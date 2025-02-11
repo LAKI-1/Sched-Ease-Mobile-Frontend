@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_schedease/widgets/schedule_card.dart';
-// import 'widget/schedule_card.dart';
 
 class DashBoard extends StatelessWidget{
   @override
@@ -21,14 +20,12 @@ class DashBoard extends StatelessWidget{
                 Spacer(), //Pushes this section to the bottom
                 _buildScheduleSection(),  //Calls function to build the schedule section UI
                 SizedBox(height: 20),
-
               ],
             ),
           )
       ),
     );
   }
-
   //Greeting Section ("Good Morning, Student!")
   Widget _buildGreetingSection(){
     return Row(   //Creating a horizontal row
@@ -41,24 +38,21 @@ class DashBoard extends StatelessWidget{
         ),
         //Greeting
         Column(
-              crossAxisAlignment: CrossAxisAlignment.end, //Align text to the right
-              children: [
-                Text(
-                  "Good Morning,",
-                  style: TextStyle(fontSize: 14, color: Colors.grey.shade600), //Smaller grey text for greeting
-                ),
-                Text(
-                  "Sienna Riverly!",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
+          crossAxisAlignment: CrossAxisAlignment.end, //Align text to the right
+          children: [
+            Text(
+              "Good Morning,",
+              style: TextStyle(fontSize: 14, color: Colors.grey.shade600), //Smaller grey text for greeting
             ),
-
+            Text(
+              "Sienna Riverly!",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ],
-
     );
   }
-
   //Time & Quote Card
   Widget _buildTimeAndQuoteCard(){
     return Container(
@@ -70,40 +64,37 @@ class DashBoard extends StatelessWidget{
           borderRadius: BorderRadius.circular(20), //Rounded corner
         ),
         child:Stack(
-          children:[
-
-            //Time: Top left
-            Positioned(
-              left: 10, //left
-              top: 10,  //top
-              child: Text(
-                "08:00 AM",
-                style:TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+            children:[
+              //Time: Top left
+              Positioned(
+                left: 10, //left
+                top: 10,  //top
+                child: Text(
+                  "08:00 AM",
+                  style:TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-
-            // Quote: Bottom Right
-            Positioned(
-              right:5,
-              bottom:2,
-              child:Text(
-                "DREAM.PLAN.DO.",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight:FontWeight.bold,
-                ),
+              // Quote: Bottom Right
+              Positioned(
+                  right:5,
+                  bottom:2,
+                  child:Text(
+                    "DREAM.PLAN.DO.",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight:FontWeight.bold,
+                    ),
+                  )
               )
-            )
-          ]
+            ]
         )
     );
   }
-
 
   //Today's Schedule
   Widget _buildScheduleSection() {
@@ -115,58 +106,88 @@ class DashBoard extends StatelessWidget{
         children: [
           //Title
           Text(
-              "Today's Schedule",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            "Today's Schedule",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-
           SizedBox(height: 15), //Adds space
 
-          //First Row: Two schedule cards
+          //First Row:
           Row(
             children: [
-              //Schedule card 1: Feedback Session
               Expanded(
                 child: ScheduleCard(
-                    title: "Feedback Session",
-                    time: "10:00 - 10:30",
-                    color: Color(0xFFE1F1FD),
+                  title: "Feedback Session with Ms.Anne",
+                  time: "09:00 - 09:30",
+                  color: Color(0xFFC5DCC2),
                 ),
-
               ),
 
-              SizedBox(width:10), //Adds space
+              SizedBox(width: 10), //Adds space
 
-              //Schedule card 2: Coursework
+              //SDGP CW Card
               Expanded(
                 child: ScheduleCard(
-                    title: "SDGP CW I Submission",
-                    time: "13:30",
-                    color: Color(0xFFFBFBFB),
-                    imagePath:'assets/cw.png'
+                  title: "SDGP CW I Submission",
+                  time: "13:30",
+                  color: Color(0xFFFBFBFB),
+                  imagePath: 'assets/cw.png',
+                ),
+              ),
+
+            ],
+          ),
+          SizedBox(height: 10), //Adds space
+
+          //Second Row:
+          Row(
+            children: [
+              //Database Lecture Card
+              Expanded(
+                child: ScheduleCard(
+                  title: "Database Submission",
+                  time: "15:00 ",
+                  color: Color(0xFFFBFBFB),
+                  imagePath: 'assets/lec.png',
+                ),
+              ),
+
+              SizedBox(width: 10), //Adds space between cards
+
+              Expanded(
+                child: ScheduleCard(
+                  title: "Feedback Session\nwith Mr. Albert",
+                  time: "17:00 - 17:30",
+                  color: Color(0xFFC5DCC2),
                 ),
               ),
             ],
           ),
+          SizedBox(height: 20), //Adds space
 
-          SizedBox(height:10), //Adds space
-
-          //Schedule card 3: Lecture
-          ScheduleCard(
-              title: "Database Lecture",
-              time: "14:00 - 16:00",
-              color: Color(0xFFFBFBFB),
-              imagePath:'assets/lec.png'
+          //View More Button
+          Center(
+            child: Container(
+              height: 40, //Sets a fixed height
+              width: 120, //Button spans to full width
+              alignment: Alignment.center, //Centers text in button
+              decoration: BoxDecoration(
+                color: Color(0xFF1A365D), //BG color of the button
+                borderRadius: BorderRadius.circular(40), //Rounded corners
+              ),
+              child: Text(
+                "View Schedule",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
-
-          SizedBox(height: 20),
-          _buildViewMoreButton(), //Calls function to add in the "View Schedule Button"
-
         ],
       ),
     );
-
   }
-
   //View More Button
   Widget _buildViewMoreButton() {
     return Center(
@@ -175,7 +196,7 @@ class DashBoard extends StatelessWidget{
         width: double.infinity, //Buttons spans to full width
         alignment: Alignment.center, //Centers text in button
         decoration: BoxDecoration(
-          color: Color(0xFF1A365D), //BG color of the button
+          color: Color(0xFF3C5A7D), //BG color of the button
           borderRadius: BorderRadius.circular(15), //Rounded corners
         ),
         child: Text(
@@ -183,11 +204,8 @@ class DashBoard extends StatelessWidget{
           style: TextStyle(color: Colors.white,fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-
-  );
-}
-
-
+    );
+  }
   // ⚡ Bottom Navigation Bar
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
@@ -202,3 +220,7 @@ class DashBoard extends StatelessWidget{
     );
   }
 }
+
+
+
+

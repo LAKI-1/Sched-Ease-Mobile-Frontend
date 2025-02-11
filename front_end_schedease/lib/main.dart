@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dashboard.dart';
-
 void main(){
   runApp(SchedEaseApp());
 }
-
 //Main Application Widget
 class SchedEaseApp extends StatelessWidget{
   @override
@@ -18,7 +16,6 @@ class SchedEaseApp extends StatelessWidget{
       ),
       home: DashBoard(),
     );
-
   }
 }
 
