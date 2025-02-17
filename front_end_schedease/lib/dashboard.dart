@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_schedease/widgets/schedule_card.dart';
+import 'package:front_end_schedease/features/schedule_page.dart';
 
 class DashBoard extends StatelessWidget{
   @override
@@ -18,8 +19,8 @@ class DashBoard extends StatelessWidget{
                 SizedBox(height: 20),     //Adds spacing
                 _buildTimeAndQuoteCard(), //Calls function to build time & quotes UI
                 Spacer(), //Pushes this section to the bottom
-                _buildScheduleSection(),  //Calls function to build the schedule section UI
-                SizedBox(height: 20),
+                _buildScheduleSection(context),  //Calls function to build the schedule section UI
+                SizedBox(height: 30),
               ],
             ),
           )
@@ -97,7 +98,7 @@ class DashBoard extends StatelessWidget{
   }
 
   //Today's Schedule
-  Widget _buildScheduleSection() {
+  Widget _buildScheduleSection(BuildContext context) {
     return Container(
       width: double.infinity, // Container spans full width
       padding: EdgeInsets.symmetric(horizontal: 20), //Adding horizontal padding
@@ -166,20 +167,29 @@ class DashBoard extends StatelessWidget{
 
           //View More Button
           Center(
-            child: Container(
-              height: 40, //Sets a fixed height
-              width: 120, //Button spans to full width
-              alignment: Alignment.center, //Centers text in button
-              decoration: BoxDecoration(
-                color: Color(0xFF1A365D), //BG color of the button
-                borderRadius: BorderRadius.circular(40), //Rounded corners
-              ),
-              child: Text(
-                "View Schedule",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+            child: GestureDetector(
+              onTap: (){
+                //Navigate to the SchedulePage
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SchedulePage()),
+                );
+              },
+              child: Container(
+                height: 40, //Sets a fixed height
+                width: 120, //Button spans to full width
+                alignment: Alignment.center, //Centers text in button
+                decoration: BoxDecoration(
+                  color: Color(0xFF1A365D), //BG color of the button
+                  borderRadius: BorderRadius.circular(40), //Rounded corners
+                ),
+                child: Text(
+                  "View Schedule",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
