@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_schedease/widgets/schedule_card.dart';
 import 'package:front_end_schedease/features/schedule_page.dart';
+import 'package:front_end_schedease/widgets/navbar.dart';
 
-class DashBoard extends StatelessWidget{
+//Using a Stateful Widget to maintain the selected state of the icon
+class DashBoard extends StatefulWidget {
+  @override
+  _DashBoardState createState() => _DashBoardState();
+}
+
+class _DashBoardState extends State<DashBoard>{
+  //Track which icon index of the navbar is selected
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Colors.white, //Sets background color to white
-      bottomNavigationBar: _buildBottomNavBar(), //Calls the function to build the bottom nav bar
+
+      // Calls the function to build the bottom nav bar
+      bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(bottom: 16.0, left: 10, right:10),
+          child: BottomNavBar( //Setting what's initially selected
+            initiallySelectedIndex: _currentIndex,  //What happens when you tap on the nav icon
+            onItemSelected: (index) {
+              //Update happens when you tap on the nav icon
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
+      ),
+
       body: SafeArea(  //UI avoids device notches and status bars
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0), //Adding horizontal padding to the whole screen
@@ -27,6 +51,51 @@ class DashBoard extends StatelessWidget{
       ),
     );
   }
+
+// class DashBoard extends StatefulWidget {
+//   @override
+//   _DashBoardState createState() => _DashBoardState();
+// }
+//
+// class _DashBoardState extends State<DashBoard> {
+//   int _currentIndex = 0; // Track the current selected tab
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white, // Sets background color to blue to match your image
+//       // Use the custom bottom navigation bar
+//       bottomNavigationBar: Padding(
+//         padding: const EdgeInsets.only(bottom: 16.0, left: 10, right: 10), // Added horizontal padding
+//         child: CustomBottomNavBar(
+//           initialSelectedIndex: _currentIndex,
+//           onItemSelected: (index) {
+//             setState(() {
+//               _currentIndex = index;
+//               // You can add navigation logic here based on the selected index
+//             });
+//           },
+//         ),
+//       ),
+//       body: SafeArea(  // UI avoids device notches and status bars
+//           child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 20.0), // Adding horizontal padding to the whole screen
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start, // Aligns children to the left side
+//                 children: [
+//                   SizedBox(height: 20),     // Adds spacing at the top
+//                   _buildGreetingSection(),  // Calls function to build the greeting section
+//                   SizedBox(height: 20),     // Adds spacing
+//                   _buildTimeAndQuoteCard(), // Calls function to build time & quotes UI
+//                   Spacer(), // Pushes this section to the bottom
+//                   _buildScheduleSection(context),  // Calls function to build the schedule section UI
+//                   SizedBox(height: 30),
+//                 ],
+//               )
+//           )
+//       ),
+//     );
+//   }
+
   //Greeting Section ("Good Morning, Student!")
   Widget _buildGreetingSection(){
     return Row(   //Creating a horizontal row
