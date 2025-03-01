@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //dependency for date formatting
 import 'package:front_end_schedease/widgets/navbar.dart';
+import 'package:front_end_schedease/features/mentor_selection_page.dart';
 
 void main(){
   runApp(MaterialApp(
@@ -245,33 +246,51 @@ class _SchedulePageState extends State<SchedulePage>{
     );
   }
 
-
-
   Widget _buildBookSessionButton() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 0,
-            blurRadius: 10,
-            offset: Offset(0, 2),
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the MentorSelectionPage with the currently selected date
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => MentorSelectionPage(selectedDate: _selectedDate),
           ),
-        ],
-      ),
-
-      child: Center(
-        child: Text(
-          'Book a Feedback Session',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+        ).then((result) {
+          // Optional: Handle result when returning from mentor selection page
+          if (result == true) {
+            // Booking was successful, maybe refresh the schedule
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Session booked successfully!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 10,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            'Book a Feedback Session',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
           ),
         ),
       ),
