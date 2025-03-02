@@ -16,6 +16,34 @@ class Message{
   final String time;
 
   Message(this.text,this.isMe,this.time);
+
+
+
+
 }
 
+class ChatScreen extends StatefulWidget{
+  final Contact contact;
+
+  const ChatScreen({Key? key, required this.contact}) : super(key: key);
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+
+}
+
+class _ChatScreenState extends State<ChatScreen>{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.contact.name),
+      ),
+      body: Center(
+        child: Text('Chat with ${widget.contact.name}'),
+
+      ),
+    );
+  }
+}
 
