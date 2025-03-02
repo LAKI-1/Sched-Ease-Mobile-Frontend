@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -48,16 +50,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         size: 38,
                       ),
-                    ),
+                    )
+
                   ],
                 ),
                 const SizedBox(height: 20),
 
                 TextField(
                   decoration: InputDecoration(
-                    hintText: 'search'
+                    hintText: 'search',
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    prefixIcon: const Icon(Icons.search,color: Colors.grey,),
+                    filled: true,
+                    fillColor: const Color(0xff20283A),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    )
                   ),
-                )
+                  style: const TextStyle(color: Colors.white),
+                ),
+
+
+
+                const SizedBox(height: 20),
+
+
+
+
+
+
+
+
 
                 
               ],
