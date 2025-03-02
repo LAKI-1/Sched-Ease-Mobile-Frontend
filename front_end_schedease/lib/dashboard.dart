@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_end_schedease/widgets/schedule_card.dart';
 import 'package:front_end_schedease/features/schedule_page.dart';
 import 'package:front_end_schedease/widgets/navbar.dart';
-
+import 'package:front_end_schedease/features/log_page.dart'; // Add this import
 
 class DashBoard extends StatefulWidget {
   @override
@@ -16,7 +16,9 @@ class _DashBoardState extends State<DashBoard> {
   final List<Widget> _pages = [
     DashBoardContent(),
     SchedulePage(),
-    //Other pages for chat and Help can be added here
+    // Chat is index 2, add it here
+    LogPage(),
+    // If there are other pages, add them here
   ];
 
   @override
@@ -38,7 +40,6 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 }
-
 class DashBoardContent extends StatelessWidget{
   @override
   Widget build(BuildContext context){
