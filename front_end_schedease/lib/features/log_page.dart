@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end_schedease/widgets/navbar.dart';
+import 'package:front_end_schedease/features/recording_page.dart';
 
 class LogPage extends StatefulWidget {
   @override
@@ -69,7 +70,7 @@ class _LogPageState extends State<LogPage> {
   ];
 
   //List of logBook items
-  final List<Map<String,dynamic>> logBookItems = [
+  List<Map<String,dynamic>> logBookItems = [
     {
       'time': '21 March, 2025',
       'title': 'Feedback Session with Mr.Albert Recording',
@@ -215,6 +216,21 @@ class _LogPageState extends State<LogPage> {
     final seconds = int.parse(parts[1]);
     return minutes * 60 + seconds.toDouble();
   }
+  // Add a new recording to the logbook
+  void _addNewRecording(Map<String, dynamic> newRecording) {
+    setState(() {
+      // Add empty transcript array if none exists
+      if (!newRecording.containsKey('transcript')) {
+        newRecording['transcript'] = [];
+      }
+
+      // Add the new recording to the beginning of the list to show it first
+      logBookItems.insert(0, newRecording);
+
+      // Switch to LogBook page to show the new recording
+      _changePage(1);
+    });
+  }
 
 
 
@@ -254,6 +270,28 @@ class _LogPageState extends State<LogPage> {
             ],
           ),
       ),
+
+      floatingActionButton: _currentPageIndex == 1
+          ? FloatingActionButton(
+            onPressed: () {
+              // Navigate to the recording page and wait for result
+              Navigator.push<Map<String, dynamic>>(
+                context,
+                MaterialPageRoute(builder: (context) => RecordingPage()),
+              ).then((newRecording) {
+                // If a recording was saved and returned, add it to the log
+                if (newRecording != null) {
+                  _addNewRecording(newRecording);
+                }
+              });
+            },
+            backgroundColor: Color(0xFF3C5A7D),
+            child: Icon(
+              Icons.mic,
+              color: Colors.white,
+            ),
+          )
+          : null, //Doesn't show record button when in Feedback Log
     );
   }
 
