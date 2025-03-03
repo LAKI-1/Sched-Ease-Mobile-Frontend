@@ -50,8 +50,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
 
-
-
           Positioned(
             top: 60,
             left: 37,
@@ -73,7 +71,6 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-
 
           Center(
             child: Column(
@@ -99,6 +96,34 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                30.verticalSpace,
+
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () {},
+                  child: SizedBox(
+                    width: 187,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: null, // Disables the button
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0x403E8498),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 3,
+                        shadowColor: Colors.black26,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Image.asset('assets/google.png', width: 24)],
+                      ),
+                    ),
+                  ),
+                ),
+
+                40.verticalSpace,
               ],
             ),
           ),
