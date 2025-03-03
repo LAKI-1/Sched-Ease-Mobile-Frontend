@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'chatscreen.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -7,9 +7,31 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+
+
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+  List<Contact>contacts=[
+    Contact('Ms..Albert','You: Thank you sir.','9:40 AM',
+    'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg'),
+    Contact('Mr.John','You: Ok,thanks!','9:25 AM',
+    'https://www.seekpng.com/png/full/115-1150053_avatar-png-transparent-png-royalty-free-default-avatar.png'),
+    Contact('Mr.Loia','You: Ok miss,I will up... ','Fri',
+    'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'),
+    Contact('Ms.Kayal','There is a consern','Fri',
+    'https://cdn-icons-png.flaticon.com/512/149/149071.png'),
+    Contact('Mr.Anne','Anne23@gmail.com','Tue',
+    'https://www.pngfind.com/pngs/m/112-1128448_avatar-png-transparent-png-royalty-free-default-avatar.png'),
+
+  ];
+
+  List<Contact>FileteredContacts=[];
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
