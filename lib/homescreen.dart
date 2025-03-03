@@ -28,7 +28,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ];
 
-  List<Contact>FileteredContacts=[];
+  List<Contact>fileteredContacts=[];
+
+
+  @override
+  void initState(){
+    super.initState();
+    fileteredContacts = contacts;
+  }
+
+  void filteredContacts(String searchText){
+    setState((){
+      fileteredContacts = contacts
+          .where((contact) =>
+           contact.name.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    });
+  }
 
 
 
