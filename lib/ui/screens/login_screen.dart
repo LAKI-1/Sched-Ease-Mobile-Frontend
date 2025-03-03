@@ -49,6 +49,59 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
+
+
+
+          Positioned(
+            top: 60,
+            left: 37,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(30),
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Color(0xFFA9A9A9), width: 1),
+                ),
+
+                child: const Icon(Icons.arrow_back_ios_new_rounded, size: 16),
+              ),
+            ),
+          ),
+
+
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/logo.png',
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  fit: BoxFit.contain,
+                ),
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    '"Scheduling made easy: Simplify your time, amplify your productivity."',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF707070),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
