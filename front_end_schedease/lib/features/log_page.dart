@@ -606,6 +606,59 @@ class _LogPageState extends State<LogPage> {
 
   }
 
+  void _deleteRecording(int index) {
+    // Gets the current filtered list to find which item to delete
+    List<Map<String,dynamic>> filteredItems = logBookItems.where((item){
+      bool yearMatch = _selectedYear == 'All' || item['year'] == _selectedYear;
+      bool monthMatch = _selectedMonth == 'All' || item['month'] == _selectedMonth;
+      return yearMatch && monthMatch;
+    }).toList();
+
+    // Showing confirmation dialog before deleting
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete Recording'),
+        content: Text('Are you sure you want to delete this recording? This action cannot be undone.'),
+        backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Color(0xFF3C5A7D)),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    ).then((confirmed) {
+      if (confirmed == true) {
+        setState(() {
+          // Get the item to delete from the filtered list
+          final itemToDelete = filteredItems[index];
+
+          // Find and remove the item from the main list
+          logBookItems.remove(itemToDelete);
+
+          // Reset expanded and selected states
+          if (_expandedRecordingIndex == index) {
+            _expandedRecordingIndex = null;
+          }
+          if (_selectedItemIndex == index) {
+            _selectedItemIndex = null;
+          }
+        });
+      }
+    });
+  }
+
   Widget _buildFeedbackItem(Map<String, dynamic> item, int index, bool isExpanded) {
     //Checks if item is selected
     bool isSelected = _selectedItemIndex == index;
@@ -714,12 +767,12 @@ class _LogPageState extends State<LogPage> {
                   ),
                 ],
               ),
-            ),
+          ),
           ),
 
-          // Expanded detailed feedback view - left incomplete as requested
-          if (isExpanded)
-            _buildDetailedFeedbackView(item),
+        // Expanded detailed feedback view - left incomplete as requested
+        if (isExpanded)
+          _buildDetailedFeedbackView(item),
         ],
       ),
     );
@@ -826,78 +879,102 @@ class _LogPageState extends State<LogPage> {
       SizedBox(height: 10),
 
     Row( //User and date info row
-    children: [
-      //Mentor icon and name
-      Icon(Icons.person_outline, size: 16, color: Colors.grey[500]),
-      SizedBox(width: 5),
-      Text(
-        item['student'] ?? 'Unknown Student',
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.grey[500],
-        ),
-        ),
-      SizedBox(width: 15),
-      //Date icon and value
-      Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey[500]),
-      SizedBox(width: 5),
-      Text(
-        item['time'],
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.grey[500],
-        ),
-      ),
-      Spacer(),
-
-      //Recording length
-      Icon(Icons.timer_outlined, size: 16, color: Colors.grey[500]),
-      SizedBox(width: 3),
-      Text(
-        item['recordingLength'] ?? '0:00',
-        style: TextStyle(
-          fontSize: 13,
-          color: Colors.grey[500],
-        ),
-       )
-      ],
-    ),
-    SizedBox(height: 12),
-
-    //View More button
-    Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-    GestureDetector(
-      onTap: () {
-      setState(() {
-        //Reset playback
-        _playbackPosition = 0;
-        _isPlaying = false;
+        //Student icon and name
+        Icon(Icons.person_outline, size: 16, color: Colors.grey[500]),
+        SizedBox(width: 5),
+        Text(
+          item['student'] ?? 'Unknown Student',
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.grey[500],
+          ),
+          ),
 
-        //Toggles expanded view
-        if(_expandedRecordingIndex == index){
-          _expandedRecordingIndex = null;
-        } else {
-          _expandedRecordingIndex = index;
-        }
-      });
-      },
-      child: Text(
-        isExpanded ? 'Close Recording' : 'View More',
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF3C5A7D), //Dark blue
+        Spacer(),
+        //Date icon and value
+        Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey[500]),
+        SizedBox(width: 5),
+        Text(
+          item['time'],
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.grey[500],
           ),
         ),
+      ],
+    ),
+    SizedBox(height: 5),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        //Recording length
+        Row(
+          children: [
+            Icon(Icons.timer_outlined, size: 16, color: Colors.grey[500]),
+              SizedBox(width: 3),
+              Text(
+                item['recordingLength'] ?? '0:00',
+                style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[500],
+                ),
+              ),
+          ],
+    ),
+
+      Row(
+        children: [
+          // Delete button - only visible when in LogBook tab
+          IconButton(
+            icon: Icon(
+              Icons.delete_outline,
+              size: 18,
+              color: Colors.red[400],
+            ),
+            onPressed: () {
+              _deleteRecording(index);
+            },
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            tooltip: 'Delete recording',
+          ),
+          SizedBox(width: 10),
+
+
+          //View More button
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                //Reset playback
+                _playbackPosition = 0;
+                _isPlaying = false;
+
+                //Toggles expanded view
+                if(_expandedRecordingIndex == index){
+                  _expandedRecordingIndex = null;
+                } else {
+                  _expandedRecordingIndex = index;
+                }
+              });
+            },
+            child: Text(
+              isExpanded ? 'Close Recording' : 'View More',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF3C5A7D), //Dark blue
+              ),
+            ),
+          ),
+        ],
       ),
       ],
-      ),
-      ],
-      ),
+    ),
+    ],
     ),
     ),
+          ),
 
     if (isExpanded) _buildRecordingPlayerView(item),
       ],
