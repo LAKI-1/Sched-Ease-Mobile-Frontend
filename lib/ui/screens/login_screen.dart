@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sign_in_screen/core/constants/styles.dart';
+import 'package:sign_in_screen/ui/screens/help_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -124,6 +125,62 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 40.verticalSpace,
+
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Row(
+                    children: [
+                      Expanded(child: Divider(color: Color(0xFF008080))),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Assistance",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF969696),
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: Color(0xFF008080))),
+                    ],
+                  ),
+                ),
+
+                10.verticalSpace,
+
+                InkWell(
+                  borderRadius: BorderRadius.circular(30),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HelpScreen()),
+                    );
+                    // Handle Help Action
+                  },
+                  child: SizedBox(
+                    width: 180,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF008080),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 3,
+                      ),
+                      child: const Text(
+                        "Need Help?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
