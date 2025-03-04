@@ -122,8 +122,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                     ),
+                    child: ListView.builder(
+                      itemCount: filteredContacts.length,
+                      itemBuilder: (context, index){
+                        final contact=filteredContacts[index];
+                        return InkWell(
+                          onTap: (){
+
+
+                          },
+                        );
+
+                      },
+                    ),
+
+                    ),
                   ),
-                )
+
 
 
 
