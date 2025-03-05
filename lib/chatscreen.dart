@@ -37,7 +37,20 @@ class _ChatScreenState extends State<ChatScreen>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.contact.name),
+        backgroundColor: const Color(0xff0000ff),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back,color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        // title: Text(widget.contact.name),
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: NetworkImage(widget.contact.imageUrl),
+            )
+          ],
+        ),
       ),
       body: Center(
         child: Text('Chat with ${widget.contact.name}'),
