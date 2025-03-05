@@ -28,18 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ];
 
-  List<Contact>fileteredContacts=[];
+  List<Contact>filteredContacts = [];
 
 
   @override
   void initState(){
     super.initState();
-    fileteredContacts = contacts;
+    filteredContacts = contacts;
   }
 
-  void filteredContacts(String searchText){
+  void filterContacts(String searchText){
     setState((){
-      fileteredContacts = contacts
+      filteredContacts = contacts
           .where((contact) =>
            contact.name.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
@@ -125,12 +125,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView.builder(
                       itemCount: filteredContacts.length,
                       itemBuilder: (context, index){
-                        final contact=filteredContacts[index];
+                        final contact= filteredContacts[index];
                         return InkWell(
                           onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                  contact: contact,
+                                )
+                              )
+                            );
+
 
 
                           },
+                          child: _buildContactRow(contact),
                         );
 
                       },
