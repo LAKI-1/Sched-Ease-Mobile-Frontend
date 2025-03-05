@@ -191,10 +191,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       child: Text(contact.name,
                         style: const TextStyle(
+                          color: Colors.white,
                           fontFamily: 'Quicksand',
                           fontSize: 17,
                         ),
                     )),
+                    Text(contact.time,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                      ),
+
+                    ),
+
+                  const SizedBox(height: 5),
+                    Text(contact.email,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+
+                    )
                   ],
                 ),
               ],
