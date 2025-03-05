@@ -48,6 +48,19 @@ class _ChatScreenState extends State<ChatScreen>{
             CircleAvatar(
               radius: 20,
               backgroundImage: NetworkImage(widget.contact.imageUrl),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.contact.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
             )
           ],
         ),

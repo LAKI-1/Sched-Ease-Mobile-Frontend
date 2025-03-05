@@ -122,6 +122,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
 
                     ),
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      trackVisibility: true,
+
+
                     child: ListView.builder(
                       itemCount: filteredContacts.length,
                       itemBuilder: (context, index){
@@ -157,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-
+                ),
                 
               ],
             ),
