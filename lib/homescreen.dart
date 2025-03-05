@@ -178,7 +178,28 @@ class _HomeScreenState extends State<HomeScreen> {
             radius: 20,
             backgroundImage: NetworkImage(contact.imageUrl),
 
+
           ),
+
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(contact.name,
+                        style: const TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 17,
+                        ),
+                    )),
+                  ],
+                ),
+              ],
+            )
+          )
 
         ],
       ),
