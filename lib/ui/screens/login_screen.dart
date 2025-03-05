@@ -68,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                   border: Border.all(color: Color(0xFFA9A9A9), width: 1),
                 ),
 
-                child: const Icon(Icons.arrow_back_ios_new_rounded, size: 16),
+                child: const Icon(Icons.arrow_back_ios_new_rounded, size: 12),
               ),
             ),
           ),
@@ -109,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: null, // Disables the button
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0x403E8498),
+                        backgroundColor: const Color(0x803E8498),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -130,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 40),
                   child: Row(
                     children: [
-                      Expanded(child: Divider(color: Color(0xFF008080))),
+                      Expanded(child: Divider(color: Color(0xFF3E8498))),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
@@ -142,7 +142,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(child: Divider(color: Color(0xFF008080))),
+                      Expanded(child: Divider(color: Color(0xFF3E8498))),
                     ],
                   ),
                 ),
@@ -164,7 +164,7 @@ class LoginScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF008080),
+                        backgroundColor: const Color(0xFF3E8498),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

@@ -109,7 +109,7 @@ class SplashScreen extends StatelessWidget {
                               child: Icon(
                                 Icons.arrow_forward_ios,
                                 color: Colors.black87,
-                                size: 16,
+                                size: 12,
                               ),
                             ),
                           ),
