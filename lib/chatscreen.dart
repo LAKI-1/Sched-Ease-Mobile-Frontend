@@ -68,6 +68,23 @@ class _ChatScreenState extends State<ChatScreen>{
       body: Center(
         child: Text('Chat with ${widget.contact.name}'),
 
+
+            )
+          );
+
+  }
+
+  Widget _buildMessageInput(){
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: const Color(0xff20283A),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.attach_file,color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
