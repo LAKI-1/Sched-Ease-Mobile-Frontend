@@ -84,6 +84,19 @@ class _ChatScreenState extends State<ChatScreen>{
             icon: const Icon(Icons.attach_file,color: Colors.white),
             onPressed: () {},
           ),
+
+          TextField(
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              hintText: 'Type message....',
+              hintStyle: TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              )
+            ),
+          )
+
         ],
       ),
     );
