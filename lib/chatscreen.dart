@@ -12,7 +12,7 @@ class Contact{
 
 class Message{
   final String text;
-  final String isMe;
+  final bool isMe;
   final String time;
 
   Message(this.text,this.isMe,this.time);
@@ -33,6 +33,43 @@ class ChatScreen extends StatefulWidget{
 }
 
 class _ChatScreenState extends State<ChatScreen>{
+
+  final TextEditingController _messageController = TextEditingController();
+  final List<Message> _messages =  [
+    Message("Hello", true, "09:42"),
+    Message(
+      "Sir",false,
+      "09:45"),
+    Message("...", true , "09:50"),
+
+  ];
+
+
+  void _sendMessage(){
+    if(_messageController.text
+      .trim()
+      .isNotEmpty) {
+      setState(() {
+        _messages.add(
+          Message(
+            _messageController.text,
+            true,
+            "${DateTime
+                .now()
+                .hour}:${DateTime
+                .now()
+                .
+            minute}",
+          ),
+        );
+      }
+      );
+
+      _messageController.clear();
+    }
+
+
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
