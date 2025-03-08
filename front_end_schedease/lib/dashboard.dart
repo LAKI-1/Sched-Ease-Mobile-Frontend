@@ -12,6 +12,8 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   int _currentIndex = 0; //Tracking currently selected index
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   //List of pages displayed based on the index selected
   final List<Widget> _pages = [
     DashBoardContent(),
@@ -20,26 +22,31 @@ class _DashBoardState extends State<DashBoard> {
     LogPage(),
     // If there are other pages, add them here
   ];
+  
+  void changePage(int index){
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 16.0, left: 10, right: 10),
         child: BottomNavBar(
           initiallySelectedIndex: _currentIndex,
           onItemSelected: (index) {
-            setState(() {
-              _currentIndex = index; //Update selected index
-            });
-          },
+            changePage(index);
+          },//Update selected index
         ),
       ),
-      body: _pages[_currentIndex], //Display the selected Page
+      body: _pages[_currentIndex],
     );
+    }
   }
-}
 class DashBoardContent extends StatelessWidget{
   @override
   Widget build(BuildContext context){
@@ -138,7 +145,8 @@ class DashBoardContent extends StatelessWidget{
       width: double.infinity, // Container spans full width
       padding: EdgeInsets.symmetric(horizontal: 20), //Adding horizontal padding
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, //Aligns the children to left side
+        crossAxisAlignment: CrossAxisAlignment.start,
+        //Aligns the children to left side
         children: [
           //Title
           Text(
@@ -203,17 +211,21 @@ class DashBoardContent extends StatelessWidget{
           //View More Button
           Center(
             child: GestureDetector(
-              onTap: (){
-                //Navigate to the SchedulePage
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SchedulePage()),
-                );
+              onTap: () {
+                final _DashBoardState? state= context.findAncestorStateOfType<_DashBoardState>(); //nearest scaffold state to access _DashBoardState
+                if ( state != null){
+                  state.setState((){
+                    state.changePage(1);
+                  });
+                }
               },
               child: Container(
-                height: 40, //Sets a fixed height
-                width: 120, //Button spans to full width
-                alignment: Alignment.center, //Centers text in button
+                height: 40,
+                //Sets a fixed height
+                width: 120,
+                //Button spans to full width
+                alignment: Alignment.center,
+                //Centers text in button
                 decoration: BoxDecoration(
                   color: Color(0xFF1A365D), //BG color of the button
                   borderRadius: BorderRadius.circular(40), //Rounded corners
@@ -233,26 +245,6 @@ class DashBoardContent extends StatelessWidget{
       ),
     );
   }
-
-  //View More Button
-  Widget _buildViewMoreButton() {
-    return Center(
-      child: Container(
-        height: 60, //Sets a fixed height
-        width: double.infinity, //Buttons spans to full width
-        alignment: Alignment.center, //Centers text in button
-        decoration: BoxDecoration(
-          color: Color(0xFF3C5A7D), //BG color of the button
-          borderRadius: BorderRadius.circular(15), //Rounded corners
-        ),
-        child: Text(
-          "View Schedule",
-          style: TextStyle(color: Colors.white,fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
 
 }
 

@@ -5,9 +5,10 @@ class BottomNavBar extends StatefulWidget {
   final Function(int) onItemSelected;
 
   BottomNavBar({
+    Key? key,
     this.initiallySelectedIndex = 0,
     required this.onItemSelected,
-  });
+  }) : super (key:key);
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -17,7 +18,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
   late int selectedIndex;
   late AnimationController _animationController;
 
-  // Mint green color for selected items
+  // Dark blue color for selected items
   final Color colorAroundNavItem = Color(0xFF3C5A7D);
 
   @override
@@ -30,6 +31,16 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
+  }
+
+  @override
+  void didUpdateWidget(BottomNavBar oldWidget){
+    super.didUpdateWidget(oldWidget);
+    if (widget.initiallySelectedIndex != oldWidget.initiallySelectedIndex){
+      setState(() {
+        selectedIndex = widget.initiallySelectedIndex;
+      });
+    }
   }
 
   @override
