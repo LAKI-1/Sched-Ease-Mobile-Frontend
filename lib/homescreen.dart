@@ -138,8 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               MaterialPageRoute(
                                 builder: (context) => ChatScreen(
                                   contact: contact,
-                                )
-                              )
+                                ),
+                              ),
                             );
 
 
@@ -190,8 +190,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
           Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(contact.name,
@@ -199,27 +202,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                           fontFamily: 'Quicksand',
                           fontSize: 17,
-                        ),
-                    )),
+                        )),
+                    ),
                     Text(contact.time,
                       style: const TextStyle(
                         color: Colors.white70,
                       ),
 
+
                     ),
+                  ],
+                ),
 
                   const SizedBox(height: 5),
                     Text(contact.email,
                       style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                        color: Colors.white70,
+                      )
 
-                    )
+                    ),
                   ],
                 ),
-              ],
-            )
-          )
+
+            ),
+
 
         ],
       ),

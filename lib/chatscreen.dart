@@ -60,8 +60,7 @@ class _ChatScreenState extends State<ChatScreen>{
                 .now()
                 .hour}:${DateTime
                 .now()
-                .
-            minute}",
+                .minute}",
           ),
         );
       }
@@ -81,7 +80,7 @@ class _ChatScreenState extends State<ChatScreen>{
           icon: const Icon(Icons.arrow_back,color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        // title: Text(widget.contact.name),
+        //title: Text(widget.contact.name),
         title: Row(
           children: [
             CircleAvatar(
@@ -95,6 +94,7 @@ class _ChatScreenState extends State<ChatScreen>{
                 Text(
                   widget.contact.name,
                   style: const TextStyle(
+                    color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -105,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen>{
         ),
       ),
 
-      //backgroundColor: const Color(0xffffffff),
+      backgroundColor: const Color(0xff18202D),
 
       body: Column(
         children: [
@@ -116,6 +116,7 @@ class _ChatScreenState extends State<ChatScreen>{
                 itemCount: _messages.length,
                 itemBuilder: (context, index){
                   final message= _messages[_messages.length = 1 - index];
+                  return _buildMessageBubble(message);
 
                 }
 
@@ -149,7 +150,15 @@ class _ChatScreenState extends State<ChatScreen>{
               message.text,
               style: const TextStyle(color: Colors.white, fontSize: 16),
 
-            )
+            ),
+            const SizedBox(height: 5),
+            Text(
+              message.time,
+              style: TextStyle(
+                color: Colors.grey[400],
+                fontSize: 12,
+              ),
+            ),
           ],
         ),
       ),
