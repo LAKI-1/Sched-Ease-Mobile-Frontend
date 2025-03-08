@@ -447,7 +447,11 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
             selectedDate: _selectedDate,
           ),
       ),
-    );
+    ).then((result){
+      if(result != null){
+        Navigator.of(context).pop(result);
+      }
+    });
   }
 
   String _getOrdinalSuffix(int day) {

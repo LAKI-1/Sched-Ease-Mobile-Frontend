@@ -564,11 +564,18 @@ class _SessionBookingFormState extends State<SessionBookingForm> {
                     //Done button
                     ElevatedButton(
                       onPressed: () {
+
+                        final sessionData ={
+                          'date' : widget.selectedDate,
+                          'mentorName': widget.mentorName,
+                          'timeSlot':_selectedTimeSlot,
+                          'focus':_focusController.text,
+                          'groupNumber': _groupNumberController.text,
+                        };
                         //Close dialogue and return to page
                         Navigator.of(context).pop(); //Close dialog
                         Navigator.of(context).pop(); //Close booking form
-                        Navigator.of(context).pop(
-                            true); //Return schedule with success flag
+                        Navigator.of(context).pop(sessionData);
                       },
 
                       style: ElevatedButton.styleFrom(

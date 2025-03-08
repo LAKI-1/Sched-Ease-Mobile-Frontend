@@ -20,30 +20,85 @@ class _SchedulePageState extends State<SchedulePage>{
 
   int _currentWeekPage = 1000; //index for infinite scroll
 
-  //Timeline of Scheduled Events
-  final List<Map<String, dynamic>> scheduleItems = [
-    {
-      'time': '10.00',
-      'title': 'Session with Supervisor (Mr.Banu)',
-      'duration': '10.00 - 12.00',
-      'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline card
-
-    },
-    {
-      'time': '13.00',
-      'title': 'CS-12 Group Meeting',
-      'duration': '13.00 - 14.00',
-      'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline cards
-    },
-  ];
+  Map <String, List<Map<String, dynamic>>> _scheduledEvents = {};
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _selectedDate = DateTime.now();
     _currentMonth = DateTime(_selectedDate.year, _selectedDate.month);
     _weekPageController = PageController(initialPage: _currentWeekPage);
+
+    _initializeSchedule();
   }
+    _initializeSchedule(){ //initialising with sample data
+      final today = DateTime.now();
+      final todayString = DateFormat('yyyy-MM-dd').format(today);
+
+      _scheduledEvents [todayString] = [
+        {
+          'time': '10.00',
+          'title': 'Session with Supervisor (Mr.Albert)',
+          'duration': '10.00 - 12.00',
+          'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline card
+
+        },
+        {
+          'time': '13.00',
+          'title': 'CS-12 Group Meeting',
+          'duration': '13.00 - 14.00',
+          'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline cards
+        },
+
+      ];
+    }
+
+
+  void _addSessionToSchedule({
+    required DateTime date,
+    required String mentorName,
+    required String timeSlot,
+    required String focusText,
+    required String groupNumber,
+  }) {
+
+    //Convert date to string format for map key
+    final dateString = DateFormat('yyyy-MM-dd').format(date);
+    //Parse time from timeSlot
+    final startTime = timeSlot.split(' - ')[0];
+
+    //Creating a new Session
+    final newSession = {
+      'time': startTime,
+      'title': 'Feedback Session with $mentorName',
+      'duration': timeSlot,
+      'focus': focusText,
+      'group': groupNumber,
+      'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5),
+    };
+    
+    setState(() {
+      //If date doesn't exist in map, create a new list
+      if (!_scheduledEvents.containsKey(dateString)){
+        _scheduledEvents[dateString] =[];
+      }
+      
+      //Add new session to the list to this date
+      _scheduledEvents[dateString] !.add(newSession);
+      
+      //Sorting events by time
+      _scheduledEvents[dateString]!.sort((a,b) =>
+          a['time'].toString().compareTo(b['time'].toString()));
+    });
+  }
+  
+  //Get scheduled events for selected date
+  List <Map<String,dynamic>> _getScheduleForSelectedDate(){
+    final dateString = DateFormat('yyyy-MM-dd').format(_selectedDate);
+    return _scheduledEvents[dateString] ?? [];
+  }
+
+  
 
   @override
   void dispose() {
@@ -180,44 +235,69 @@ class _SchedulePageState extends State<SchedulePage>{
               crossAxisSpacing: 8.0,
             ),
             itemCount: firstDayWeekDay + daysInMonth.length,
-            itemBuilder: (context, index){
-    //Empty spots before first day of month
-    if (index < firstDayWeekDay){
-    return Container();
-    }
+            itemBuilder: (context, index) {
+              //Empty spots before first day of month
+              if (index < firstDayWeekDay) {
+                return Container();
+              }
 
-    //Actual days of month
-    final dayIndex = index - firstDayWeekDay;
-    final day = daysInMonth[dayIndex];
+              //Actual days of month
+              final dayIndex = index - firstDayWeekDay;
+              final day = daysInMonth[dayIndex];
 
-    bool isSelected = day.year == _selectedDate.year &&
-    day.month == _selectedDate.month &&
-    day.day == _selectedDate.day;
+              bool isSelected = day.year == _selectedDate.year &&
+                  day.month == _selectedDate.month &&
+                  day.day == _selectedDate.day;
 
-    return GestureDetector(
-    onTap: (){
-    setState(() {
-    _selectedDate = day;
-    });
-    },
-    child: Container(
-    decoration: BoxDecoration(
-    color: isSelected ? Colors.white : Colors.transparent,
-    shape: BoxShape.circle,
-    ),
-    child: Center(
-    child: Text(
-    '${day.day}',
-    style: TextStyle(
-    fontSize: 14,
-    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-    color: isSelected ? Color(0xFF3C5A7D) : Colors.white,
-    ),
-    ),
-    ),
-    ),
-    );
-    },
+              //Convert date to string format for map key
+              final dateString = DateFormat('yyyy-MM-dd').format(day);
+              final hasEvents = _scheduledEvents.containsKey(dateString) &&
+                  _scheduledEvents[dateString]!.isNotEmpty;
+
+
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedDate = day;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.white : Colors.transparent,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      //Day number
+                      Text(
+                        '${day.day}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight
+                              .normal,
+                          color: isSelected ? Color(0xFF3C5A7D) : Colors.white,
+                        ),
+                      ),
+
+                      if(hasEvents)
+                        Positioned(
+                          bottom: 2,
+                          child: Container(
+                            width: 5,
+                            height: 5,
+                            decoration: BoxDecoration(
+                              color: isSelected ? Color(0xFF3C5A7D) : Color(
+                                  0xFFC5DCC2),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            }
           ),
           SizedBox(height: 20),
           _buildBookSessionButton(),
@@ -257,8 +337,16 @@ class _SchedulePageState extends State<SchedulePage>{
             builder: (context) => MentorSelectionPage(selectedDate: _selectedDate),
           ),
         ).then((result) {
-          // Optional: Handle result when returning from mentor selection page
-          if (result == true) {
+          // Checking if session details are back
+          if (result is Map<String,dynamic>) {
+            // Add the booked session to the schedule
+            _addSessionToSchedule(
+              date: result['date'],
+              mentorName: result['mentorName'],
+              timeSlot: result['timeSlot'],
+              focusText: result['focus'],
+              groupNumber: result['groupNumber'],
+            );
             // Booking was successful, maybe refresh the schedule
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -305,6 +393,9 @@ class _SchedulePageState extends State<SchedulePage>{
 
   //Build Schedule Timeline Content
   Widget _buildScheduleContent() {
+    //Getting the schedule for selected date
+    final scheduleItems = _getScheduleForSelectedDate();
+
     // Using the ordinal suffix method to format the date properly
     final day = _selectedDate.day;
     final suffix = _getOrdinalSuffix(day);
@@ -322,16 +413,48 @@ class _SchedulePageState extends State<SchedulePage>{
             ),
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 10),
 
           //List of schedule items
           Expanded(
-            child: ListView.builder(
-              itemCount: scheduleItems.length,
-              itemBuilder: (context, index) {
-                final item = scheduleItems[index];
-                return _buildScheduleItem(item);
-              },
+            child: scheduleItems.isEmpty
+              ? _buildEmptySchedule()
+              : ListView.builder(
+                  itemCount: scheduleItems.length,
+                  itemBuilder: (context, index) {
+                  final item = scheduleItems[index];
+                  return _buildScheduleItem(item);
+                  },
+              ),
+              ),
+        ],
+      ),
+    );
+  }
+  Widget _buildEmptySchedule(){
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.event_available,
+            size: 50,
+            color: Colors.grey.withOpacity(0.5),
+          ),
+          SizedBox(height: 10),
+          Text(
+            'No sessions scheduled for this day',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Tap "Book a Feedback Session" to schedule',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
             ),
           ),
         ],
@@ -390,11 +513,41 @@ class _SchedulePageState extends State<SchedulePage>{
                       color: Colors.grey[600],
                     ),
                   ),
-                ],
-              ),
+
+                  //Show additionally booked sessions
+                if (item.containsKey('focus'))
+                   Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      SizedBox(height: 8),
+                      Divider(height: 1, color: Colors.grey.withOpacity(0.3)),
+                      SizedBox(height: 8),
+                      Text(
+                      'Focus: ${item['focus']}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[800],
+                        ),
+                      ),
+
+                  if (item.containsKey('group'))
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        'Group: ${item['group']}',
+                       style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[800],
+                      ),
+                    ),
+                  ),
+                      ],
+                   ),
+              ],
             ),
           ),
-        ],
+          ),
+      ],
       ),
     );
   }
