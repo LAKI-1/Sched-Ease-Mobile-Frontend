@@ -47,8 +47,8 @@ class _ChatScreenState extends State<ChatScreen>{
 
   void _sendMessage(){
     if(_messageController.text
-      .trim()
-      .isNotEmpty) {
+        .trim()
+        .isNotEmpty) {
       setState(() {
         _messages.add(
           Message(
@@ -96,14 +96,28 @@ class _ChatScreenState extends State<ChatScreen>{
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
-      body: Center(
-        child: Text('Chat with ${widget.contact.name}'),
+
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              reverse: true,
+                padding: const EdgeInsets.all(15),
+                itemCount: _messages.length,
+                itemBuilder: (context, index){
+                  final message= _messages[_messages.length = 1 - index];
+                }
+
+            ),
+          ),
+          _buildMessageInput(),
+        ],
 
 
             )
