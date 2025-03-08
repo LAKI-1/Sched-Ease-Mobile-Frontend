@@ -14,10 +14,8 @@ class MentorSelectionPage extends StatefulWidget{
 }
 
 class _MentorSelectionPageState extends State<MentorSelectionPage> {
-  late PageController _weekPageController; //Week view slider
+
   late DateTime _selectedDate;
-  late DateTime _currentMonth;
-  int _currentWeekPage = 1000; //Starting page number for infinite scrolling
   int? _selectedMentorIndex; //Index of mentor selected
 
   //List of mentors
@@ -49,46 +47,8 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
     //Called when widget is added to the tree
     super.initState();
     _selectedDate = widget.selectedDate;
-    _currentMonth = DateTime(_selectedDate.year, _selectedDate.month);
-    _weekPageController = PageController(initialPage: _currentWeekPage);
   }
 
-  @override
-  void dispose() {
-    //Called when widget is removed from the tree
-    _weekPageController.dispose();
-    super.dispose();
-  }
-
-  DateTime _getFirstDayOfWeek(DateTime date) {
-    //Helper Method: Gets first day as Monday
-    return date.subtract(Duration(days: date.weekday - 1));
-  }
-
-  List <DateTime> _getDaysInWeek(DateTime date){
-    //Helper Method: Gets first five days in the week
-    DateTime firstDayOfWeek = _getFirstDayOfWeek(date); //Gets Monday
-    return List.generate(5, (index) => firstDayOfWeek.add(Duration(days: index))); //Creates 5 days in a week
-  }
-
-  void _handleMonthChange (bool next){
-    //Method: Changes the < > buttons to change months
-    setState(() {
-      if (next){
-        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1); //Next month
-      } else {
-        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1); //Previous month
-      }
-
-      _selectedDate = _currentMonth; //Updating the date to new month
-
-      DateTime firstDayOfMonth = _getFirstDayOfWeek(_currentMonth); //First weekday of month
-      int pageDiff = next ? 4 : -4; //No. of weeks
-      _currentWeekPage += pageDiff; //Updates index of current page
-      _weekPageController.jumpToPage(_currentWeekPage); //Jumps to new page
-
-    });
-  }
 
   @override
   Widget build(BuildContext context){
@@ -111,7 +71,6 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
       body: SafeArea(
           child: Column(
             children: [
-              _buildCalendarSection(), //Calendar on top
               Expanded(
                   child: _buildMentorList(), //List of mentors
               ),
@@ -122,140 +81,7 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
     );
   }
 
-  Widget _buildCalendarSection() {
-    // Method: Calendar on top
-    return Container(
-      //Entire box layout
-      padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(top: 20, left: 15, right: 15),
-      decoration: BoxDecoration(
-        color: Color(0xFF3C5A7D), //Dark blue
-        borderRadius: BorderRadius.all(Radius.circular(60)),
-      ),
-      child: Column(
-        //Month Nav Layout
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton( //Previous month
-                icon: Icon(Icons.chevron_left, color: Colors.white),
-                onPressed: () => _handleMonthChange(false), //Action
-              ),
 
-              Text(
-                DateFormat('MMMM').format(_currentMonth),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-
-              IconButton( //Next month
-                icon: Icon(Icons.chevron_right, color: Colors.white),
-                onPressed:() => _handleMonthChange(true),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          SizedBox( //Week View
-            height: 100,
-            child: PageView.builder( //Slidable view for weeks
-              controller: _weekPageController,
-              onPageChanged: (page){
-                setState(() {
-                  int weekDiff = page - _currentWeekPage; //Calculate week difference
-                  _currentWeekPage = page; //Update current page
-
-                  //Update selected date based on week diff
-                  DateTime newDate = _selectedDate.add(Duration(days: weekDiff * 7));
-                  _selectedDate = newDate;
-
-                  //Update month when needed
-                  _currentMonth = DateTime(newDate.year, newDate.month);
-                });
-              },
-              itemBuilder: (context, page){ //Build each page
-                //Find start of week for page
-                int weekDiff = page - _currentWeekPage;
-                DateTime weekStart = _selectedDate.add(Duration(days: weekDiff * 7));
-
-                List<DateTime> days = _getDaysInWeek(weekStart); //Gets a week of 5 days
-
-                //Row of day items (Mon-Fri)
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: days.map((date) => _buildDayItem(date)).toList(),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDayItem (DateTime date) {
-    //Method: builds single day in calendar
-
-    //Checking if this date is the selected Date
-    bool isSelected = date.year == _selectedDate.year &&
-      date.month == _selectedDate.month &&
-      date.day == _selectedDate.day;
-
-    //Checking if this day is in current month
-    bool isCurrentMonth = date.month == _currentMonth.month;
-
-    return GestureDetector( //Making it tappable
-      onTap: (){
-        setState(() {
-          _selectedDate = date;
-          _currentMonth = DateTime(date.year, date.month);
-        });
-      },
-      child: Container( //Container for selected day
-        width: 65,
-        padding: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            //Name of day
-            Text(
-              DateFormat('E').format(date).substring(0,3), //Formatted for a day with 3 letters
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.black
-                    : isCurrentMonth
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.5), //Faded white when not in current month
-                fontSize: 16,
-              ),
-            ),
-
-            SizedBox(height: 8),
-
-            //Number of the day
-            Text(
-              date.day.toString(),
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.black
-                    : isCurrentMonth
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.5), //Faded white when not in current month
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildMentorList() {
     //Method: Builds list of Mentors
@@ -401,7 +227,7 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
       ),
     );
   }
-  
+
   //Next button that navigates to the booking form
   Widget _buildNextButton() {
     return Container(
@@ -411,7 +237,7 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
               ? () {
                 //Only when a mentor is selected
                 _navigateToBookingForm();
-                } 
+                }
               :null,
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF3C5A7D), //Dark blue
@@ -471,3 +297,4 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
     }
   }
 }
+
