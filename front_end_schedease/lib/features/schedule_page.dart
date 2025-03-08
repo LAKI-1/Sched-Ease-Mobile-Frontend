@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //dependency for date formatting
 import 'package:front_end_schedease/widgets/navbar.dart';
@@ -53,6 +52,24 @@ class _SchedulePageState extends State<SchedulePage>{
     super.dispose();
   }
 
+  // Helper method to get ordinal suffix for day
+  String _getOrdinalSuffix(int day) {
+    //Helper Method: Get ordinal suffix for day
+    if (day >= 11 && day <= 13) {
+      return 'th';  // Special case for 11th, 12th, 13th
+    }
+    switch (day % 10) {  // Check last digit
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
+
   //Helper Method: To get Monday as the 1st day of week
   DateTime _getFirstDayOfWeek(DateTime date){
     return date.subtract(Duration(days: date.weekday - 1));
@@ -88,18 +105,18 @@ class _SchedulePageState extends State<SchedulePage>{
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                height: 20, //Adds space between top and calendar
-                color: Colors.white,
-              ),
-              _buildCalendarSection(),
-              Expanded(
-                  child: _buildScheduleContent(),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            Container(
+              height: 20, //Adds space between top and calendar
+              color: Colors.white,
+            ),
+            _buildCalendarSection(),
+            Expanded(
+              child: _buildScheduleContent(),
+            ),
+          ],
+        ),
       ),
       //bottomNavigationBar: _buildBottomNavBar(),
     );
@@ -190,8 +207,8 @@ class _SchedulePageState extends State<SchedulePage>{
   Widget _buildDayItem(DateTime date){
     //Checking if user has selected the date
     bool isSelected = date.year == _selectedDate.year &&
-    date.month == _selectedDate.month &&
-    date.day == _selectedDate.day;
+        date.month == _selectedDate.month &&
+        date.day == _selectedDate.day;
 
     //Checking if date is in current month
     bool isCurrentMonth = date.month == _currentMonth.month;
@@ -260,8 +277,12 @@ class _SchedulePageState extends State<SchedulePage>{
             // Booking was successful, maybe refresh the schedule
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Session booked successfully!'),
-                backgroundColor: Colors.green,
+                content: Text('Session booked successfully!',
+                style: TextStyle(
+                  color: Colors.black
+                ),
+                ),
+                backgroundColor: Color(0xFFC5DCC2),
               ),
             );
           }
@@ -299,13 +320,17 @@ class _SchedulePageState extends State<SchedulePage>{
 
   //Build Schedule Timeline Content
   Widget _buildScheduleContent() {
+    // Using the ordinal suffix method to format the date properly
+    final day = _selectedDate.day;
+    final suffix = _getOrdinalSuffix(day);
+
     return Container(
       padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            '${DateFormat('EEEE, d').format(_selectedDate)}st',
+            '${DateFormat('EEEE, d').format(_selectedDate)}$suffix',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -331,63 +356,61 @@ class _SchedulePageState extends State<SchedulePage>{
 
   // Building a single timeline item
   Widget _buildScheduleItem(Map<String, dynamic> item){
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Display the scheduled time
-            SizedBox(
-              width: 50,
-              child: Text(
-                item['time'],
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Display the scheduled time
+          SizedBox(
+            width: 50,
+            child: Text(
+              item['time'],
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
               ),
             ),
+          ),
 
-            SizedBox(width: 10),
+          SizedBox(width: 10),
 
-            //Displaying schedule details
-            Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: item['backgroundColor'],
-                    borderRadius: BorderRadius.circular(15),
+          //Displaying schedule details
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: item['backgroundColor'],
+                borderRadius: BorderRadius.circular(15),
+              ),
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Display Session title
+                  Text(
+                    item['title'],
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
+                  SizedBox(height: 5),
 
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //Display Session title
-                      Text(
-                        item['title'],
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-
-                      //Display schedule duration
-                      Text(
-                        item['duration'],
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
+                  //Display schedule duration
+                  Text(
+                    item['duration'],
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
+                ],
+              ),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
-
-
+}

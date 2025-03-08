@@ -253,19 +253,6 @@ class DashBoardContent extends StatelessWidget{
     );
   }
 
-  //Bottom Navigation Bar
-  Widget _buildBottomNavBar() {
-    return BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"), // Home icon.
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Schedule"), // Calendar icon.
-        BottomNavigationBarItem(icon: Icon(Icons.message), label: "Chat"), // Chat icon.
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"), // Profile icon.
-      ],
-      selectedItemColor: Colors.blue, // Selected item color.
-      unselectedItemColor: Colors.grey, // Unselected item color.
-    );
-  }
 
 }
 

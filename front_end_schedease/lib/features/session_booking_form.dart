@@ -166,54 +166,115 @@ class _SessionBookingFormState extends State<SessionBookingForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select Time Slot',
+          'Select a Time Slot',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(height: 10),
+        InkWell(
+          onTap: (){
+            //When tapped shows validation error if submitted without timeslot
+            if(_formKey.currentState?.validate() == false && _selectedTimeSlot == null){
+              return;
+            }
+          },
 
-        Wrap( //Flowing grid for timeslots
-          spacing: 10, //Horizontal spacing
-          runSpacing: 10, //Vertical spacing
-          children: _timeSlots.map((timeSlot) {
-            bool isSelected = _selectedTimeSlot == timeSlot;
+          child: FormField<String>(
+            validator: (value){
+              if (_selectedTimeSlot == null){
+                return 'Please select a time slot'; //Error message
+              }
+              return null;
+            },
+            builder: (FormFieldState<String> state){
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment:Alignment.centerRight,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        width: 1.0,
+                        color: state.hasError
+                            ? Colors.red.shade700 //red when no filled
+                            : Colors.grey,
+                      ),
+                    ),
+                    child: PopupMenuButton<String>(
+                      color: Colors.white,
+                      tooltip: '',
+                      elevation: 4,
+                      offset: Offset(0, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      onSelected: (String value){
+                        setState(() {
+                          _selectedTimeSlot = value;
+                          state.didChange(value); //Update form field state
+                        });
+                      },
+                      itemBuilder: (BuildContext context){
+                        return _timeSlots.map((String timeSlot){
+                          return PopupMenuItem<String>(
+                            value: timeSlot,
+                            child: Container(
+                              color: Colors.white,
+                              width: 175,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: Text(
+                                timeSlot,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          );
+                        }).toList();
+                      },
 
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedTimeSlot =
-                      timeSlot; //Set this as the selected time slot
-                });
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                decoration: BoxDecoration(
-                  color: isSelected ? Color(0xFF3C5A7D) : Colors.white,
-                  //Blue when selected, else white
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected ? Color(0xFF3C5A7D) : Colors.grey
-                        .withOpacity(0.3),
-                    width: 1,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _selectedTimeSlot ?? 'Select a time slot',
+                              style: TextStyle(
+                                color: _selectedTimeSlot == null ? Colors.black: Colors.black,
+                              ),
+                            ),
+                            Icon(Icons.arrow_drop_down, color: Color(0xFF3C5A7D)),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                child: Text(
-                  timeSlot,
-                  style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight
-                        .normal,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
+
+                  if (state.hasError)
+                    Padding(
+                      padding: EdgeInsets.only(left: 12, top: 8),
+                      child: Text(
+                        state.errorText!,
+                        style: TextStyle(
+                          color: Colors.red.shade700,
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
+                ],
+              );
+            },
+          ),
+        )
       ],
+
     );
   }
+
 
   Widget _buildGroupNumberSection() {
     return Column(

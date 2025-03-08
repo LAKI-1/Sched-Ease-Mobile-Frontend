@@ -426,6 +426,7 @@ class _MentorSelectionPageState extends State<MentorSelectionPage> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
       ),
