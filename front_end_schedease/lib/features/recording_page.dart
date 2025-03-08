@@ -119,6 +119,12 @@ class _RecordingPageState extends State<RecordingPage> {
                 controller: _titleController,
                 decoration: InputDecoration(
                   labelText: 'Recording Title',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF3C5A7D),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF3C5A7D)),
+                  ),
                   hintText: 'Enter a title for this recording',
                 ),
               ),
@@ -127,6 +133,12 @@ class _RecordingPageState extends State<RecordingPage> {
                 controller: _studentNameController,
                 decoration: InputDecoration(
                   labelText: 'Student Name',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF3C5A7D),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF3C5A7D)),
+                  ),
                   hintText: 'Enter your name',
                 ),
               ),
