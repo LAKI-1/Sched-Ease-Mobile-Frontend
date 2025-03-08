@@ -16,15 +16,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Contact>contacts=[
     Contact('Ms..Albert','You: Thank you sir.','9:40 AM',
-    'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg'),
+    'https://i.pinimg.com/236x/89/d1/ef/89d1efb106a342203018a0b600cb3f34.jpg'),
     Contact('Mr.John','You: Ok,thanks!','9:25 AM',
-    'https://www.seekpng.com/png/full/115-1150053_avatar-png-transparent-png-royalty-free-default-avatar.png'),
+    'https://i.pinimg.com/originals/87/66/e5/8766e5f221fa30acb078d6d2d6b7af81.jpg'),
     Contact('Mr.Loia','You: Ok miss,I will up... ','Fri',
-    'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'),
+    'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg'),
     Contact('Ms.Kayal','There is a consern','Fri',
-    'https://cdn-icons-png.flaticon.com/512/149/149071.png'),
+    'https://i.pinimg.com/736x/23/d2/bb/23d2bb062693ad8d9e6221ce4b4476d6.jpg'),
     Contact('Mr.Anne','Anne23@gmail.com','Tue',
-    'https://www.pngfind.com/pngs/m/112-1128448_avatar-png-transparent-png-royalty-free-default-avatar.png'),
+    'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg'),
 
   ];
 
@@ -66,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         radius: 35,
 
                         backgroundImage: NetworkImage(
-                          'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg',
+                         // 'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg',
+                          'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
 
                       ),
 

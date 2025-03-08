@@ -1,4 +1,4 @@
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +26,36 @@ class Message{
 
 }
 
+class FullScreenPhoto extends StatelessWidget{
+  final String imageUrl;
+  final String contactName;
+  const FullScreenPhoto({
+    Key? key,
+    required this.imageUrl,
+    required this.contactName,
+
+}): super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+            contactName,
+          style: const TextStyle(color: Colors.white),
+
+        ),
+      ),
+    );
+  }
+}
+
 class ChatScreen extends StatefulWidget{
   final Contact contact;
 
@@ -36,15 +66,17 @@ class ChatScreen extends StatefulWidget{
 
 }
 
+
+
 class _ChatScreenState extends State<ChatScreen>{
 
   final TextEditingController _messageController = TextEditingController();
   final List<Message> _messages =  [
-    Message("Hello..,Mr.Albert!", true, "09:42"),
+    Message("Hello..,Mr.Albert!", true, "09:42", isRead: true),
     Message(
       "There is confusion about do \nwe have the session today",false,
       "09:45"),
-    Message("...", true , "09:50"),
+    Message("...", true , "09:50", isRead: false),
 
   ];
 
@@ -73,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen>{
       appBar: AppBar(
         backgroundColor: const Color(0xff87cefa),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back,color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         //title: Text(widget.contact.name),
