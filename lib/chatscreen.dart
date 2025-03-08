@@ -112,6 +112,7 @@ class _ChatScreenState extends State<ChatScreen>{
                 itemCount: _messages.length,
                 itemBuilder: (context, index){
                   final message= _messages[_messages.length = 1 - index];
+
                 }
 
             ),
@@ -123,6 +124,21 @@ class _ChatScreenState extends State<ChatScreen>{
             )
           );
 
+  }
+
+
+  Widget _buildMessageBubble(Message message){
+    return Align(
+      alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        decoration: BoxDecoration(
+          color: message.isMe ? Colors.blue : const Color(0xff20283A),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
   }
 
   Widget _buildMessageInput(){
