@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -103,6 +105,8 @@ class _ChatScreenState extends State<ChatScreen>{
         ),
       ),
 
+      //backgroundColor: const Color(0xffffffff),
+
       body: Column(
         children: [
           Expanded(
@@ -137,6 +141,17 @@ class _ChatScreenState extends State<ChatScreen>{
           color: message.isMe ? Colors.blue : const Color(0xff20283A),
           borderRadius: BorderRadius.circular(15),
         ),
+        child: Column(
+          crossAxisAlignment:
+          message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.text,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+
+            )
+          ],
+        ),
       ),
     );
   }
@@ -151,8 +166,10 @@ class _ChatScreenState extends State<ChatScreen>{
             icon: const Icon(Icons.attach_file,color: Colors.white),
             onPressed: () {},
           ),
+          Expanded(
 
-          TextField(
+          child: TextField(
+            controller: _messageController,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               hintText: 'Type message....',
@@ -160,8 +177,19 @@ class _ChatScreenState extends State<ChatScreen>{
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
                 borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: const Color(0xff18202D),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
               )
             ),
+          ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send,color: Colors.white),
+            onPressed: _sendMessage,
           )
 
         ],
