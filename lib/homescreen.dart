@@ -62,11 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                      ClipOval(
+                      CircleAvatar(
+                        radius: 35,
 
-                        child: Image.network(
+                        backgroundImage: NetworkImage(
                           'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg',
-                          height: 60,
+
                       ),
 
 
@@ -83,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     IconButton(
                       onPressed: (){},
                       icon: const Icon(
-                        Icons.camera_alt_sharp,
+                        Icons.more_horiz,
                         color: Colors.white,
 
                         size: 38,
