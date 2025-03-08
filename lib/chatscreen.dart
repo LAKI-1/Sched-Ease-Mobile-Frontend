@@ -16,8 +16,10 @@ class Message{
   final String text;
   final bool isMe;
   final String time;
+  final bool isRead;
+  final bool isDelivered;
 
-  Message(this.text,this.isMe,this.time);
+  Message(this.text,this.isMe,this.time,{this.isRead=false,this.isDelivered=true});
 
 
 
@@ -130,10 +132,14 @@ class _ChatScreenState extends State<ChatScreen>{
     return Align(
       alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width*0.75,
+
+        ),
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
         decoration: BoxDecoration(
-          color: message.isMe ? Colors.blue : const Color(0xff20283A),
+          color: message.isMe ? Colors.lightBlueAccent: const Color(0xFF40C4FF),
 
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18),
@@ -159,6 +165,15 @@ class _ChatScreenState extends State<ChatScreen>{
                 fontSize: 12,
               ),
             ),
+            if(message.isMe)...[
+              const SizedBox(width: 5),
+              Icon(
+                message.isRead ? Icons.done_all : Icons.done,
+                size: 14,
+                color: Colors.black,
+
+              )
+            ]
           ],
         ),
       ),
