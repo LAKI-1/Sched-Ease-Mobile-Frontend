@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //dependency for date formatting
-import 'package:front_end_schedease/widgets/navbar.dart';
 import 'package:front_end_schedease/features/mentor_selection_page.dart';
 
 void main(){
@@ -70,35 +69,7 @@ class _SchedulePageState extends State<SchedulePage>{
     }
   }
 
-  //Helper Method: To get Monday as the 1st day of week
-  DateTime _getFirstDayOfWeek(DateTime date){
-    return date.subtract(Duration(days: date.weekday - 1));
-  }
 
-  //Helper Method: Get 5 days of the week
-  List<DateTime> _getDaysInWeek(DateTime date){
-    DateTime firstDayOfWeek = _getFirstDayOfWeek(date);
-    return List.generate(5, (index) => firstDayOfWeek.add(Duration(days: index )));
-  }
-
-  //Method to change month when navigating < >
-  void _handleMonthChange (bool next){
-    setState(() {
-      if (next){
-        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1); //Moves to next month
-      } else{
-        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);//Moves to previous month
-      }
-
-      _selectedDate = _currentMonth; //Update selected date to the first day of new month
-
-      //Adjusting the page view showing the first week of new month
-      DateTime firstDayOfMonth = _getFirstDayOfWeek(_currentMonth);
-      int pageDiff = next ? 4 : -4; //Approximate weeks in a month
-      _currentWeekPage += pageDiff;
-      _weekPageController.jumpToPage(_currentWeekPage);
-    });
-  }
 
   @override
   Widget build(BuildContext context){
@@ -122,79 +93,131 @@ class _SchedulePageState extends State<SchedulePage>{
     );
   }
 
-  //Build the calendar section
+  // //Build the calendar section
   Widget _buildCalendarSection(){
+    //Get all days of current month
+    List <DateTime> daysInMonth = _getDaysInMonth(_currentMonth);
+
+    //Get the weekday of the first day (0 --> Monday)
+    int firstDayWeekDay = DateTime(_currentMonth.year, _currentMonth.month,1).weekday - 1;
     return Container(
       padding: EdgeInsets.all(20),
-      margin: EdgeInsets.only(top: 20, left: 15,right: 15),
+      margin: EdgeInsets.only(top:20,left:15, right:15),
       decoration: BoxDecoration(
-        color: Color(0xFF3C5A7D), //Bg color of the calendar
+        color: Color(0xFF3C5A7D),
         borderRadius: BorderRadius.all(Radius.circular(60)),
       ),
       child: Column(
         children: [
-          //Month nav row
+          //Month navigation
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //Previous month
               IconButton(
                 icon: Icon(Icons.chevron_left, color: Colors.white),
-                onPressed: () => _handleMonthChange(false),
+                onPressed: (){
+                  setState(() {
+                    _currentMonth = DateTime(_currentMonth.year, _currentMonth.month-1);
+                    _selectedDate = DateTime(_currentMonth.year, _currentMonth.month,
+                        min(_selectedDate.day, _daysInMonth(_currentMonth.year, _currentMonth.month)));
+                  });
+                },
               ),
 
               //Current Month and Year
               Text(
-                DateFormat('MMMM').format(_currentMonth),
+                '${DateFormat('MMMM').format(_currentMonth)} ${_currentMonth.year}',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
 
-              //Next Month
+              //Next month
               IconButton(
-                icon: Icon(Icons.chevron_right, color: Colors.white),
-                onPressed: () => _handleMonthChange(true),
+                icon: Icon(Icons.chevron_right,color: Colors.white),
+                onPressed: (){
+                  setState(() {
+                    _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
+                    _selectedDate = DateTime(_currentMonth.year, _currentMonth.month,
+                        min(_selectedDate.day, _daysInMonth(_currentMonth.year, _currentMonth.month)));
+
+                  });
+                },
               ),
             ],
           ),
+
           SizedBox(height: 20),
 
-          //Displaying Week with PageView
-          SizedBox(
-            height: 100,
-            child: PageView.builder(
-              controller: _weekPageController,
-              onPageChanged: (page) {
-                setState(() {
-                  //Difference in weeks from current page
-                  int weekDiff = page - _currentWeekPage;
-                  _currentWeekPage = page;
-
-                  //Update the selected date
-                  DateTime newDate = _selectedDate.add(Duration(days: weekDiff * 7));
-                  _selectedDate = newDate;
-
-                  //Update the month when required
-                  _currentMonth = DateTime(newDate.year, newDate.month);
-                });
-              },
-              itemBuilder: (context, page){
-                //Start of the week for current page
-                int weekDiff = page - _currentWeekPage;
-                DateTime weekStart = _selectedDate.add(Duration(days: weekDiff * 7));
-
-                List<DateTime> days = _getDaysInWeek(weekStart);
-
-                //Building the row of days
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: days.map( (date) => _buildDayItem(date) ).toList(),
-                );
-              },
+          //Weekday header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              for(String weekday in ['M','T','W','T','F','S','S'])
+                Text(
+                  weekday,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            ],
+          ),
+          
+          SizedBox(height: 10),
+          
+          //Calendar grid
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              childAspectRatio: 1.0,
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
             ),
+            itemCount: firstDayWeekDay + daysInMonth.length,
+            itemBuilder: (context, index){
+    //Empty spots before first day of month
+    if (index < firstDayWeekDay){
+    return Container();
+    }
+
+    //Actual days of month
+    final dayIndex = index - firstDayWeekDay;
+    final day = daysInMonth[dayIndex];
+
+    bool isSelected = day.year == _selectedDate.year &&
+    day.month == _selectedDate.month &&
+    day.day == _selectedDate.day;
+
+    return GestureDetector(
+    onTap: (){
+    setState(() {
+    _selectedDate = day;
+    });
+    },
+    child: Container(
+    decoration: BoxDecoration(
+    color: isSelected ? Colors.white : Colors.transparent,
+    shape: BoxShape.circle,
+    ),
+    child: Center(
+    child: Text(
+    '${day.day}',
+    style: TextStyle(
+    fontSize: 14,
+    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    color: isSelected ? Color(0xFF3C5A7D) : Colors.white,
+    ),
+    ),
+    ),
+    ),
+    );
+    },
           ),
           SizedBox(height: 20),
           _buildBookSessionButton(),
@@ -203,65 +226,27 @@ class _SchedulePageState extends State<SchedulePage>{
     );
   }
 
-  //Building a single day in the week
-  Widget _buildDayItem(DateTime date){
-    //Checking if user has selected the date
-    bool isSelected = date.year == _selectedDate.year &&
-        date.month == _selectedDate.month &&
-        date.day == _selectedDate.day;
+  //Method to get all days in a month
+  List <DateTime> _getDaysInMonth (DateTime month){
+    final firstDay = DateTime(month.year, month.month, 1);
+    final lastDay = DateTime(month.year, month.month + 1, 0);
 
-    //Checking if date is in current month
-    bool isCurrentMonth = date.month == _currentMonth.month;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          //Update selected date & current month
-          _selectedDate = date;
-          _currentMonth = DateTime(date.year, date.month);
-        });
-      },
-      child: Container(
-        width: 65,
-        padding: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          children: [
-            //Displaying the days of the week(Mon-Fri)
-            Text(
-              DateFormat('E').format(date).substring(0,3),
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.black
-                    : isCurrentMonth
-                    ? Colors.white
-                    :Colors.white.withOpacity(0.5),
-                fontSize: 16,
-              ),
-            ),
-            SizedBox(height: 8),
-
-            //Displaying date
-            Text(
-              date.day.toString(),
-              style: TextStyle(
-                color: isSelected
-                    ? Colors.black
-                    : isCurrentMonth
-                    ? Colors.white
-                    : Colors.white.withOpacity(0.5),
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return List.generate(
+      lastDay.day,
+        (index) => DateTime(month.year, month.month, index +1),
     );
   }
+
+  //Method to get no. of days in a month
+  int _daysInMonth (int year, int month){
+    return DateTime (year, month +1, 0).day;
+  }
+
+  //Function for min
+  int min(int a, int b){
+    return a< b ? a:b;
+  }
+
 
   Widget _buildBookSessionButton() {
     return GestureDetector(
