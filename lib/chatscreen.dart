@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Contact{
   final String name;
@@ -39,7 +40,7 @@ class FullScreenPhoto extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -48,7 +49,7 @@ class FullScreenPhoto extends StatelessWidget{
         ),
         title: Text(
             contactName,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
 
         ),
       ),
@@ -129,6 +130,7 @@ class ChatScreen extends StatefulWidget{
 class _ChatScreenState extends State<ChatScreen>{
 
   final TextEditingController _messageController = TextEditingController();
+  final ImagePicker _picker =  ImagePicker();
   final List<Message> _messages =  [
     Message("Hello..,Mr.Albert!", true, "09:42", isRead: true),
     Message(
@@ -162,11 +164,50 @@ class _ChatScreenState extends State<ChatScreen>{
     }
   }
 
+  void _getFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if(image != null){
+      setState((){
+        _messages.add(
+          Message(
+            "photo",
+            true,
+            "${DateTime
+                .now()
+                .hour}: ${DateTime
+                .now()
+                .minute}",
+            // isImage: true,
+            // imagePath: image.path,
+
+
+
+
+          )
+        );
+      });
+    }
+  }
+
+  void _openFullScreen(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenPhoto(
+          imageUrl: widget.contact.imageUrl,
+          contactName: widget.contact.name,
+
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff87cefa),
+        backgroundColor: const Color(0xfffffff),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -197,6 +238,7 @@ class _ChatScreenState extends State<ChatScreen>{
       ),
 
       backgroundColor: const Color(0xff18202D),
+
 
       body: Column(
         children: [
@@ -234,7 +276,7 @@ class _ChatScreenState extends State<ChatScreen>{
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
         decoration: BoxDecoration(
-          color: message.isMe ? Colors.lightBlueAccent: const Color(0xFF40C4FF),
+          color: message.isMe ? Colors.lightGreen: const Color(0xFF90EE90),
 
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18),
@@ -249,7 +291,7 @@ class _ChatScreenState extends State<ChatScreen>{
           children: [
             Text(
               message.text,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.black, fontSize: 16),
 
             ),
             const SizedBox(height: 5),

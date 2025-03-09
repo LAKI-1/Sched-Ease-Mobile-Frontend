@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: const Color(0xff18202D),
+        backgroundColor: const Color(0xffffffff),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
 
                       ),
                     ),
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: (){},
                       icon: const Icon(
                         Icons.more_horiz,
-                        color: Colors.white,
+                        color: Colors.black,
 
                         size: 38,
                       ),
@@ -102,13 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     hintStyle: const TextStyle(color: Colors.grey),
                     prefixIcon: const Icon(Icons.search,color: Colors.grey,),
                     filled: true,
-                    fillColor: const Color(0xff20283A),
+                    fillColor: const Color(0xFFF5F5F5),
+
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
                     )
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.black),
+                  onChanged: filterContacts,
                 ),
 
 
@@ -201,14 +203,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       child: Text(contact.name,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: 'Quicksand',
                           fontSize: 17,
                         )),
                     ),
                     Text(contact.time,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: Colors.black,
                       ),
 
 
@@ -219,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 5),
                     Text(contact.email,
                       style: const TextStyle(
-                        color: Colors.white70,
+                        color: Colors.black,
                       )
 
                     ),
