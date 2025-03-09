@@ -65,6 +65,24 @@ class FullScreenPhoto extends StatelessWidget{
               maxScale: 4.0,
               child: Image.network(
                   imageUrl,
+                  fit: BoxFit.contain,
+                  loadingBuilder: (context, child, loadingprogress){
+                    if(loadingprogress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingprogress.expectedTotalBytes != null
+                            ?loadingprogress.cumulativeBytesLoaded /
+                            loadingprogress.expectedTotalBytes!
+                            :null,
+
+                        color: Colors.white,
+
+                      ),
+                    );
+                  }
+
+                  
+
 
 
               ),
