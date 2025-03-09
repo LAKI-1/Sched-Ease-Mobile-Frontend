@@ -6,12 +6,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   await Supabase.initialize(
-    url: 'https://niwzewmxvdnbmkfxxxbk.supabase.co',
+    url: 'https://wvmlalwfmzzbugsruoee.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pd3pld214dmRuYm1rZnh4eGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjIzNjksImV4cCI6MjA1NjczODM2OX0.PiChm9zF2rmfABh6y02VHP6amzI3hnj2fiuYzp_W4Fw',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2bWxhbHdmbXp6YnVnc3J1b2VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg5OTM0NDAsImV4cCI6MjA1NDU2OTQ0MH0.PLBtR4y3MgEcBP9e-PotUETRinxImHIB582-6h6caBY',
   );
   runApp(const SignInScreen());
 }
+
+final supabase = Supabase.instance.client;
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});

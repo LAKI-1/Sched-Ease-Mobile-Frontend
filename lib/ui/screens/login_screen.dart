@@ -2,9 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sign_in_screen/core/constants/styles.dart';
 import 'package:sign_in_screen/ui/screens/help_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final supabase = Supabase.instance.client;
+
+  Future<AuthResponse> _googleSignIn() async {
+    const webClientId =
+        '774729998454-ikupt71orb4iqlste11472e8ntj581dj.apps.googleusercontent.com';
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(serverClientId: webClientId);
+
+    await googleSignIn.signOut();
+
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+    if (googleUser == null) {
+      throw 'Sign-in process aborted by user.';
+    }
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    if (accessToken == null || idToken == null) {
+      throw 'No valid tokens received.';
+    }
+
+    return await supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +141,20 @@ class LoginScreen extends StatelessWidget {
 
                 InkWell(
                   borderRadius: BorderRadius.circular(30),
-                  onTap: () {},
                   child: SizedBox(
                     width: 187,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: null, // Disables the button
+                      onPressed: () async {
+                        try {
+                          final response =
+                              await _googleSignIn(); // Call Google Sign-In
+                          print("User Signed In: ${response.user?.email}");
+                        } catch (error) {
+                          print("Google Sign-In Error: $error");
+                        }
+                      },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0x803E8498),
                         shape: RoundedRectangleBorder(
