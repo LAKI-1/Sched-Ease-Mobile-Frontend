@@ -52,6 +52,26 @@ class FullScreenPhoto extends StatelessWidget{
 
         ),
       ),
+
+
+      body: Center(
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Hero(
+            tag: 'profile',
+            child: InteractiveViewer(
+              boundaryMargin: const EdgeInsets.all(20),
+              minScale: 0.5,
+              maxScale: 4.0,
+              child: Image.network(
+                  imageUrl,
+
+
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
