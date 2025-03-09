@@ -48,7 +48,7 @@ class FullScreenPhoto extends StatelessWidget{
         ),
         title: Text(
             contactName,
-          style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
 
         ),
       ),
@@ -78,6 +78,26 @@ class FullScreenPhoto extends StatelessWidget{
                         color: Colors.white,
 
                       ),
+                    );
+                  },
+
+
+                  errorBuilder: (context,error,stackTrace){
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 60,
+
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Failed to load this Image',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
                     );
                   }
 
@@ -119,14 +139,20 @@ class _ChatScreenState extends State<ChatScreen>{
   ];
 
 
-  void _sendMessage(){
-    if(_messageController.text.trim().isNotEmpty) {
+  void _sendMessage() {
+    if (_messageController.text
+        .trim()
+        .isNotEmpty) {
       setState(() {
         _messages.add(
           Message(
             _messageController.text,
             true,
-            "${DateTime.now().hour}:${DateTime.now().minute}",
+            "${DateTime
+                .now()
+                .hour}:${DateTime
+                .now()
+                .minute}",
           ),
         );
       }
@@ -134,9 +160,8 @@ class _ChatScreenState extends State<ChatScreen>{
 
       _messageController.clear();
     }
-
-
   }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
