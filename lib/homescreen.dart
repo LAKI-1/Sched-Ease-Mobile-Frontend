@@ -72,7 +72,20 @@ class _HomeScreenState extends State<HomeScreen> {
         },
 
 
-              )
+              ),
+            const Divider(color: Colors.white),
+            ListTile(
+              leading: const Icon(Icons.delete,color: Colors.white),
+              title: const Text(
+                'Delete Contact',
+                style: TextStyle(color: Colors.white),
+
+              ),
+              onTap: (){
+                Navigator.pop(context);
+
+              },
+            )
 
           ],
         );
@@ -82,7 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void addContactDialog(){
     final nameController = TextEditingController();
-    final emailController= TextEditingController();
 
     showDialog(
       context: context,
@@ -107,10 +119,45 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+
+              },
+              child: const Text('Cancel',style: TextStyle(color: Colors.white)),
+
+
+            ),
+
+            TextButton(
+              onPressed: (){
+                if(nameController.text.isNotEmpty){
+                  setState(() {
+                    Contact(
+                      nameController.text,
+                      AutofillHints.email,
+                      'now',
+                      'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
+
+                    );
+                    filteredContacts=List.from(contacts);
+                  });
+                }
+                Navigator.of(context).pop();
+              },
+              child: const Text('Add',style: TextStyle(color: Colors.blueGrey)),
+            )
+
+          ],
         );
       }
     );
   }
+
+
+
 
 
 
