@@ -256,7 +256,7 @@ class _ChatScreenState extends State<ChatScreen>{
     return Scaffold(
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFF000000),
+        backgroundColor: const Color(0xFF20283F),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -408,27 +408,29 @@ class _ChatScreenState extends State<ChatScreen>{
   Widget _buildMessageInput(){
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: const Color(0xff20283A),
+      color: const Color(0xFFF5F5F5),
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.attach_file,color: Colors.white),
+            icon: const Icon(Icons.attach_file,color: Colors.black),
             onPressed: _getFromGallery,
           ),
           Expanded(
 
           child: TextField(
             controller: _messageController,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.black),
             decoration: InputDecoration(
               hintText: 'Type message....',
               hintStyle: TextStyle(color: Colors.grey),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
+                borderSide: BorderSide(color: Colors.black,width: 2.0),
+
               ),
               filled: true,
-              fillColor: const Color(0xff18202D),
+              fillColor: const Color(0xFFFFFFFF),
+
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 20,
                 vertical: 10,
@@ -437,7 +439,7 @@ class _ChatScreenState extends State<ChatScreen>{
           ),
           ),
           IconButton(
-            icon: const Icon(Icons.send,color: Colors.white),
+            icon: const Icon(Icons.send,color: Colors.black),
             onPressed: _sendMessage,
           )
 

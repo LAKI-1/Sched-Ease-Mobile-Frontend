@@ -47,6 +47,72 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  void contactOption(){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF20283A),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+
+      ),
+      builder: (BuildContext context){
+        return Column(
+          //mainAxisAlignment: MainAxisAlignment.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person_2_rounded, color: Colors.white),
+              title: const Text(
+                'Add Contact',
+                 style: TextStyle(color: Colors.white),
+
+              ),
+              onTap: (){
+                Navigator.pop(context);
+                addContactDialog();
+        },
+
+
+              )
+
+          ],
+        );
+      }
+    );
+  }
+
+  void addContactDialog(){
+    final nameController = TextEditingController();
+    final emailController= TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          backgroundColor: const Color(0xFF20283A),
+          title: const Text('Add new contact',style: TextStyle(color: Colors.white)),
+          content: Column(
+            //mainAxisAlignment: MainAxisAlignment.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+
+                  ),
+                ),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: (){},
+                      onPressed: contactOption,
                       icon: const Icon(
                         Icons.more_horiz,
                         color: Colors.black,
