@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //dependency for date formatting
 import 'package:front_end_schedease/features/mentor_selection_page.dart';
+import 'dart:async';
 
 void main(){
   runApp(MaterialApp(
@@ -13,12 +14,91 @@ class SchedulePage extends StatefulWidget {
   _SchedulePageState createState() => _SchedulePageState();
 }
 
+class ReminderService{
+  static final ReminderService _instance = ReminderService._();
+  static ReminderService get instance => _instance;
+
+  //Storing scheduled reminders, group by date as the key
+  Map<String, List <Map<String,dynamic>>> _scheduledReminders = {};
+  Timer? _reminderTimer; //Checks for reminders that are yet to be notified
+  Function (String title, String body) ? onReminderDue; //Calls this function when a reminder is due
+
+  ReminderService._(); //Constructor
+
+  void init (Function(String title, String body) callback) {
+    onReminderDue = callback; //Stores callback function
+
+    _reminderTimer = Timer.periodic(Duration(minutes: 1), (timer){
+      _checkForUpcomingReminders();
+    });
+  }
+
+  void dispose(){
+    _reminderTimer?.cancel(); //Cancels the timer when the app is disposed
+  }
+
+  void scheduleReminder({
+    required String sessionId, //Unique identifier for the session
+    required DateTime sessionTime, //Session start time
+    required String title, //Notification title
+    required String body, //Notification body
+}){
+    final dateKey = DateFormat('yyyy-MM-dd').format(sessionTime);
+
+    final reminderData = {
+      'id':sessionId,
+      'sessionTime': sessionTime,
+      'reminderTime': sessionTime.subtract(Duration(minutes: 60)), //Defaults to one hour
+      'title': title,
+      'body': body,
+      'triggered':false, //Flag checks if reminder is shown or not
+    };
+
+    if (!_scheduledReminders.containsKey(dateKey)){
+      _scheduledReminders[dateKey] =[]; //Initialise empty list for this date if needed
+    }
+
+    _scheduledReminders[dateKey]!.add(reminderData);
+    print('Reminder scheduled for $sessionTime');
+  }
+
+  //Check if any reminders should be shown be shown now
+  void _checkForUpcomingReminders(){
+    final now = DateTime.now();
+    final today = DateFormat('yyyy-MM-dd').format(now);
+
+    if(_scheduledReminders.containsKey(today)){
+      final reminders = _scheduledReminders[today]!;
+
+      for (var reminder in reminders){
+        if(!reminder ['triggered'] &&
+            reminder['reminderTime'].isBefore(now) &&
+            reminder['reminderTime'].isAfter(now.subtract(Duration(minutes: 2)))){
+
+          //Mark triggered to prevent duplicates
+          reminder['triggered']=true;
+
+          //Calling function to show notification
+          if(onReminderDue != null){
+            onReminderDue !(reminder['title'], reminder['body']);
+          }
+        }
+      }
+    }
+  }
+
+  List <Map<String, dynamic>> getRemindersForDate(DateTime date){
+    final dateKey = DateFormat('yyyy-MM-dd').format(date);
+    return _scheduledReminders[dateKey] ?? [];
+  }
+}
+
 class _SchedulePageState extends State<SchedulePage>{
   late PageController _weekPageController; //Managing the week view of the calendar
-  late DateTime _selectedDate; // Tracks the selected date
+  late DateTime _selectedDate; // Tracks the selected date by user
   late DateTime _currentMonth; //Tracks the displayed month
 
-  int _currentWeekPage = 1000; //index for infinite scroll
+  int _currentWeekPage = 1000; //index for infinite scrolling
 
   Map <String, List<Map<String, dynamic>>> _scheduledEvents = {};
 
@@ -30,6 +110,13 @@ class _SchedulePageState extends State<SchedulePage>{
     _weekPageController = PageController(initialPage: _currentWeekPage);
 
     _initializeSchedule();
+
+    //Initialize the reminder service with callback
+    ReminderService.instance.init(_showReminderNotification);
+
+    //Schedule reminders for al existing sessions
+    _scheduleRemindersForAllSessions();
+
   }
     _initializeSchedule(){ //initialising with sample data
       final today = DateTime.now();
@@ -52,6 +139,10 @@ class _SchedulePageState extends State<SchedulePage>{
 
       ];
     }
+
+    Timer? _reminderCheckTimer; //Timer checks reminders periodically
+    bool _notificationsEnabled = true; //User preference: To keep notifications enabled
+    int _reminderTimeMinutes = 60;  //User preference: How many minutes earlier to remind session
 
 
   void _addSessionToSchedule({
@@ -76,33 +167,35 @@ class _SchedulePageState extends State<SchedulePage>{
       'group': groupNumber,
       'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5),
     };
-    
+
     setState(() {
       //If date doesn't exist in map, create a new list
       if (!_scheduledEvents.containsKey(dateString)){
         _scheduledEvents[dateString] =[];
       }
-      
+
       //Add new session to the list to this date
       _scheduledEvents[dateString] !.add(newSession);
-      
+
       //Sorting events by time
       _scheduledEvents[dateString]!.sort((a,b) =>
           a['time'].toString().compareTo(b['time'].toString()));
+
+      //Also schedule a reminder for this new session
+      _scheduleReminderForSession(date, startTime, newSession);
     });
   }
-  
+
   //Get scheduled events for selected date
   List <Map<String,dynamic>> _getScheduleForSelectedDate(){
     final dateString = DateFormat('yyyy-MM-dd').format(_selectedDate);
     return _scheduledEvents[dateString] ?? [];
   }
 
-  
-
   @override
   void dispose() {
     _weekPageController.dispose();  //Dispose the PageController to free up resources
+    ReminderService.instance.dispose(); //Cleans up reminder service
     super.dispose();
   }
 
@@ -123,8 +216,6 @@ class _SchedulePageState extends State<SchedulePage>{
         return 'th';
     }
   }
-
-
 
   @override
   Widget build(BuildContext context){
@@ -189,17 +280,31 @@ class _SchedulePageState extends State<SchedulePage>{
                 ),
               ),
 
-              //Next month
-              IconButton(
-                icon: Icon(Icons.chevron_right,color: Colors.white),
-                onPressed: (){
-                  setState(() {
-                    _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
-                    _selectedDate = DateTime(_currentMonth.year, _currentMonth.month,
-                        min(_selectedDate.day, _daysInMonth(_currentMonth.year, _currentMonth.month)));
+              Row(
+                children: [
+                  //Bell icon for reminders
+                  IconButton(
+                    icon: Icon(
+                      _notificationsEnabled ? Icons.notifications_active : Icons.notifications_none,
+                      color: Colors.white,
+                    ),
+                    tooltip: 'Reminder Settings',
+                    onPressed: () => _showNotificationSettingsDialog(),
+                  ),
 
-                  });
-                },
+                  //Next month
+                  IconButton(
+                    icon: Icon(Icons.chevron_right,color: Colors.white),
+                    onPressed: (){
+                      setState(() {
+                        _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
+                        _selectedDate = DateTime(_currentMonth.year, _currentMonth.month,
+                            min(_selectedDate.day, _daysInMonth(_currentMonth.year, _currentMonth.month)));
+
+                      });
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -221,9 +326,9 @@ class _SchedulePageState extends State<SchedulePage>{
                 ),
             ],
           ),
-          
+
           SizedBox(height: 10),
-          
+
           //Calendar grid
           GridView.builder(
             shrinkWrap: true,
@@ -550,5 +655,272 @@ class _SchedulePageState extends State<SchedulePage>{
       ],
       ),
     );
+  }
+
+  // Show a popup dialog when a reminder is due
+  void _showReminderNotification(String title, String body) {
+    // This function is called by the ReminderService when a reminder is due
+    // It shows a dialog in the center of the screen with the reminder information
+
+    // Using Future.delayed to allow the context to be ready
+    Future.delayed(Duration.zero, () {
+      showDialog(
+        context: context,
+        barrierDismissible: false, // User must tap a button to dismiss
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3C5A7D),
+              ),
+            ),
+            content: Text(body),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+                child: Text('DISMISS'),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF3C5A7D),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                  // Navigate to the schedule page if not already there
+                  // This is optional - it will take users to the schedule view
+                },
+                child: Text('VIEW SCHEDULE'),
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
+
+  // Show dialog for configuring notification settings
+  void _showNotificationSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Using StatefulBuilder to allow state changes inside the dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Reminder Settings'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Enable/disable notifications toggle
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Enable Reminders',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Switch(
+                        value: _notificationsEnabled,
+                        activeColor: Color(0xFF3C5A7D),  // Blue when active
+                        onChanged: (bool value) {
+                          // Update local dialog state
+                          setState(() {
+                            _notificationsEnabled = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 20),
+
+                  // Reminder time selection section
+                  Text(
+                    'Remind me before:',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 10),
+
+                  // Time options as selectable chips
+                  Wrap(
+                    spacing: 10,
+                    children: [
+                      // 15 minutes option
+                      _buildTimeOption(15, _reminderTimeMinutes, (value) {
+                        setState(() {
+                          _reminderTimeMinutes = value;
+                        });
+                      }),
+                      // 30 minutes option
+                      _buildTimeOption(30, _reminderTimeMinutes, (value) {
+                        setState(() {
+                          _reminderTimeMinutes = value;
+                        });
+                      }),
+                      // 1 hour option
+                      _buildTimeOption(60, _reminderTimeMinutes, (value) {
+                        setState(() {
+                          _reminderTimeMinutes = value;
+                        });
+                      }),
+                      // 2 hours option
+                      _buildTimeOption(120, _reminderTimeMinutes, (value) {
+                        setState(() {
+                          _reminderTimeMinutes = value;
+                        });
+                      }),
+                    ],
+                  ),
+                ],
+              ),
+              actions: [
+                // Cancel button
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Cancel'),
+                ),
+                // Save button
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF3C5A7D),
+                  ),
+                  onPressed: () {
+                    // Save settings to the main state
+                    this.setState(() {
+                      // The settings are already saved to the class variables
+                      // No additional action needed
+                    });
+
+                    // Close dialog
+                    Navigator.of(context).pop();
+
+                    // Show a confirmation message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Reminder settings updated',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        backgroundColor: Color(0xFFC5DCC2),  // Light green
+                      ),
+                    );
+                  },
+                  child: Text('Save'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // Helper method to build selectable time option chips
+  Widget _buildTimeOption(int minutes, int selectedValue, Function(int) onSelected) {
+    // Check if this option is the currently selected one
+    final bool isSelected = minutes == selectedValue;
+
+    // Format the label based on the time
+    String label;
+    if (minutes < 60) {
+      label = '$minutes min';  // For minutes (e.g., "15 min")
+    } else {
+      // For hours (e.g., "1 hour" or "2 hours")
+      label = '${minutes ~/ 60} hour${minutes == 60 ? '' : 's'}';
+    }
+
+    // Create a selectable chip for this time option
+    return GestureDetector(
+      onTap: () => onSelected(minutes),  // Call the callback with this value when tapped
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          // Blue background if selected, light gray if not
+          color: isSelected ? Color(0xFF3C5A7D) : Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            // White text if selected, black if not
+            color: isSelected ? Colors.white : Colors.black,
+            // Bold if selected
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  // Schedule a reminder for a specific session
+  void _scheduleReminderForSession(DateTime date, String timeString, Map<String, dynamic> session) {
+    // Only schedule if notifications are enabled
+    if (!_notificationsEnabled) return;
+
+    // Parse the time string into hours and minutes components
+    // Handle both formats: "10.00" and "10:00"
+    final timeParts = timeString.replaceAll('.', ':').split(':');
+    if (timeParts.length < 2) return;  // Skip if invalid format
+
+    // Convert string time parts to integers
+    final hours = int.tryParse(timeParts[0]) ?? 0;
+    final minutes = int.tryParse(timeParts[1]) ?? 0;
+
+    // Create a DateTime object for the exact session start time
+    final sessionDateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      hours,
+      minutes,
+    );
+
+    // Create a unique ID for this session based on date and time
+    // This allows us to identify and manage the reminder later
+    final sessionId = '${date.day}${date.month}${date.year}${hours}${minutes}'.replaceAll(' ', '');
+
+    // Determine the reminder time based on user preference
+    final reminderTime = sessionDateTime.subtract(Duration(minutes: _reminderTimeMinutes));
+
+    // Create appropriate message based on session type
+    String messageBody;
+    if (session['title'].toLowerCase().contains('lecture')) {
+      messageBody = 'You have a lecture: ${session['title']} starting at ${session['time']}';
+    } else if (session['title'].toLowerCase().contains('feedback')) {
+      messageBody = 'You have a feedback session: ${session['title']} starting at ${session['time']}';
+    } else {
+      messageBody = 'You have "${session['title']}" scheduled at ${session['time']}';
+    }
+
+    // Schedule the reminder using our ReminderService
+    ReminderService.instance.scheduleReminder(
+      sessionId: sessionId,
+      sessionTime: sessionDateTime,
+      title: 'Upcoming Session Reminder',
+      body: messageBody,
+    );
+  }
+
+  // Schedule reminders for all existing sessions in the schedule
+  void _scheduleRemindersForAllSessions() {
+    // Loop through all dates in the schedule
+    _scheduledEvents.forEach((dateString, sessions) {
+      // Parse the date string back to a DateTime
+      final date = DateFormat('yyyy-MM-dd').parse(dateString);
+
+      // Loop through all sessions for this date
+      sessions.forEach((session) {
+        // Set up a reminder for each session
+        _scheduleReminderForSession(date, session['time'], session);
+      });
+    });
   }
 }
