@@ -23,6 +23,33 @@ class ProfileState extends State<Profile> {
                   color: const Color(0xFFFBFBFB),
                 ),
               ),
+
+              Positioned(
+                top: 38,
+                left: 37,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(40),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: const Color(0xFFA9A9A9),
+                        width: 1,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
