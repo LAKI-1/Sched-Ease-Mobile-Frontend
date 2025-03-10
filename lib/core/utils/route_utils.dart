@@ -8,8 +8,6 @@ class RouteUtils {
       case profile:
         return MaterialPageRoute(builder: (context) => Profile());
 
-      //case home:
-      //  return MaterialPageRoute(builder: (context) => HomeScreen{});
       default:
         return MaterialPageRoute(
           builder:
