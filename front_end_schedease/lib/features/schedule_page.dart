@@ -238,6 +238,49 @@ class _SchedulePageState extends State<SchedulePage>{
       //bottomNavigationBar: _buildBottomNavBar(),
     );
   }
+  //Use this commented code snippet to test alerts and notification
+//   @override
+//   Widget build(BuildContext context){
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       body: SafeArea(
+//         child: Column(
+//           children: [
+//             Container(
+//               height: 20, //Adds space between top and calendar
+//               color: Colors.white,
+//             ),
+//             _buildCalendarSection(),
+//             Expanded(
+//               child: _buildScheduleContent(),
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: _buildTestButton(), // Add this line
+//     );
+//   }
+//
+// // New method to create the test button for notifications
+//   Widget _buildTestButton() {
+//     return Container(
+//       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+//       color: Colors.grey[200],
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           ElevatedButton(
+//             style: ElevatedButton.styleFrom(
+//               backgroundColor: Color(0xFF3C5A7D),
+//               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+//             ),
+//             onPressed: _scheduleTestReminder,
+//             child: Text('Test Feedback Session Reminder (10s)'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
   // //Build the calendar section
   Widget _buildCalendarSection(){
@@ -669,6 +712,7 @@ class _SchedulePageState extends State<SchedulePage>{
         barrierDismissible: false, // User must tap a button to dismiss
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Colors.white,
             title: Text(
               title,
               style: TextStyle(
@@ -682,7 +726,10 @@ class _SchedulePageState extends State<SchedulePage>{
                 onPressed: () {
                   Navigator.of(context).pop(); // Dismiss the dialog
                 },
-                child: Text('DISMISS'),
+                child: Text('DISMISS',
+                  style: TextStyle(color: Color(0xFF3C5A7D)),
+                ),
+
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -693,7 +740,9 @@ class _SchedulePageState extends State<SchedulePage>{
                   // Navigate to the schedule page if not already there
                   // This is optional - it will take users to the schedule view
                 },
-                child: Text('VIEW SCHEDULE'),
+                child: Text('VIEW SCHEDULE',
+                style: TextStyle(color: Colors.white),
+              ),
               ),
             ],
           );
@@ -712,6 +761,7 @@ class _SchedulePageState extends State<SchedulePage>{
           builder: (context, setState) {
             return AlertDialog(
               title: Text('Reminder Settings'),
+              backgroundColor: Colors.white,
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -747,8 +797,8 @@ class _SchedulePageState extends State<SchedulePage>{
                   SizedBox(height: 10),
 
                   // Time options as selectable chips
-                  Wrap(
-                    spacing: 10,
+                  Row(
+                    spacing: 8,
                     children: [
                       // 15 minutes option
                       _buildTimeOption(15, _reminderTimeMinutes, (value) {
@@ -768,12 +818,6 @@ class _SchedulePageState extends State<SchedulePage>{
                           _reminderTimeMinutes = value;
                         });
                       }),
-                      // 2 hours option
-                      _buildTimeOption(120, _reminderTimeMinutes, (value) {
-                        setState(() {
-                          _reminderTimeMinutes = value;
-                        });
-                      }),
                     ],
                   ),
                 ],
@@ -784,7 +828,10 @@ class _SchedulePageState extends State<SchedulePage>{
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('Cancel'),
+                  child: Text('Cancel',
+                  style: TextStyle(color:Color(0xFF3C5A7D),
+                  ),
+                  ),
                 ),
                 // Save button
                 ElevatedButton(
@@ -812,7 +859,8 @@ class _SchedulePageState extends State<SchedulePage>{
                       ),
                     );
                   },
-                  child: Text('Save'),
+                  child: Text('Save',
+                  style: TextStyle(color: Colors.white)),
                 ),
               ],
             );
@@ -923,4 +971,34 @@ class _SchedulePageState extends State<SchedulePage>{
       });
     });
   }
+
+  // Use this code snippet to test out notifications
+  // void _scheduleTestReminder() {
+  //   // Get current time
+  //   final now = DateTime.now();
+  //
+  //   // Schedule reminder for 10 seconds from now
+  //   final reminderTime = now.add(Duration(seconds: 10));
+  //
+  //   // Create a unique session ID
+  //   final sessionId = 'test-${now.millisecondsSinceEpoch}';
+  //
+  //   // Instead of relying on the standard reminder mechanism,
+  //   // we'll create a direct timer to trigger the notification
+  //   Timer(Duration(seconds: 10), () {
+  //     _showReminderNotification(
+  //         'Upcoming Feedback Session',
+  //         'This is a test reminder for a feedback session with Dr. Smith at ${DateFormat('HH:mm').format(now.add(Duration(hours: 1)))}'
+  //     );
+  //   });
+  //
+  //   // Show confirmation
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('Test reminder will appear in 10 seconds'),
+  //       duration: Duration(seconds: 2),
+  //       backgroundColor: Color(0xFFC5DCC2),
+  //     ),
+  //   );
+  // }
 }
