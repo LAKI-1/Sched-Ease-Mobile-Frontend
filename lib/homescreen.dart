@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: const Color(0xffffffff),
+        backgroundColor: const Color(0xFFFFFFFF),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),

@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,18 +21,22 @@ class Message{
   final String time;
   final bool isRead;
   final bool isDelivered;
+  final bool isImage;
+  final String imagePath;
 
-  Message(this.text,this.isMe,this.time,{this.isRead=false,this.isDelivered=true});
+
+  Message(this.text,this.isMe,this.time,{this.isRead=false,this.isDelivered=true,this.isImage=false,this.imagePath=''
+  });
 
 
 
 
 }
 
-class FullScreenPhoto extends StatelessWidget{
+class FullScreenPhotoViewer extends StatelessWidget{
   final String imageUrl;
   final String contactName;
-  const FullScreenPhoto({
+  const FullScreenPhotoViewer({
     Key? key,
     required this.imageUrl,
     required this.contactName,
@@ -40,7 +46,7 @@ class FullScreenPhoto extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -115,6 +121,47 @@ class FullScreenPhoto extends StatelessWidget{
   }
 }
 
+class FullScreenImageViewer extends StatelessWidget{
+  final String imagePath;
+
+  const FullScreenImageViewer({
+    Key? key,
+    required this.imagePath,
+
+}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(20),
+            minScale: 0.5,
+            maxScale: 4.0,
+            child: Image.file(
+              File(imagePath),
+              fit: BoxFit.contain ,
+
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
 class ChatScreen extends StatefulWidget{
   final Contact contact;
 
@@ -178,8 +225,8 @@ class _ChatScreenState extends State<ChatScreen>{
                 .hour}: ${DateTime
                 .now()
                 .minute}",
-            // isImage: true,
-            // imagePath: image.path,
+            isImage: true,
+            imagePath: image.path,
 
 
 
@@ -194,7 +241,7 @@ class _ChatScreenState extends State<ChatScreen>{
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FullScreenPhoto(
+        builder: (context) => FullScreenPhotoViewer(
           imageUrl: widget.contact.imageUrl,
           contactName: widget.contact.name,
 
@@ -205,20 +252,31 @@ class _ChatScreenState extends State<ChatScreen>{
 
   @override
   Widget build(BuildContext context){
+
     return Scaffold(
+
       appBar: AppBar(
-        backgroundColor: const Color(0xfffffff),
+        backgroundColor: const Color(0xFF000000),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
         //title: Text(widget.contact.name),
         title: Row(
+
           children: [
-            CircleAvatar(
-              radius: 20,
+            GestureDetector(
+              onTap: _openFullScreen,
+              child: Hero(
+                tag: 'profile',
+                child: CircleAvatar(
+                  radius: 20,
+
+
               backgroundImage: NetworkImage(widget.contact.imageUrl),
             ),
+              ),
+        ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,10 +292,13 @@ class _ChatScreenState extends State<ChatScreen>{
               ],
             ),
           ],
-        ),
-      ),
 
-      backgroundColor: const Color(0xff18202D),
+        ),
+      ), 
+        
+        
+      
+      backgroundColor: const Color(0xffffffff),
 
 
       body: Column(
@@ -289,12 +350,39 @@ class _ChatScreenState extends State<ChatScreen>{
           crossAxisAlignment:
           message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
+            if(message.isImage && message.imagePath != null)...[
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullScreenImageViewer(
+                        imagePath: message.imagePath!,
+                      ),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(
+                    File(message.imagePath!),
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                ),
+
+            ],
             Text(
               message.text,
               style: const TextStyle(color: Colors.black, fontSize: 16),
 
             ),
             const SizedBox(height: 5),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.min,
+
             Text(
               message.time,
               style: TextStyle(
@@ -325,7 +413,7 @@ class _ChatScreenState extends State<ChatScreen>{
         children: [
           IconButton(
             icon: const Icon(Icons.attach_file,color: Colors.white),
-            onPressed: () {},
+            onPressed: _getFromGallery,
           ),
           Expanded(
 
