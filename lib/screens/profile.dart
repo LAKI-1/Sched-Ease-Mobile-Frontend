@@ -62,6 +62,30 @@ class ProfileState extends State<Profile> {
                       height: 64,
                       child: Image.asset('assets/user_icon.png'),
                     ),
+
+                    const SizedBox(height: 20),
+
+                    const Text(
+                      "Clark Kent",
+                      style: TextStyle(
+                        color: Color(0xFF343434),
+                        fontFamily: 'Poppins',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 7),
+
+                    const Text(
+                      "Student",
+                      style: TextStyle(
+                        color: Color(0xFF000000),
+                        fontFamily: 'Poppins',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ),
