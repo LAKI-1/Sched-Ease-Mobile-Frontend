@@ -99,11 +99,48 @@ class ProfileState extends State<Profile> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ProfileMenuWidget(iconPath: 'assets/account_icon.png'),
-                      ProfileMenuWidget(iconPath: 'assets/privacy_icon.png'),
-                      ProfileMenuWidget(iconPath: 'assets/chat_icon.png'),
-                      ProfileMenuWidget(iconPath: 'assets/logbook_icon.png'),
-                      ProfileMenuWidget(iconPath: 'assets/help_icon.png'),
+                      ProfileMenuWidget(
+                        title: "Account",
+                        subtitle: "Account info, Passkeys",
+                        iconPath: 'assets/account_icon.png',
+                        onPress: () {},
+                      ),
+
+                      SizedBox(height: 10.h),
+
+                      ProfileMenuWidget(
+                        title: "Privacy",
+                        subtitle: "Profile photo, Group",
+                        iconPath: 'assets/privacy_icon.png',
+                        onPress: () {},
+                      ),
+
+                      SizedBox(height: 10.h),
+
+                      ProfileMenuWidget(
+                        title: "Chats",
+                        subtitle: "Theme, Font size",
+                        iconPath: 'assets/chat_icon.png',
+                        onPress: () {},
+                      ),
+
+                      SizedBox(height: 10.h),
+
+                      ProfileMenuWidget(
+                        title: "Log Book",
+                        subtitle: "\Voice-to-Text Generator",
+                        iconPath: 'assets/logbook_icon.png',
+                        onPress: () {},
+                      ),
+
+                      SizedBox(height: 10.h),
+
+                      ProfileMenuWidget(
+                        title: "Help",
+                        subtitle: "Help center, contact us",
+                        iconPath: 'assets/help_icon.png',
+                        onPress: () {},
+                      ),
                     ],
                   ),
                 ),
@@ -117,16 +154,44 @@ class ProfileState extends State<Profile> {
 }
 
 class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({Key? key, required this.iconPath}) : super(key: key);
+  const ProfileMenuWidget({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.iconPath,
+    required this.onPress,
+  }) : super(key: key);
 
+  final String title;
+  final String subtitle;
   final String iconPath;
+  final VoidCallback onPress;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      trailing: Container(
+      onTap: onPress,
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Colors.grey.withOpacity(0.1),
+        ),
+
         child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Color(0xFF000000),
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(color: Color(0x80000000), fontSize: 14),
       ),
     );
   }
