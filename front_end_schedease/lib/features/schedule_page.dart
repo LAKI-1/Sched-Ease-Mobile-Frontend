@@ -435,7 +435,6 @@ class _SchedulePageState extends State<SchedulePage>{
     return a< b ? a:b;
   }
 
-
   Widget _buildBookSessionButton() {
     return GestureDetector(
       onTap: () {
@@ -447,25 +446,36 @@ class _SchedulePageState extends State<SchedulePage>{
         ).then((result) {
           // Checking if session details are back
           if (result is Map<String,dynamic>) {
-            // Add the booked session to the schedule
-            _addSessionToSchedule(
-              date: result['date'],
-              mentorName: result['mentorName'],
-              timeSlot: result['timeSlot'],
-              focusText: result['focus'],
-              groupNumber: result['groupNumber'],
-            );
-            // Booking was successful, maybe refresh the schedule
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Session booked successfully!',
-                style: TextStyle(
-                  color: Colors.black
+            final date = result['date'] as DateTime;
+            final timeSlot = result['timeSlot'] as String;
+
+            // Check for timetable clashes
+            if (_hasTimeClash(date, timeSlot)) {
+              // Show clash notification if there's a conflict
+              _showClashNotification(context, timeSlot);
+            } else {
+              // No clash, proceed with booking
+              _addSessionToSchedule(
+                date: date,
+                mentorName: result['mentorName'],
+                timeSlot: timeSlot,
+                focusText: result['focus'],
+                groupNumber: result['groupNumber'],
+              );
+
+              // Booking was successful, show confirmation
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Session booked successfully!',
+                    style: TextStyle(
+                        color: Colors.black
+                    ),
+                  ),
+                  backgroundColor: Color(0xFFC5DCC2),
                 ),
-                ),
-                backgroundColor: Color(0xFFC5DCC2),
-              ),
-            );
+              );
+            }
           }
         });
       },
@@ -959,5 +969,167 @@ class _SchedulePageState extends State<SchedulePage>{
   //     ),
   //   );
   // }
+
+
+// Check if a time slot clashes with existing events in schedule
+  bool _hasTimeClash(DateTime date, String timeSlot) {
+    // Parse the time slot string (e.g., "10:00 - 12:00")
+    final times = timeSlot.split(' - ');
+    if (times.length != 2) return false; // Invalid format, can't check
+
+    // Parse start and end times
+    final startTimeStr = times[0].replaceAll('.', ':');
+    final endTimeStr = times[1].replaceAll('.', ':');
+
+    // Extract hours and minutes
+    final startParts = startTimeStr.split(':');
+    final endParts = endTimeStr.split(':');
+
+    if (startParts.length < 2 || endParts.length < 2) return false; // Invalid format
+
+    // Convert to DateTime objects for comparison
+    final startHour = int.tryParse(startParts[0]) ?? 0;
+    final startMinute = int.tryParse(startParts[1]) ?? 0;
+    final endHour = int.tryParse(endParts[0]) ?? 0;
+    final endMinute = int.tryParse(endParts[1]) ?? 0;
+
+    final sessionStart = DateTime(
+        date.year, date.month, date.day, startHour, startMinute
+    );
+    final sessionEnd = DateTime(
+        date.year, date.month, date.day, endHour, endMinute
+    );
+
+    // Get all events for the selected date
+    final dateEvents = _eventService.getEventsForDate(date);
+
+    // Check for overlaps with any existing event
+    for (final event in dateEvents) {
+      // Parse event times
+      final eventTimeStr = event['duration'] as String? ?? event['time'] as String;
+      final eventTimes = eventTimeStr.split(' - ');
+
+      DateTime eventStart;
+      DateTime eventEnd;
+
+      if (eventTimes.length == 2) {
+        // It has a start and end time
+        final eventStartStr = eventTimes[0].replaceAll('.', ':');
+        final eventEndStr = eventTimes[1].replaceAll('.', ':');
+
+        final eventStartParts = eventStartStr.split(':');
+        final eventEndParts = eventEndStr.split(':');
+
+        if (eventStartParts.length < 2 || eventEndParts.length < 2) continue; // Skip invalid format
+
+        final eventStartHour = int.tryParse(eventStartParts[0]) ?? 0;
+        final eventStartMinute = int.tryParse(eventStartParts[1]) ?? 0;
+        final eventEndHour = int.tryParse(eventEndParts[0]) ?? 0;
+        final eventEndMinute = int.tryParse(eventEndParts[1]) ?? 0;
+
+        eventStart = DateTime(
+            date.year, date.month, date.day, eventStartHour, eventStartMinute
+        );
+        eventEnd = DateTime(
+            date.year, date.month, date.day, eventEndHour, eventEndMinute
+        );
+      } else {
+        // It only has a start time, assume 1 hour duration
+        final eventTimeOnly = eventTimeStr.replaceAll('.', ':');
+        final eventTimeParts = eventTimeOnly.split(':');
+
+        if (eventTimeParts.length < 2) continue; // Skip invalid format
+
+        final eventHour = int.tryParse(eventTimeParts[0]) ?? 0;
+        final eventMinute = int.tryParse(eventTimeParts[1]) ?? 0;
+
+        eventStart = DateTime(
+            date.year, date.month, date.day, eventHour, eventMinute
+        );
+        eventEnd = eventStart.add(Duration(hours: 1)); // Default 1 hour
+      }
+
+      // Check if there's an overlap
+      // Overlap occurs if:
+      // - New session starts during an existing event
+      // - New session ends during an existing event
+      // - New session completely contains an existing event
+      if ((sessionStart.isAfter(eventStart) && sessionStart.isBefore(eventEnd)) ||
+          (sessionEnd.isAfter(eventStart) && sessionEnd.isBefore(eventEnd)) ||
+          (sessionStart.isBefore(eventStart) && sessionEnd.isAfter(eventEnd)) ||
+          (sessionStart.isAtSameMomentAs(eventStart)) ||
+          (sessionEnd.isAtSameMomentAs(eventEnd))) {
+        return true; // Clash found!
+      }
+    }
+
+    // No clash found
+    return false;
+  }
+
+// Add this method to show the clash notification
+  void _showClashNotification(BuildContext context, String timeSlot) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Color(0xFF3C5A7D),
+                size: 28,
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Schedule Conflict',
+                style: TextStyle(
+                  color: Color(0xFF3C5A7D),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Unable to book this session at $timeSlot as it conflicts with your existing timetable.',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Please select a different time slot.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFF3C5A7D),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        );
+      },
+    );
+  }
 
 }
