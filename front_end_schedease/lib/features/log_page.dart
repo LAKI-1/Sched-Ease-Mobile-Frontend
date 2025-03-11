@@ -16,8 +16,9 @@ class _LogPageState extends State<LogPage> {
   String _selectedMonth = 'All';
   String _selectedYear = '2025';
 
-  //Tracking what item is currently selected
-  int? _selectedItemIndex; //Nullable for no selected
+  //Tracking what item is currently selected seperately for feedback and logs
+  int? _selectedFeedbackIndex; //Nullable for no selected
+  int? _selectedRecordingIndex;
 
   //Tracks which feedback or recording is expanded for a detailed view
   int? _expandedFeedbackIndex;
@@ -252,8 +253,7 @@ class _LogPageState extends State<LogPage> {
                     onPageChanged: (index){
                       setState(() {
                         _currentPageIndex = index;
-                        //Reset selection when changing pages
-                        _selectedItemIndex = null;
+
                         _expandedFeedbackIndex = null;
                         _expandedRecordingIndex = null;
 
@@ -651,8 +651,8 @@ class _LogPageState extends State<LogPage> {
           if (_expandedRecordingIndex == index) {
             _expandedRecordingIndex = null;
           }
-          if (_selectedItemIndex == index) {
-            _selectedItemIndex = null;
+          if (_selectedRecordingIndex == index) {
+            _selectedRecordingIndex = null;
           }
         });
       }
@@ -661,7 +661,7 @@ class _LogPageState extends State<LogPage> {
 
   Widget _buildFeedbackItem(Map<String, dynamic> item, int index, bool isExpanded) {
     //Checks if item is selected
-    bool isSelected = _selectedItemIndex == index;
+    bool isSelected = _selectedFeedbackIndex == index;
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       margin: EdgeInsets.only(bottom: 15),
@@ -683,10 +683,10 @@ class _LogPageState extends State<LogPage> {
             onTap: () {
               //Toggle item selection
               setState(() {
-                if (_selectedItemIndex == index) {
-                  _selectedItemIndex = null; //If selected, then deselect
+                if (_selectedFeedbackIndex == index) {
+                  _selectedFeedbackIndex  = null; //If selected, then deselect
                 } else {
-                  _selectedItemIndex = index; //Else, select this item deselecting others
+                  _selectedFeedbackIndex  = index; //Else, select this item deselecting others
                 }
               });
             },
@@ -834,7 +834,7 @@ class _LogPageState extends State<LogPage> {
 
   Widget _buildLogBookItem(Map<String, dynamic> item, int index, bool isExpanded) {
     //Checks if item is selected
-    bool isSelected = _selectedItemIndex == index;
+    bool isSelected = _selectedRecordingIndex == index;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
@@ -857,10 +857,10 @@ class _LogPageState extends State<LogPage> {
               onTap: (){
             //Toggle item selection
             setState(() {
-              if (_selectedItemIndex == index){
-                _selectedItemIndex = null; //If selected, then deselect
+              if (_selectedRecordingIndex == index){
+                _selectedRecordingIndex = null; //If selected, then deselect
               }else{
-                _selectedItemIndex = index; //Else, select this item deselecting others
+                _selectedRecordingIndex = index; //Else, select this item deselecting others
               }
         });
     },

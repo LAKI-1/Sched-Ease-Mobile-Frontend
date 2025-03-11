@@ -41,7 +41,7 @@ class EventService{
       },
       {
         'time': '15.00',
-        'title': 'Database Submission',
+        'title': 'Database CW Submission',
         'duration': '15.00',
         'backgroundColor': Color(0xFFFBFBFB),
         'type': 'submission',
