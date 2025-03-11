@@ -50,6 +50,21 @@ class ProfileState extends State<Profile> {
                   ),
                 ),
               ),
+
+              Positioned(
+                top: 40,
+                left: 50,
+                right: 50,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 62,
+                      height: 64,
+                      child: Image.asset('assets/user_icon.png'),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
