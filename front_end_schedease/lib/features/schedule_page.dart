@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; //dependency for date formatting
 import 'package:front_end_schedease/features/mentor_selection_page.dart';
 import 'dart:async';
+import 'package:front_end_schedease/service/event_service.dart';
 
-void main(){
-  runApp(MaterialApp(
-    home: SchedulePage(), //The app starts with the schedule page
-  ));
-}
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -100,7 +96,7 @@ class _SchedulePageState extends State<SchedulePage>{
 
   int _currentWeekPage = 1000; //index for infinite scrolling
 
-  Map <String, List<Map<String, dynamic>>> _scheduledEvents = {};
+ final  EventService _eventService =EventService.instance;
 
   @override
   void initState() {
@@ -109,7 +105,6 @@ class _SchedulePageState extends State<SchedulePage>{
     _currentMonth = DateTime(_selectedDate.year, _selectedDate.month);
     _weekPageController = PageController(initialPage: _currentWeekPage);
 
-    _initializeSchedule();
 
     //Initialize the reminder service with callback
     ReminderService.instance.init(_showReminderNotification);
@@ -118,28 +113,6 @@ class _SchedulePageState extends State<SchedulePage>{
     _scheduleRemindersForAllSessions();
 
   }
-    _initializeSchedule(){ //initialising with sample data
-      final today = DateTime.now();
-      final todayString = DateFormat('yyyy-MM-dd').format(today);
-
-      _scheduledEvents [todayString] = [
-        {
-          'time': '10.00',
-          'title': 'Session with Supervisor (Mr.Albert)',
-          'duration': '10.00 - 12.00',
-          'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline card
-
-        },
-        {
-          'time': '13.00',
-          'title': 'CS-12 Group Meeting',
-          'duration': '13.00 - 14.00',
-          'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5), //Bg color of timeline cards
-        },
-
-      ];
-    }
-
     Timer? _reminderCheckTimer; //Timer checks reminders periodically
     bool _notificationsEnabled = true; //User preference: To keep notifications enabled
     int _reminderTimeMinutes = 60;  //User preference: How many minutes earlier to remind session
@@ -152,44 +125,30 @@ class _SchedulePageState extends State<SchedulePage>{
     required String focusText,
     required String groupNumber,
   }) {
-
-    //Convert date to string format for map key
-    final dateString = DateFormat('yyyy-MM-dd').format(date);
-    //Parse time from timeSlot
-    final startTime = timeSlot.split(' - ')[0];
-
-    //Creating a new Session
-    final newSession = {
-      'time': startTime,
-      'title': 'Feedback Session with $mentorName',
-      'duration': timeSlot,
-      'focus': focusText,
-      'group': groupNumber,
-      'backgroundColor': Color(0xFFC5DCC2).withOpacity(0.5),
-    };
-
-    setState(() {
-      //If date doesn't exist in map, create a new list
-      if (!_scheduledEvents.containsKey(dateString)){
-        _scheduledEvents[dateString] =[];
-      }
-
-      //Add new session to the list to this date
-      _scheduledEvents[dateString] !.add(newSession);
-
-      //Sorting events by time
-      _scheduledEvents[dateString]!.sort((a,b) =>
-          a['time'].toString().compareTo(b['time'].toString()));
-
-      //Also schedule a reminder for this new session
-      _scheduleReminderForSession(date, startTime, newSession);
-    });
+    // Use EventService to add the session
+    _eventService.addFeedbackSession(
+      date: date,
+      mentorName: mentorName,
+      timeSlot: timeSlot,
+      focusText: focusText,
+      groupNumber: groupNumber,
+    );
+    // Schedule a reminder for this new session
+    _scheduleReminderForSession(
+        date,
+        timeSlot.split(' - ')[0],
+        {
+          'title': 'Feedback Session with $mentorName',
+          'time': timeSlot.split(' - ')[0],
+          'duration': timeSlot,
+        }
+    );
+    //Force a UI update
+    setState(() {});
   }
-
-  //Get scheduled events for selected date
-  List <Map<String,dynamic>> _getScheduleForSelectedDate(){
-    final dateString = DateFormat('yyyy-MM-dd').format(_selectedDate);
-    return _scheduledEvents[dateString] ?? [];
+  // Get scheduled events for selected date
+  List<Map<String, dynamic>> _getScheduleForSelectedDate() {
+  return _eventService.getEventsForDate(_selectedDate);
   }
 
   @override
@@ -286,6 +245,7 @@ class _SchedulePageState extends State<SchedulePage>{
   Widget _buildCalendarSection(){
     //Get all days of current month
     List <DateTime> daysInMonth = _getDaysInMonth(_currentMonth);
+
 
     //Get the weekday of the first day (0 --> Monday)
     int firstDayWeekDay = DateTime(_currentMonth.year, _currentMonth.month,1).weekday - 1;
@@ -399,8 +359,8 @@ class _SchedulePageState extends State<SchedulePage>{
 
               //Convert date to string format for map key
               final dateString = DateFormat('yyyy-MM-dd').format(day);
-              final hasEvents = _scheduledEvents.containsKey(dateString) &&
-                  _scheduledEvents[dateString]!.isNotEmpty;
+              final events = _eventService.getEventsForDate(day);
+              final hasEvents = events.isNotEmpty;
 
 
               return GestureDetector(
@@ -959,17 +919,15 @@ class _SchedulePageState extends State<SchedulePage>{
 
   // Schedule reminders for all existing sessions in the schedule
   void _scheduleRemindersForAllSessions() {
-    // Loop through all dates in the schedule
-    _scheduledEvents.forEach((dateString, sessions) {
-      // Parse the date string back to a DateTime
-      final date = DateFormat('yyyy-MM-dd').parse(dateString);
+
+      final today = DateTime.now();
+      final events = _eventService.getTodayEvents();
 
       // Loop through all sessions for this date
-      sessions.forEach((session) {
+      events.forEach((session) {
         // Set up a reminder for each session
-        _scheduleReminderForSession(date, session['time'], session);
+        _scheduleReminderForSession(today, session['time'], session);
       });
-    });
   }
 
   // Use this code snippet to test out notifications
@@ -1001,4 +959,5 @@ class _SchedulePageState extends State<SchedulePage>{
   //     ),
   //   );
   // }
+
 }
