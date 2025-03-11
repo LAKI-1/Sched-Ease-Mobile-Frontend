@@ -92,7 +92,7 @@ class ProfileState extends State<Profile> {
               ),
 
               Positioned(
-                top: 170.h,
+                top: 180.h,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -128,7 +128,7 @@ class ProfileState extends State<Profile> {
 
                       ProfileMenuWidget(
                         title: "Log Book",
-                        subtitle: "\Voice-to-Text Generator",
+                        subtitle: "Voice-to-Text Generator",
                         iconPath: 'assets/logbook_icon.png',
                         onPress: () {},
                       ),
@@ -169,29 +169,47 @@ class ProfileMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onPress,
-      leading: Container(
-        width: 40,
-        height: 40,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.grey.withOpacity(0.1),
+          border: Border.all(color: Colors.grey, width: 1),
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(2, 2),
+            ),
+          ],
         ),
 
-        child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: Color(0xFF000000),
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
+        child: ListTile(
+          onTap: onPress,
+          leading: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.grey.withOpacity(0.1),
+            ),
+
+            child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: Color(0xFF000000),
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: TextStyle(color: Color(0x80000000), fontSize: 14),
+          ),
         ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: TextStyle(color: Color(0x80000000), fontSize: 14),
       ),
     );
   }
