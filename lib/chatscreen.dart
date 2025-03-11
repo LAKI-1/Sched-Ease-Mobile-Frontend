@@ -256,7 +256,7 @@ class _ChatScreenState extends State<ChatScreen>{
     return Scaffold(
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFF20283F),
+        backgroundColor: const Color(0xFF3c5a7D),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -337,7 +337,7 @@ class _ChatScreenState extends State<ChatScreen>{
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
         decoration: BoxDecoration(
-          color: message.isMe ? Colors.lightGreen: const Color(0xFF90EE90),
+          color: message.isMe ? Color(0XFFB3E5FC): const Color(0xFFE0E0E0),
 
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18),

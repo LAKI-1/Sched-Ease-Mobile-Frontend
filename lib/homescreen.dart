@@ -54,108 +54,200 @@ class _HomeScreenState extends State<HomeScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
 
+
+      ),
+      constraints: const BoxConstraints(
+        maxHeight: 120,
       ),
       builder: (BuildContext context){
         return Column(
           //mainAxisAlignment: MainAxisAlignment.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.person_2_rounded, color: Colors.white),
+              leading: const Icon(Icons.delete, color: Colors.white),
               title: const Text(
-                'Add Contact',
-                 style: TextStyle(color: Colors.white),
+                'Delete Contact',
+                 style: TextStyle(color: Colors.white,fontSize: 19),
+
 
               ),
               onTap: (){
                 Navigator.pop(context);
-                addContactDialog();
+                deleteOption();
         },
 
 
               ),
-            const Divider(color: Colors.white),
-            ListTile(
-              leading: const Icon(Icons.delete,color: Colors.white),
-              title: const Text(
-                'Delete Contact',
-                style: TextStyle(color: Colors.white),
-
-              ),
-              onTap: (){
-                Navigator.pop(context);
-
-              },
-            )
+            // //const Divider(color: Colors.white),
+            // ListTile(
+            //   leading: const Icon(Icons.delete,color: Colors.white),
+            //   title: const Text(
+            //     'Delete Contact',
+            //     style: TextStyle(color: Colors.white),
+            //
+            //   ),
+            //   onTap: (){
+            //     Navigator.pop(context);
+            //     deleteOption();
+            //
+            //   },
+            // )
 
           ],
         );
       }
     );
   }
+  //
+  // void addContactDialog(){
+  //   final nameController = TextEditingController();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context){
+  //       return AlertDialog(
+  //         backgroundColor: const Color(0xFF20283A),
+  //         title: const Text('Add new contact',style: TextStyle(color: Colors.white)),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             TextField(
+  //               controller: nameController,
+  //               decoration: const InputDecoration(
+  //                 labelText: 'Name',
+  //                 labelStyle: TextStyle(color: Colors.white),
+  //                 enabledBorder: UnderlineInputBorder(
+  //                   borderSide: BorderSide(color: Colors.white),
+  //
+  //                 ),
+  //               ),
+  //               style: const TextStyle(color: Colors.white),
+  //             ),
+  //           ],
+  //         ),
+  //
+  //         actions: [
+  //           TextButton(
+  //             onPressed: (){
+  //               Navigator.of(context).pop();
+  //
+  //             },
+  //             child: const Text('Cancel',style: TextStyle(color: Colors.white)),
+  //
+  //
+  //           ),
+  //
+  //           TextButton(
+  //             onPressed: (){
+  //               if(nameController.text.isNotEmpty){
+  //                 setState(() {
+  //                   Contact(
+  //                     nameController.text,
+  //                     AutofillHints.email,
+  //                     'now',
+  //                     'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
+  //
+  //                   );
+  //                   filteredContacts=List.from(contacts);
+  //                 });
+  //               }
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Add',style: TextStyle(color: Colors.blueGrey)),
+  //           )
+  //
+  //         ],
+  //       );
+  //     }
+  //   );
+  // }
 
-  void addContactDialog(){
-    final nameController = TextEditingController();
 
+  void deleteOption() {
     showDialog(
       context: context,
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF20283A),
-          title: const Text('Add new contact',style: TextStyle(color: Colors.white)),
-          content: Column(
-            //mainAxisAlignment: MainAxisAlignment.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: TextStyle(color: Colors.white),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+          backgroundColor: const Color(0xff20283A),
+          title: const Text(
+              'Select Contact to Delete',
+              style: TextStyle(color: Colors.white)),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: contacts.length,
+              itemBuilder: (context, index) {
+                final contact = contacts[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(contact.imageUrl),
 
                   ),
-                ),
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          ),
+                  title: Text(
+                      contact.name,
+                      style: const TextStyle(color: Colors.white)),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext confirmContext) {
+                        return AlertDialog(
+                          backgroundColor: const Color(0xFF20283A),
+                          title: const Text('Confirm Delete',
+                              style: TextStyle(color: Colors.white)),
+                          content: Text(
+                            'Are you Sure? ${contact.name}?',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(confirmContext).pop();
+                              },
+                              child: const Text('Cancel',
+                                  style: TextStyle(color: Colors.white)),
 
+
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  contacts.removeAt(index);
+                                  filteredContacts = List.from(contacts);
+                                });
+                                Navigator.of(confirmContext).pop();
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red)),
+
+                            ),
+                          ],
+
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
           actions: [
             TextButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.of(context).pop();
-
               },
-              child: const Text('Cancel',style: TextStyle(color: Colors.white)),
+              child: const Text(
+                  'Cancel', style: TextStyle(color: Colors.white)),
 
 
             ),
-
-            TextButton(
-              onPressed: (){
-                if(nameController.text.isNotEmpty){
-                  setState(() {
-                    Contact(
-                      nameController.text,
-                      AutofillHints.email,
-                      'now',
-                      'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
-
-                    );
-                    filteredContacts=List.from(contacts);
-                  });
-                }
-                Navigator.of(context).pop();
-              },
-              child: const Text('Add',style: TextStyle(color: Colors.blueGrey)),
-            )
-
           ],
         );
-      }
+      },
     );
   }
-
 
 
 
