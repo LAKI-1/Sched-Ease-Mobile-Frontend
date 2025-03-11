@@ -96,13 +96,18 @@ class ProfileState extends State<Profile> {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: SingleChildScrollView(child: Column(children: [
-                      
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProfileMenuWidget(iconPath: 'assets/account_icon.png'),
+                      ProfileMenuWidget(iconPath: 'assets/privacy_icon.png'),
+                      ProfileMenuWidget(iconPath: 'assets/chat_icon.png'),
+                      ProfileMenuWidget(iconPath: 'assets/logbook_icon.png'),
+                      ProfileMenuWidget(iconPath: 'assets/help_icon.png'),
                     ],
-                  )),
+                  ),
+                ),
               ),
-
-              ProfileMenuWidget(),
             ],
           ),
         ),
@@ -112,10 +117,17 @@ class ProfileState extends State<Profile> {
 }
 
 class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({super.key});
+  const ProfileMenuWidget({Key? key, required this.iconPath}) : super(key: key);
+
+  final String iconPath;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile();
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      trailing: Container(
+        child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
+      ),
+    );
   }
 }
