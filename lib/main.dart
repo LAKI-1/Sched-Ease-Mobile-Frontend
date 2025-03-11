@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:user_profile/core/utils/route_utils.dart';
-import 'package:user_profile/screens/profile.dart';
+import 'package:user_profile/screens/profile/profile.dart';
 
 void main() {
   runApp(const SchedEaseMobileFrontend());

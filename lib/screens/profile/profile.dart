@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:user_profile/screens/widgets/profile_menu.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -26,7 +27,7 @@ class ProfileState extends State<Profile> {
               ),
 
               Positioned(
-                top: 38,
+                top: 20,
                 left: 37,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(40),
@@ -53,7 +54,7 @@ class ProfileState extends State<Profile> {
               ),
 
               Positioned(
-                top: 40,
+                top: 25,
                 left: 50,
                 right: 50,
                 child: Column(
@@ -64,7 +65,7 @@ class ProfileState extends State<Profile> {
                       child: Image.asset('assets/user_icon.png'),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
 
                     const Text(
                       "Clark Kent",
@@ -76,15 +77,14 @@ class ProfileState extends State<Profile> {
                       ),
                     ),
 
-                    const SizedBox(height: 7),
+                    const SizedBox(height: 5),
 
                     const Text(
                       "Student",
                       style: TextStyle(
-                        color: Color(0xFF000000),
+                        color: Color(0x80000000),
                         fontFamily: 'Poppins',
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -92,7 +92,7 @@ class ProfileState extends State<Profile> {
               ),
 
               Positioned(
-                top: 180.h,
+                top: 150.h,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -141,73 +141,51 @@ class ProfileState extends State<Profile> {
                         iconPath: 'assets/help_icon.png',
                         onPress: () {},
                       ),
+
+                      SizedBox(height: 20.h),
+
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 17,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF3C5A7D),
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 3,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 16,
+                              ),
+                              child: Text(
+                                "Log out",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.iconPath,
-    required this.onPress,
-  }) : super(key: key);
-
-  final String title;
-  final String subtitle;
-  final String iconPath;
-  final VoidCallback onPress;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, width: 1),
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(2, 2),
-            ),
-          ],
-        ),
-
-        child: ListTile(
-          onTap: onPress,
-          leading: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Colors.grey.withOpacity(0.1),
-            ),
-
-            child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
-          ),
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            subtitle,
-            style: TextStyle(color: Color(0x80000000), fontSize: 14),
           ),
         ),
       ),

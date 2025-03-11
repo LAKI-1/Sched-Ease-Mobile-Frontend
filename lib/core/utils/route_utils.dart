@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:user_profile/core/constants/string.dart';
-import 'package:user_profile/screens/profile.dart';
+import 'package:user_profile/screens/profile/profile.dart';
 
 class RouteUtils {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
