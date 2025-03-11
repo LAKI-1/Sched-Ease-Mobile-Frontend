@@ -287,6 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       ),
                     ),
+
                     IconButton(
                       onPressed: contactOption,
                       icon: const Icon(
@@ -296,6 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         size: 38,
                       ),
                     )
+
 
                   ],
                 ),
@@ -312,15 +314,45 @@ class _HomeScreenState extends State<HomeScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
-                    )
+                    ),
+
                   ),
                   style: const TextStyle(color: Colors.black),
                   onChanged: filterContacts,
                 ),
 
-
-
                 const SizedBox(height: 20),
+
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.person,color: Colors.grey),
+                        Text('Lecturer',style: TextStyle(fontSize: 12,color: Colors.grey)),
+                      ],
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.group,color: Colors.grey),
+                        Text('Group',style: TextStyle(fontSize: 12,color: Colors.grey)),
+                      ],
+                    ),
+
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.person,color: Colors.grey),
+                        Text('Supervisor',style: TextStyle(fontSize: 12,color: Colors.grey)),
+
+                      ],
+                    )
+                  ],
+                ),
 
                 Expanded(
                   child: Container(
