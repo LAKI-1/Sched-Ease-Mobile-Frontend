@@ -658,8 +658,12 @@ class _LogPageState extends State<LogPage> {
       }
     });
   }
+  String? _selectedFeedbackId;
+  String? _selectedRecordingId;
 
   Widget _buildFeedbackItem(Map<String, dynamic> item, int index, bool isExpanded) {
+    // Create a unique ID for the item using title and time
+    String itemId = "${item['title']}-${item['time']}";
     //Checks if item is selected
     bool isSelected = _selectedFeedbackIndex == index;
     return AnimatedContainer(
@@ -683,11 +687,19 @@ class _LogPageState extends State<LogPage> {
             onTap: () {
               //Toggle item selection
               setState(() {
-                if (_selectedFeedbackIndex == index) {
-                  _selectedFeedbackIndex  = null; //If selected, then deselect
-                } else {
-                  _selectedFeedbackIndex  = index; //Else, select this item deselecting others
-                }
+                // First, clear the selection
+                _selectedFeedbackIndex = null;
+              });
+
+              // Add a micro-delay and then set the new selection
+              Future.delayed(Duration.zero, () {
+                setState(() {
+                  if (_selectedFeedbackIndex == index) {
+                    _selectedFeedbackIndex = null; // Toggle off if already selected
+                  } else {
+                    _selectedFeedbackIndex = index; // Select this item
+                  }
+                });
               });
             },
             child: Container(
