@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'chatscreen.dart';
+import 'group_chat_screen.dart';
 
+enum ChatCategory {lecturer, group}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  ChatCategory currentCategory = ChatCategory.lecturer;
 
 
   List<Contact>contacts=[
@@ -28,13 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ];
 
+  List<Contact> groupChats = [
+    Contact('Project Team 45','John: Let\'s meet tomorrow','10:20 AM',
+      'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg'),
+  ];
+
+
+
   List<Contact>filteredContacts = [];
+  List<Contact>currentList=[];
 
 
   @override
   void initState(){
     super.initState();
     filteredContacts = contacts;
+    filteredContacts= currentList;
   }
 
   void filterContacts(String searchText){
@@ -43,6 +56,22 @@ class _HomeScreenState extends State<HomeScreen> {
           .where((contact) =>
            contact.name.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
+    });
+  }
+
+  void switchCategory(ChatCategory category){
+    setState(() {
+      currentCategory = category;
+
+      switch(category){
+        case ChatCategory.lecturer:
+          currentList = contacts;
+          break;
+        case ChatCategory.group:
+          currentList = groupChats;
+          break;
+      }
+      filteredContacts=currentList;
     });
   }
 
@@ -327,32 +356,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.person,color: Colors.grey),
-                        Text('Lecturer',style: TextStyle(fontSize: 12,color: Colors.grey)),
-                      ],
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.group,color: Colors.grey),
-                        Text('Group',style: TextStyle(fontSize: 12,color: Colors.grey)),
-                      ],
-                    ),
-
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.person,color: Colors.grey),
-                        Text('Supervisor',style: TextStyle(fontSize: 12,color: Colors.grey)),
-
-                      ],
-                    )
-                  ],
+                    _categoryButton('Lecturer',Icons.school,ChatCategory.lecturer,
+                      Colors.grey),
+                    _categoryButton('Group', Icons.group,ChatCategory.group,
+                      Colors.grey),
+                ],
                 ),
+
+
+
+
+
+
+
+
+
+
 
                 Expanded(
                   child: Container(
@@ -407,11 +426,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 
               ],
             ),
-          ),
+
         ),
+      ),
+    ));
+
+
+  }
+
+  Widget _categoryButton(
+      String text, IconData icon, ChatCategory category, Color color) {
+    return GestureDetector(
+      onTap: () => switchCategory(category),
+        child: Column(
+          children: [
+          Icon(icon,
+              color: currentCategory == category ? color : Colors.grey),
+          Text(text,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: currentCategory == category ? color : Colors.grey)),
+        ],
       ),
     );
   }
+
 
 
 
