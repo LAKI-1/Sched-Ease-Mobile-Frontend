@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'chatscreen.dart';
 import 'group_chat_screen.dart';
+import 'supervisor_chat_screen.dart';
 
-enum ChatCategory {lecturer, group}
+enum ChatCategory {lecturer, group, supervisor }
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,8 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<Contact> groupChats = [
-    Contact('Project Team 45','John: Let\'s meet tomorrow','10:20 AM',
+    Contact('Project Team 45','John: Let\'s meet tomorrow','10:22 AM',
       'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg'),
+  ];
+
+  List<Contact> supervisorChats = [
+    Contact('Mr. William','You: Sir.Can we get a meeting today?','11.10 AM',
+      'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg'),
   ];
 
 
@@ -69,6 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
           break;
         case ChatCategory.group:
           currentList = groupChats;
+          break;
+
+        case ChatCategory.supervisor:
+          currentList=supervisorChats;
           break;
       }
       filteredContacts=currentList;
@@ -107,89 +117,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
               ),
-            // //const Divider(color: Colors.white),
-            // ListTile(
-            //   leading: const Icon(Icons.delete,color: Colors.white),
-            //   title: const Text(
-            //     'Delete Contact',
-            //     style: TextStyle(color: Colors.white),
-            //
-            //   ),
-            //   onTap: (){
-            //     Navigator.pop(context);
-            //     deleteOption();
-            //
-            //   },
-            // )
 
           ],
         );
       }
     );
   }
-  //
-  // void addContactDialog(){
-  //   final nameController = TextEditingController();
-  //
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context){
-  //       return AlertDialog(
-  //         backgroundColor: const Color(0xFF20283A),
-  //         title: const Text('Add new contact',style: TextStyle(color: Colors.white)),
-  //         content: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             TextField(
-  //               controller: nameController,
-  //               decoration: const InputDecoration(
-  //                 labelText: 'Name',
-  //                 labelStyle: TextStyle(color: Colors.white),
-  //                 enabledBorder: UnderlineInputBorder(
-  //                   borderSide: BorderSide(color: Colors.white),
-  //
-  //                 ),
-  //               ),
-  //               style: const TextStyle(color: Colors.white),
-  //             ),
-  //           ],
-  //         ),
-  //
-  //         actions: [
-  //           TextButton(
-  //             onPressed: (){
-  //               Navigator.of(context).pop();
-  //
-  //             },
-  //             child: const Text('Cancel',style: TextStyle(color: Colors.white)),
-  //
-  //
-  //           ),
-  //
-  //           TextButton(
-  //             onPressed: (){
-  //               if(nameController.text.isNotEmpty){
-  //                 setState(() {
-  //                   Contact(
-  //                     nameController.text,
-  //                     AutofillHints.email,
-  //                     'now',
-  //                     'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
-  //
-  //                   );
-  //                   filteredContacts=List.from(contacts);
-  //                 });
-  //               }
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('Add',style: TextStyle(color: Colors.blueGrey)),
-  //           )
-  //
-  //         ],
-  //       );
-  //     }
-  //   );
-  // }
+
 
 
   void deleteOption() {
@@ -359,6 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     _categoryButton('Lecturer',Icons.school,ChatCategory.lecturer,
                       Colors.grey),
                     _categoryButton('Group', Icons.group,ChatCategory.group,
+                      Colors.grey),
+                    _categoryButton('Supervisor',Icons.person,ChatCategory.supervisor,
                       Colors.grey),
                 ],
                 ),
