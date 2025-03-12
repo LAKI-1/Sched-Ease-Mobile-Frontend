@@ -152,7 +152,14 @@ class ProfileState extends State<Profile> {
                         title: "Privacy",
                         subtitle: "Profile photo, Group",
                         iconPath: 'assets/privacy_icon.png',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Placeholder(),
+                            ),
+                          );
+                        },
                       ),
 
                       SizedBox(height: 10.h),
@@ -161,7 +168,14 @@ class ProfileState extends State<Profile> {
                         title: "Chats",
                         subtitle: "Theme, Font size",
                         iconPath: 'assets/chat_icon.png',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Placeholder(),
+                            ),
+                          );
+                        },
                       ),
 
                       SizedBox(height: 10.h),
@@ -170,7 +184,14 @@ class ProfileState extends State<Profile> {
                         title: "Log Book",
                         subtitle: "Voice-to-Text Generator",
                         iconPath: 'assets/logbook_icon.png',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Placeholder(),
+                            ),
+                          );
+                        },
                       ),
 
                       SizedBox(height: 10.h),
@@ -179,7 +200,14 @@ class ProfileState extends State<Profile> {
                         title: "Help",
                         subtitle: "Help center, contact us",
                         iconPath: 'assets/help_icon.png',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Placeholder(),
+                            ),
+                          );
+                        },
                       ),
 
                       SizedBox(height: 20.h),
