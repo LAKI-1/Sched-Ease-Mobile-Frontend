@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'chatscreen.dart';
-import 'group_chat_screen.dart';
-import 'supervisor_chat_screen.dart';
+// import 'group_chat_screen.dart';
+// import 'supervisor_chat_screen.dart';
+import 'contact.dart';
 
 enum ChatCategory {lecturer, group, supervisor }
 
@@ -21,26 +22,64 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Contact>contacts=[
     Contact('Ms..Albert','You: Thank you sir.','9:40 AM',
-    'https://i.pinimg.com/236x/89/d1/ef/89d1efb106a342203018a0b600cb3f34.jpg'),
+    'https://i.pinimg.com/236x/89/d1/ef/89d1efb106a342203018a0b600cb3f34.jpg',
+    [
+
+
+    ]),
+
     Contact('Mr.John','You: Ok,thanks!','9:25 AM',
-    'https://i.pinimg.com/originals/87/66/e5/8766e5f221fa30acb078d6d2d6b7af81.jpg'),
+    'https://i.pinimg.com/originals/87/66/e5/8766e5f221fa30acb078d6d2d6b7af81.jpg',
+    [
+
+    ]),
     Contact('Mr.Loia','You: Ok miss,I will up... ','Fri',
-    'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg'),
+    'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg',
+    [
+
+    ]),
     Contact('Ms.Kayal','There is a consern','Fri',
-    'https://i.pinimg.com/736x/23/d2/bb/23d2bb062693ad8d9e6221ce4b4476d6.jpg'),
+    'https://i.pinimg.com/736x/23/d2/bb/23d2bb062693ad8d9e6221ce4b4476d6.jpg',
+    [
+
+    ]),
     Contact('Mr.Anne','Anne23@gmail.com','Tue',
-    'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg'),
+    'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg',
+    [
+
+    ]),
 
   ];
 
   List<Contact> groupChats = [
-    Contact('Project Team 45','John: Let\'s meet tomorrow','10:22 AM',
-      'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg'),
+    Contact('Project Group 45','John: Let\'s meet tomorrow','10:22 AM',
+      'https://static.vecteezy.com/system/resources/thumbnails/033/982/953/small/beautiful-girl-at-sunset-landscape-background-cartoon-summer-sunset-with-clouds-mountain-and-lake-anime-style-photo.jpg',
+    [
+
+    ]),
+    Contact('Team Leaders','Athor: Can we discuss with our all team leadres?','9:23 PM',
+      'https://www.google.com/search?sca_esv=d425b5dac0dba72a&q=group+pictures+cartoon&udm=2&fbs=ABzOT_CWdhQLP1FcmU5B0fn3xuWpA-dk4wpBWOGsoR7DG5zJBkzPWUS0OtApxR2914vrjk4ZqZZ4I2IkJifuoUeV0iQtlsVaSqiwnznvC1owt2z2tTdc23Auc6X4y2i7IIF0f-daFQAnIISUeBdGNO3Bl2VmXrYULqbJwOFxhGBxjDvPi7AXljWm69dCJGJtZf49EuPbm-5He1d5dYd0SRT0i0ep72Wwyw&sa=X&ved=2ahUKEwiZo4vo3oOMAxXtF1kFHVXUGJwQtKgLegQIEhAB&biw=1536&bih=730&dpr=1.25#vhid=UMcxWS1pi1jGrM&vssid=mosaic',[
+
+        ]),
+
   ];
 
   List<Contact> supervisorChats = [
     Contact('Mr. William','You: Sir.Can we get a meeting today?','11.10 AM',
-      'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg'),
+      'https://i.pinimg.com/280x280_RS/85/14/3d/85143d043d763a77659dcfb85625bbe9.jpg',
+    [
+
+    ]),
+    Contact('Mr.Charles','You: Can we discuss today? ','6:10 AM',
+      'https://photosbook.in/wp-content/uploads/stylish-cartoon-boy-dp44.jpg',
+    [
+
+    ]),
+    Contact('Ms. Marry','Please confirm it','6:08 PM',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ4HDkgF6qFd8gDxVCr6_n1INZ6phJSnDSqg&s',
+    [
+
+    ]),
   ];
 
 
@@ -359,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
                 ),
-                
+
               ],
             ),
 

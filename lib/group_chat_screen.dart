@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'chatscreen.dart';
+
 import 'chat_message.dart';
+import 'contact.dart';
+import 'homescreen.dart';
 
 class GroupChatScreen extends StatefulWidget{
   final Contact group;

@@ -5,17 +5,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'contact.dart';
+import 'Messages.dart';
 
-class Contact{
-  final String name;
-  final String email;
-  final String time;
-  final String imageUrl;
 
-  Contact(this.name,this.email,this.time,this.imageUrl);
-}
 
-class Message{
+
+
+class Messages{
   final String text;
   final bool isMe;
   final String time;
@@ -25,14 +22,15 @@ class Message{
   final String imagePath;
 
 
-  Message(this.text,this.isMe,this.time,{this.isRead=false,this.isDelivered=true,this.isImage=false,this.imagePath=''
-  });
-
-
-
-
+  Messages(this.text, this.isMe, this.time,
+      {this.isRead = false, this.isDelivered = true, this.isImage = false, this.imagePath = ''
+      });
 }
 
+
+
+
+//
 class FullScreenPhotoViewer extends StatelessWidget{
   final String imageUrl;
   final String contactName;
@@ -108,7 +106,7 @@ class FullScreenPhotoViewer extends StatelessWidget{
                     );
                   }
 
-                  
+
 
 
 
@@ -121,46 +119,46 @@ class FullScreenPhotoViewer extends StatelessWidget{
   }
 }
 
-class FullScreenImageViewer extends StatelessWidget{
-  final String imagePath;
-
-  const FullScreenImageViewer({
-    Key? key,
-    required this.imagePath,
-
-}) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Center(
-        child: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: InteractiveViewer(
-            boundaryMargin: const EdgeInsets.all(20),
-            minScale: 0.5,
-            maxScale: 4.0,
-            child: Image.file(
-              File(imagePath),
-              fit: BoxFit.contain ,
-
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-}
+// class FullScreenImageViewer extends StatelessWidget{
+//   final String imagePath;
+//
+//   const FullScreenImageViewer({
+//     Key? key,
+//     required this.imagePath,
+//
+// }) : super(key: key);
+//
+//
+//   @override
+//   Widget build(BuildContext context){
+//     return Scaffold(
+//       backgroundColor: Colors.black,
+//       appBar: AppBar(
+//         backgroundColor: Colors.black,
+//         leading: IconButton(
+//           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+//           onPressed: () => Navigator.pop(context),
+//         ),
+//       ),
+//       body: Center(
+//         child: GestureDetector(
+//           onTap: () => Navigator.pop(context),
+//           child: InteractiveViewer(
+//             boundaryMargin: const EdgeInsets.all(20),
+//             minScale: 0.5,
+//             maxScale: 4.0,
+//             child: Image.file(
+//               File(imagePath),
+//               fit: BoxFit.contain ,
+//
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+// }
 
 class ChatScreen extends StatefulWidget{
   final Contact contact;
@@ -178,14 +176,29 @@ class _ChatScreenState extends State<ChatScreen>{
 
   final TextEditingController _messageController = TextEditingController();
   final ImagePicker _picker =  ImagePicker();
-  final List<Message> _messages =  [
-    Message("Hello..,Mr.Albert!", true, "09:42", isRead: true),
-    Message(
-      "There is confusion about do \nwe have the session today",false,
-      "09:45"),
-    Message("...", true , "09:50", isRead: false),
+ // static final Map<String, List<Message>> chatHistory={};
 
-  ];
+  List<Message>_messages=[];
+
+  // final List _messages =
+  //   [
+  //     Message("Hello..,Mr.Albert!", true, "09:42", isRead: true),
+  //     Message(
+  //     "There is confusion about do \nwe have the session today", false,
+  //     "09:45"),
+  //     Message("...", true, "09:50", isRead: false),
+  //
+  //
+  //
+  //
+  //   ];
+  //
+
+  @override
+  void initState(){
+    super.initState();
+    _messages=widget.contact.messages;
+  }
 
 
   void _sendMessage() {
@@ -448,4 +461,46 @@ class _ChatScreenState extends State<ChatScreen>{
     );
   }
 }
+
+class FullScreenImageViewer extends StatelessWidget{
+  final String imagePath;
+
+  const FullScreenImageViewer({
+    Key? key,
+    required this.imagePath,
+
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(20),
+            minScale: 0.5,
+            maxScale: 4.0,
+            child: Image.file(
+              File(imagePath),
+              fit: BoxFit.contain ,
+
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
 
