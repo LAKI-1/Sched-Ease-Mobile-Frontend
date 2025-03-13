@@ -22,7 +22,7 @@ class _GroupChatScreenState extends State<GroupChatScreen>{
   
   @override 
   void iniState(){
-    
+
   }
 
   @override

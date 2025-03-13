@@ -119,46 +119,7 @@ class FullScreenPhotoViewer extends StatelessWidget{
   }
 }
 
-// class FullScreenImageViewer extends StatelessWidget{
-//   final String imagePath;
-//
-//   const FullScreenImageViewer({
-//     Key? key,
-//     required this.imagePath,
-//
-// }) : super(key: key);
-//
-//
-//   @override
-//   Widget build(BuildContext context){
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       appBar: AppBar(
-//         backgroundColor: Colors.black,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//       ),
-//       body: Center(
-//         child: GestureDetector(
-//           onTap: () => Navigator.pop(context),
-//           child: InteractiveViewer(
-//             boundaryMargin: const EdgeInsets.all(20),
-//             minScale: 0.5,
-//             maxScale: 4.0,
-//             child: Image.file(
-//               File(imagePath),
-//               fit: BoxFit.contain ,
-//
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-// }
+
 
 class ChatScreen extends StatefulWidget{
   final Contact contact;
@@ -180,19 +141,7 @@ class _ChatScreenState extends State<ChatScreen>{
 
   List<Message>_messages=[];
 
-  // final List _messages =
-  //   [
-  //     Message("Hello..,Mr.Albert!", true, "09:42", isRead: true),
-  //     Message(
-  //     "There is confusion about do \nwe have the session today", false,
-  //     "09:45"),
-  //     Message("...", true, "09:50", isRead: false),
-  //
-  //
-  //
-  //
-  //   ];
-  //
+
 
   @override
   void initState(){
@@ -350,7 +299,7 @@ class _ChatScreenState extends State<ChatScreen>{
         margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
         decoration: BoxDecoration(
-          color: message.isMe ? Color(0XFFB3E5FC): const Color(0xFFE0E0E0),
+          color: message.isMe ? Color(0xFFE0E0E0): const Color(0xFFE0E0E0),
 
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18),
