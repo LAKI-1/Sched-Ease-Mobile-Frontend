@@ -180,6 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (){
                 Navigator.pop(context);
                 deleteOption();
+
+
         },
 
 
@@ -193,22 +195,64 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
+
   void deleteOption() {
+
+    List<Contact>currentContactList=currentList;
+
+    String title='';
+
+    if(currentCategory==ChatCategory.group){
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            backgroundColor: const Color(0xFF20283A),
+            title: const Text(
+              'Group Chat Deletion',
+              style: TextStyle(color: Colors.white),
+
+            ),
+            content: const Text(
+              'Group cannot be Deleted',
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: [
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'OK',style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          );
+        }
+      );
+      return;
+    }
+
+    if (currentCategory case ChatCategory.lecturer) {
+      title='Select Contact to delete';
+    } else if (currentCategory case ChatCategory.supervisor) {
+      title='Select supervisor to delete';
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color(0xff20283A),
-          title: const Text(
-              'Select Contact to Delete',
+          title:Text(
+              title,
               style: TextStyle(color: Colors.white)),
           content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: contacts.length,
+              itemCount: currentContactList.length,
               itemBuilder: (context, index) {
-                final contact = contacts[index];
+                final contact = currentContactList[index];
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(contact.imageUrl),
@@ -242,7 +286,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             TextButton(
                               onPressed: () {
                                 setState(() {
-                                  contacts.removeAt(index);
+                                  // contacts.removeAt(index);
+
+                                  if (currentCategory case ChatCategory.lecturer) {
+                                    contacts.removeAt(index);
+                                  } else if (currentCategory case ChatCategory.supervisor) {
+                                    supervisorChats.removeAt(index);
+                                  }
                                   filteredContacts = List.from(contacts);
                                 });
                                 Navigator.of(confirmContext).pop();
