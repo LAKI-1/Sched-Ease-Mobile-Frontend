@@ -125,10 +125,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void filterContacts(String searchText){
     setState((){
-      filteredContacts = contacts
-          .where((contact) =>
-           contact.name.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
+      // filteredContacts = contacts
+      //     .where((contact) =>
+      //      contact.name.toLowerCase().contains(searchText.toLowerCase()))
+      //     .toList();
+
+      if(searchText.isEmpty){
+        filteredContacts=currentList;
+
+      }else{
+        filteredContacts=currentList
+            .where((contact)=>
+              contact.name.toLowerCase().contains(searchText.toLowerCase()))
+            .toList();
+      }
     });
   }
 
