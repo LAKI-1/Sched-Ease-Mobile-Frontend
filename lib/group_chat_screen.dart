@@ -304,6 +304,90 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   }
 
 
+  Widget _buildMessageInput(){
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: const Color(0xFFF5F5F5),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.attach_file,color: Colors.black),
+            onPressed: _getFromGallery,
+          ),
+          Expanded(
+
+            child: TextField(
+              controller: _messageController,
+              style: const TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                  hintText: 'Type message....',
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(color: Colors.black,width: 2.0),
+
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFFFFFFF),
+
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  )
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send,color: Colors.black),
+            onPressed: _sendMessage,
+          )
+
+        ],
+      ),
+    );
+  }
+}
+
+class FullScreenImageViewer extends StatelessWidget{
+  final String imagePath;
+
+  const FullScreenImageViewer({
+    Key? key,
+    required this.imagePath,
+
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(20),
+            minScale: 0.5,
+            maxScale: 4.0,
+            child: Image.file(
+              File(imagePath),
+              fit: BoxFit.contain ,
+
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+}
 
 
 
