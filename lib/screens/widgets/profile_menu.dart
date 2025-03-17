@@ -1,61 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
-  const ProfileMenuWidget({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.iconPath,
-    required this.onPress,
-  }) : super(key: key);
-
   final String title;
   final String subtitle;
   final String iconPath;
   final VoidCallback onPress;
 
+  const ProfileMenuWidget({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.iconPath,
+    required this.onPress,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+    return GestureDetector(
+      onTap: onPress,
       child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+        padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0x993E8498), width: 1.5),
-          borderRadius: BorderRadius.circular(20),
           color: Colors.white,
+          borderRadius: BorderRadius.circular(15.r),
+          border: Border.all(color: const Color(0x993E8498), width: 1.5.w),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
               blurRadius: 2,
-              offset: const Offset(1, 1),
+              offset: Offset(1.w, 1.h),
             ),
           ],
         ),
-        height: 65,
-        child: ListTile(
-          onTap: onPress,
-          leading: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Colors.grey.withOpacity(0.1),
+
+        child: Row(
+          children: [
+            Container(
+              width: 40.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.grey.withOpacity(0.1),
+              ),
+
+              child: Center(
+                child: Image.asset(iconPath, width: 24.w, height: 24.h),
+              ),
             ),
 
-            child: Center(child: Image.asset(iconPath, width: 24, height: 24)),
-          ),
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFF000000),
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
+            SizedBox(width: 15.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF000000),
+                    ),
+                  ),
+                  SizedBox(height: 5.h),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0x80000000),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          subtitle: Text(
-            subtitle,
-            style: TextStyle(color: Color(0x80000000), fontSize: 14),
-          ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16.sp,
+              color: const Color(0xFFA9A9A9),
+            ),
+          ],
         ),
       ),
     );

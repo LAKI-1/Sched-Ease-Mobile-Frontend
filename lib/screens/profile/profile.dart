@@ -18,16 +18,19 @@ class ProfileState extends State<Profile> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Log out'),
-            content: const Text('Are you sure you want to log out?'),
+            title: Text('Log out', style: TextStyle(fontSize: 18.sp)),
+            content: Text(
+              'Are you sure you want to log out?',
+              style: TextStyle(fontSize: 14.sp),
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: Text('Cancel', style: TextStyle(fontSize: 14.sp)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Log out'),
+                child: Text('Log out', style: TextStyle(fontSize: 14.sp)),
               ),
             ],
           ),
@@ -42,9 +45,14 @@ class ProfileState extends State<Profile> {
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Error signing out: $e')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Error signing out: $e',
+                style: TextStyle(fontSize: 14.sp),
+              ),
+            ),
+          );
         }
       }
     }
@@ -59,72 +67,63 @@ class ProfileState extends State<Profile> {
           color: const Color(0xFFFBFBFB),
           child: Stack(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: const Color(0xFFFBFBFB),
-                ),
-              ),
-
               Positioned(
-                top: 20,
-                left: 37,
+                top: 20.h,
+                left: 20.w,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(40),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  borderRadius: BorderRadius.circular(40.r),
+                  onTap: () => Navigator.pop(context),
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 40.w,
+                    height: 40.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: const Color(0xFFA9A9A9),
-                        width: 1,
+                        width: 1.w,
                       ),
                     ),
-                    child: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: 16,
-                    ),
+                    child: Icon(Icons.arrow_back_ios_new_rounded, size: 16.sp),
                   ),
                 ),
               ),
 
               Positioned(
-                top: 25,
-                left: 50,
-                right: 50,
+                top: 25.h,
+                left: 0,
+                right: 0,
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 62,
-                      height: 64,
-                      child: Image.asset('assets/user_icon.png'),
+                      width: 62.w,
+                      height: 64.h,
+                      child: Image.asset(
+                        'assets/user_icon.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
 
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
 
-                    const Text(
+                    Text(
                       "Clark Kent",
                       style: TextStyle(
-                        color: Color(0xFF343434),
+                        color: const Color(0xFF343434),
                         fontFamily: 'Poppins',
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
 
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5.h),
 
-                    const Text(
+                    Text(
                       "Student",
                       style: TextStyle(
-                        color: Color(0x80000000),
+                        color: const Color(0x80000000),
                         fontFamily: 'Poppins',
-                        fontSize: 12,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ],
@@ -143,7 +142,14 @@ class ProfileState extends State<Profile> {
                         title: "Account",
                         subtitle: "Account info, Passkeys",
                         iconPath: 'assets/account_icon.png',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Placeholder(),
+                            ),
+                          );
+                        },
                       ),
 
                       SizedBox(height: 10.h),
@@ -215,43 +221,34 @@ class ProfileState extends State<Profile> {
                       GestureDetector(
                         onTap: () => _signout(context),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 17,
-                            vertical: 3,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 17.w,
+                            vertical: 12.h,
                           ),
+                          margin: EdgeInsets.symmetric(horizontal: 20.w),
                           decoration: BoxDecoration(
                             color: const Color(0xFF3C5A7D),
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(30.r),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
-                                blurRadius: 3,
-                                offset: const Offset(0, 2),
+                                blurRadius: 3.r,
+                                offset: Offset(0, 2.h),
                               ),
                             ],
                           ),
 
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 16,
-                                ),
-                                child: Text(
-                                  "Log out",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            "Log out",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
+                      SizedBox(height: 20.h),
                     ],
                   ),
                 ),
