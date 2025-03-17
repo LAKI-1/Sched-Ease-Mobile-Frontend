@@ -5,6 +5,10 @@ import 'chat_message.dart';
 
 
 import 'contact.dart';
+import 'package:image_picker/image_picker.dart';
+import 'Messages.dart';
+
+
 
 
 
