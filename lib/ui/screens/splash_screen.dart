@@ -53,7 +53,7 @@ class SplashScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF008080),
+                      color: const Color(0xFF3C5A7D),
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(

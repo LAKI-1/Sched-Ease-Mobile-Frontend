@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final supabase = Supabase.instance.client;
+  bool _isLoading = false;
 
   Future<AuthResponse> _googleSignIn() async {
     const webClientId =
@@ -145,15 +146,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 187,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          final response =
-                              await _googleSignIn(); // Call Google Sign-In
-                          print("User Signed In: ${response.user?.email}");
-                        } catch (error) {
-                          print("Google Sign-In Error: $error");
-                        }
-                      },
+                      onPressed:
+                          _isLoading
+                              ? null
+                              : () async {
+                                setState(() => _isLoading = true);
+                                try {
+                                  final response = await _googleSignIn();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Placeholder(),
+                                    ),
+                                  ); // Call Google Sign-In
+                                  print(
+                                    "User Signed In: ${response.user?.email}",
+                                  );
+                                } catch (error) {
+                                  print("Google Sign-In Error: $error");
+                                } finally {
+                                  setState(() => _isLoading = false);
+                                }
+                              },
 
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0x803E8498),
@@ -163,10 +177,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         elevation: 3,
                         shadowColor: Colors.black26,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Image.asset('assets/google.png', width: 24)],
-                      ),
+                      child:
+                          _isLoading
+                              ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                              : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/google.png', width: 24),
+                                ],
+                              ),
                     ),
                   ),
                 ),
