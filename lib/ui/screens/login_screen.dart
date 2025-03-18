@@ -66,85 +66,72 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 1.sw * 0.05,
-                vertical: 10.h,
+          Positioned(
+            top: 40.h,
+            left: 30.w,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(30.r),
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: 24.w,
+                height: 24.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Color(0xFFA9A9A9), width: 1.w),
+                ),
+
+                child: Icon(Icons.arrow_back_ios_new_rounded, size: 12.sp),
               ),
+            ),
+          ),
+
+          Center(
+            child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  30.verticalSpace,
                   Text(
                     "Welcome to\nSched-Ease",
                     style: h.copyWith(
                       fontFamily: 'Poppins',
-                      fontSize: 32,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF000000),
                     ),
                     textAlign: TextAlign.center,
                   ),
-                ],
-              ),
-            ),
-          ),
 
-          Positioned(
-            top: 60,
-            left: 37,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(30),
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Color(0xFFA9A9A9), width: 1),
-                ),
+                  SizedBox(height: 10.h),
 
-                child: const Icon(Icons.arrow_back_ios_new_rounded, size: 12),
-              ),
-            ),
-          ),
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 0.6.sw,
+                    height: 0.3.sh,
+                    fit: BoxFit.contain,
+                  ),
 
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/logo.png',
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  fit: BoxFit.contain,
-                ),
-
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    '"Scheduling made easy: Simplify your time, amplify your productivity."',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF707070),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
+                    child: Text(
+                      '"Scheduling made easy: Simplify your time, amplify your productivity."',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF707070),
+                      ),
                     ),
                   ),
-                ),
 
-                30.verticalSpace,
+                  SizedBox(height: 30.h),
 
-                InkWell(
-                  borderRadius: BorderRadius.circular(30),
-                  child: SizedBox(
-                    width: 187,
-                    height: 50,
+                  SizedBox(
+                    width: 187.w,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed:
                           _isLoading
@@ -172,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0x803E8498),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(30.r),
                         ),
                         elevation: 3,
                         shadowColor: Colors.black26,
@@ -185,71 +172,66 @@ class _LoginScreenState extends State<LoginScreen> {
                               : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('assets/google.png', width: 24),
+                                  Image.asset('assets/google.png', width: 24.w),
                                 ],
                               ),
                     ),
                   ),
-                ),
 
-                40.verticalSpace,
+                  SizedBox(height: 30.h),
 
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Row(
-                    children: [
-                      Expanded(child: Divider(color: Color(0xFF3E8498))),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          "Assistance",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF969696),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.w),
+                    child: Row(
+                      children: [
+                        Expanded(child: Divider(color: Color(0xFF3E8498))),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(
+                            "Assistance",
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF969696),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(child: Divider(color: Color(0xFF3E8498))),
-                    ],
+                        Expanded(child: Divider(color: Color(0xFF3E8498))),
+                      ],
+                    ),
                   ),
-                ),
 
-                10.verticalSpace,
+                  SizedBox(height: 10.h),
 
-                InkWell(
-                  borderRadius: BorderRadius.circular(30),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HelpScreen()),
-                    );
-                    // Handle Help Action
-                  },
-                  child: SizedBox(
-                    width: 180,
-                    height: 50,
+                  SizedBox(
+                    width: 180.w,
+                    height: 50.h,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HelpScreen()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3E8498),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(30.r),
                         ),
                         elevation: 3,
                       ),
-                      child: const Text(
+                      child: Text(
                         "Need Help?",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
