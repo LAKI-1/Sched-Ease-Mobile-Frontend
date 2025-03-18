@@ -1,12 +1,13 @@
-// import 'dart:io';
+
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'contact.dart';
-import 'Messages.dart';
+import 'messages.dart';
 
 
 
@@ -30,16 +31,16 @@ class Messages{
 
 
 
-//
+
 class FullScreenPhotoViewer extends StatelessWidget{
   final String imageUrl;
   final String contactName;
   const FullScreenPhotoViewer({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.contactName,
 
-}): super(key: key);
+});
 
   @override
   Widget build(BuildContext context){
@@ -124,16 +125,18 @@ class FullScreenPhotoViewer extends StatelessWidget{
 class ChatScreen extends StatefulWidget{
   final Contact contact;
 
-  const ChatScreen({Key? key, required this.contact}) : super(key: key);
 
+  const ChatScreen({
+    super.key,
+    required this.contact}) ;
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 
 }
 
 
 
-class _ChatScreenState extends State<ChatScreen>{
+class ChatScreenState extends State<ChatScreen>{
 
   final TextEditingController _messageController = TextEditingController();
   final ImagePicker _picker =  ImagePicker();
@@ -268,7 +271,7 @@ class _ChatScreenState extends State<ChatScreen>{
           Expanded(
             child: ListView.builder(
               reverse: true,
-                padding: const EdgeInsets.all(15),
+                padding: EdgeInsets.all(15.w),
                 itemCount: _messages.length,
                 itemBuilder: (context, index){
                   final message= _messages[_messages.length - 1 - index];
@@ -312,14 +315,14 @@ class _ChatScreenState extends State<ChatScreen>{
           crossAxisAlignment:
           message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            if(message.isImage && message.imagePath != null)...[
+            if(message.isImage && message.imagePath.isNotEmpty)...[
               GestureDetector(
                 onTap: (){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => FullScreenImageViewer(
-                        imagePath: message.imagePath!,
+                        imagePath: message.imagePath,
                       ),
                     ),
                   );
@@ -327,9 +330,9 @@ class _ChatScreenState extends State<ChatScreen>{
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                    File(message.imagePath!),
-                    width: 200,
-                    height: 200,
+                    File(message.imagePath),
+                    width: MediaQuery.of(context).size.width*0.6,
+                    height:MediaQuery.of(context).size.width*0.6,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -415,10 +418,10 @@ class FullScreenImageViewer extends StatelessWidget{
   final String imagePath;
 
   const FullScreenImageViewer({
-    Key? key,
+    super.key,
     required this.imagePath,
 
-  }) : super(key: key);
+  }) ;
 
 
   @override

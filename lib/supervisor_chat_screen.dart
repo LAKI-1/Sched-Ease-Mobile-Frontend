@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'homescreen.dart';
-import 'chat_message.dart';
 import 'chatscreen.dart';
 import 'dart:io';
 import 'contact.dart';
 import 'package:image_picker/image_picker.dart';
-import 'Messages.dart';
+import 'messages.dart';
 
 
 
@@ -19,7 +16,7 @@ import 'Messages.dart';
 class SupervisorChatScreen extends StatefulWidget{
   final Contact supervisor;
 
-  const SupervisorChatScreen({Key? key,required this.supervisor}) : super(key: key);
+  const SupervisorChatScreen({super.key,required this.supervisor});
 
   @override
   State<SupervisorChatScreen>createState()=> _SupervisorChatScreenState();
@@ -32,7 +29,7 @@ class SupervisorChatScreen extends StatefulWidget{
 class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
   final TextEditingController _messageController = TextEditingController();
   final List<Message> _messages =[];
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final ImagePicker _picker = ImagePicker();
 
 
@@ -183,14 +180,14 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
         child: Column(
           crossAxisAlignment: message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            if(message.isImage && message.imagePath != null)...[
+            if(message.isImage && message.imagePath.isNotEmpty)...[
               GestureDetector(
                 onTap: (){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => FullScreenImageViewer(
-                          imagePath: message.imagePath!,
+                          imagePath: message.imagePath,
                           // contactName: widget.group.name,
                         )
                     ),
@@ -201,7 +198,7 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                    File(message.imagePath!),
+                    File(message.imagePath),
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
@@ -287,10 +284,10 @@ class FullScreenImageViewer extends StatelessWidget{
   final String imagePath;
 
   const FullScreenImageViewer({
-    Key? key,
+    super.key,
     required this.imagePath,
 
-  }) : super(key: key);
+  });
 
 
   @override

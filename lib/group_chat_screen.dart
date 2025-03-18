@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'chat_message.dart';
+
 import 'contact.dart';
-import 'homescreen.dart';
-import 'Messages.dart';
+
+import 'messages.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FullScreenPhotoViewer extends StatelessWidget{
@@ -11,11 +11,11 @@ class FullScreenPhotoViewer extends StatelessWidget{
   final String contactName;
 
   const FullScreenPhotoViewer({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.contactName,
 
-}): super(key: key);
+});
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class FullScreenPhotoViewer extends StatelessWidget{
 class GroupChatScreen extends StatefulWidget{
   final Contact group;
 
-  const GroupChatScreen({Key? key, required this.group}) : super(key: key);
+  const GroupChatScreen({super.key, required this.group});
 
   @override
   State<GroupChatScreen> createState() => _GroupChatScreenState();
@@ -248,14 +248,14 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
         child: Column(
           crossAxisAlignment: message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            if(message.isImage && message.imagePath != null)...[
+            if(message.isImage && message.imagePath.isNotEmpty)...[
               GestureDetector(
                 onTap: (){
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => FullScreenImageViewer(
-                        imagePath: message.imagePath!,
+                        imagePath: message.imagePath,
                        // contactName: widget.group.name,
                       )
                     ),
@@ -266,7 +266,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                    File(message.imagePath!),
+                    File(message.imagePath),
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
@@ -352,10 +352,10 @@ class FullScreenImageViewer extends StatelessWidget{
   final String imagePath;
 
   const FullScreenImageViewer({
-    Key? key,
+    super.key,
     required this.imagePath,
 
-  }) : super(key: key);
+  });
 
 
   @override

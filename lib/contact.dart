@@ -1,4 +1,4 @@
-import 'Messages.dart';
+import 'messages.dart';
 
 class Contact{
   final String name;

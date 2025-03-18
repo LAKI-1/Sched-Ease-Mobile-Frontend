@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:newchatapp/Messages.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newchatapp/messages.dart';
 import 'chatscreen.dart';
 // import 'group_chat_screen.dart';
 // import 'supervisor_chat_screen.dart';
@@ -119,16 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState(){
     super.initState();
-    filteredContacts = contacts;
+    currentList = contacts;
     filteredContacts= currentList;
   }
 
   void filterContacts(String searchText){
     setState((){
-      // filteredContacts = contacts
-      //     .where((contact) =>
-      //      contact.name.toLowerCase().contains(searchText.toLowerCase()))
-      //     .toList();
 
       if(searchText.isEmpty){
         filteredContacts=currentList;
@@ -243,9 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    if (currentCategory case ChatCategory.lecturer) {
+    if (currentCategory == ChatCategory.lecturer) {
       title='Select Contact to delete';
-    } else if (currentCategory case ChatCategory.supervisor) {
+    } else if (currentCategory == ChatCategory.supervisor) {
       title='Select supervisor to delete';
     }
     showDialog(
@@ -303,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   } else if (currentCategory case ChatCategory.supervisor) {
                                     supervisorChats.removeAt(index);
                                   }
-                                  filteredContacts = List.from(contacts);
+                                  filteredContacts = List.from(currentList);
                                 });
                                 Navigator.of(confirmContext).pop();
                                 Navigator.of(context).pop();
@@ -351,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color(0xFFFFFFFF),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(horizontal: 15.0.w),
             child: Column(
               children: [
                 Row(
@@ -360,18 +357,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       CircleAvatar(
                         radius: 35,
 
-                        backgroundImage: NetworkImage(
-                         // 'https://static.vecteezy.com/system/resources/thumbnails/032/400/914/small_2x/charming-cute-3d-cartoon-girl-generate-ai-photo.jpg',
+                        backgroundImage: const NetworkImage(
                           'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
 
                       ),
 
 
                     ),
-                    const Text(
+                    Text(
                       'Chat',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 30.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
 
@@ -541,10 +537,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Expanded(
                       child: Text(contact.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Quicksand',
-                          fontSize: 17,
+                          fontSize: 17.sp,
                         )),
                     ),
                     Text(contact.time,
@@ -557,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
 
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5.h),
                     Text(contact.email,
                       style: const TextStyle(
                         color: Colors.black,
