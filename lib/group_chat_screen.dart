@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io';
 
 import 'contact.dart';
@@ -172,21 +173,21 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               child: Hero(
                 tag: 'profile',
                 child: CircleAvatar(
-                  radius: 20,
+                  radius: 20.r,
                   backgroundImage: NetworkImage(widget.group.imageUrl),
                 ),
               ),
             ),
 
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.group.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -199,13 +200,13 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
         ),
       ),
 
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               reverse: true,
-              padding: const EdgeInsets.all(15),
+              padding: EdgeInsets.all(15.w),
               itemCount: _messages.length,
               itemBuilder: (context,index){
                 final message=_messages[_messages.length-1-index];
@@ -229,20 +230,20 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
+          maxWidth: 0.75.sw,
 
         ),
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 5.h),
+        padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 10.h),
         decoration: BoxDecoration(
           color: message.isMe ? Color(0xFFE0E0E0) : const Color(0xFFE0E0E0),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-            bottomLeft: message.isMe ? Radius.circular(18) : Radius.circular(5),
-            bottomRight: message.isMe ? Radius.circular(5) : Radius.circular(18),
+          borderRadius: BorderRadius.circular(18.r),
+            // topLeft: Radius.circular(18),
+            // topRight: Radius.circular(18),
+            // bottomLeft: message.isMe ? Radius.circular(18) : Radius.circular(5),
+            // bottomRight: message.isMe ? Radius.circular(5) : Radius.circular(18),
 
-          )
+
         ),
 
         child: Column(
@@ -267,8 +268,8 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
                     File(message.imagePath),
-                    width: 200,
-                    height: 200,
+                    width: 0.5.sw,
+                    height: 0.5.sw,
                     fit: BoxFit.cover,
                   ),
 
@@ -277,15 +278,15 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
             ],
             Text(
               message.text,
-              style: const TextStyle(color: Colors.black,fontSize: 16),
+              style: TextStyle(color: Colors.black,fontSize: 16.sp),
 
               ),
-            const SizedBox(height: 5),
+            SizedBox(height: 5.h),
             Text(
               message.time,
               style: TextStyle(
                 color: Colors.grey[400],
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
 
@@ -306,7 +307,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
   Widget _buildMessageInput(){
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.w),
       color: const Color(0xFFF5F5F5),
       child: Row(
         children: [
@@ -318,21 +319,21 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
             child: TextField(
               controller: _messageController,
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black,fontSize: 16.sp),
               decoration: InputDecoration(
                   hintText: 'Type message....',
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.grey,fontSize: 14.sp),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                     borderSide: BorderSide(color: Colors.black,width: 2.0),
 
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFFFFFFF),
+                  fillColor: Colors.white,
 
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 10.h,
                   )
               ),
             ),
@@ -373,9 +374,9 @@ class FullScreenImageViewer extends StatelessWidget{
         child: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: InteractiveViewer(
-            boundaryMargin: const EdgeInsets.all(20),
-            minScale: 0.5,
-            maxScale: 4.0,
+            boundaryMargin: EdgeInsets.all(20.w),
+            minScale: 0.9.sw,
+            maxScale: 0.9.sw,
             child: Image.file(
               File(imagePath),
               fit: BoxFit.contain ,

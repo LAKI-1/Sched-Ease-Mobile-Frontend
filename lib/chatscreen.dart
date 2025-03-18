@@ -235,22 +235,22 @@ class ChatScreenState extends State<ChatScreen>{
               child: Hero(
                 tag: 'profile',
                 child: CircleAvatar(
-                  radius: 20,
+                  radius: 20.r,
 
 
               backgroundImage: NetworkImage(widget.contact.imageUrl),
             ),
               ),
         ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.contact.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -296,19 +296,19 @@ class ChatScreenState extends State<ChatScreen>{
       alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width*0.75,
+          maxWidth: 0.75.sw,
 
         ),
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 5.h),
+        padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 10.h),
         decoration: BoxDecoration(
           color: message.isMe ? Color(0xFFE0E0E0): const Color(0xFFE0E0E0),
 
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-            bottomLeft: message.isMe ? Radius.circular(18):Radius.circular(5),
-            bottomRight: message.isMe ? Radius.circular(5): Radius.circular(18),
+            topLeft: Radius.circular(18.r),
+            topRight: Radius.circular(18.r),
+            bottomLeft: message.isMe ? Radius.circular(18.r):Radius.circular(5.r),
+            bottomRight: message.isMe ? Radius.circular(5.r): Radius.circular(18.r),
           ),
         ),
         child: Column(
@@ -328,11 +328,11 @@ class ChatScreenState extends State<ChatScreen>{
                   );
                 },
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.r),
                   child: Image.file(
                     File(message.imagePath),
-                    width: MediaQuery.of(context).size.width*0.6,
-                    height:MediaQuery.of(context).size.width*0.6,
+                    width: 0.6.sw,
+                    height:0.6.sw,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -341,10 +341,10 @@ class ChatScreenState extends State<ChatScreen>{
             ],
             Text(
               message.text,
-              style: const TextStyle(color: Colors.black, fontSize: 16),
+              style: TextStyle(color: Colors.black, fontSize: 16.sp),
 
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: 5.h),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.min,
 
@@ -352,11 +352,11 @@ class ChatScreenState extends State<ChatScreen>{
               message.time,
               style: TextStyle(
                 color: Colors.grey[400],
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
             if(message.isMe)...[
-              const SizedBox(width: 5),
+              SizedBox(width: 5.w),
               Icon(
                 message.isRead ? Icons.done_all : Icons.done,
                 size: 14,
@@ -394,11 +394,11 @@ class ChatScreenState extends State<ChatScreen>{
 
               ),
               filled: true,
-              fillColor: const Color(0xFFFFFFFF),
+              fillColor: Colors.white,
 
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 20.w,
+                vertical: 10.h,
               )
             ),
           ),

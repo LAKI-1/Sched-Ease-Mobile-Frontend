@@ -4,6 +4,7 @@ import 'dart:io';
 import 'contact.dart';
 import 'package:image_picker/image_picker.dart';
 import 'messages.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -90,69 +91,71 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
 
   @override
   Widget build(BuildContext context){
+    return ScreenUtilInit(
+      designSize: const Size(360,690),
+    builder: (context,child){
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF3C5A7D),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: _openFullScreen,
-              child: Hero(
-                tag: 'profile',
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(widget.supervisor.imageUrl),
-                ),
-              ),
-            ),
+    appBar: AppBar(
+    backgroundColor: const Color(0xFF3C5A7D),
+    leading: IconButton(
+    icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+    onPressed: () => Navigator.pop(context),
+    ),
+    title: Row(
+    children: [
+    GestureDetector(
+    onTap: _openFullScreen,
+    child: Hero(
+    tag: 'profile',
+    child: CircleAvatar(
+    radius: 20.r,
+    backgroundImage: NetworkImage(widget.supervisor.imageUrl),
+    ),
+    ),
+    ),
 
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.supervisor.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-
-
-
-          ],
-        ),
-      ),
-
-      backgroundColor: const Color(0xFFFFFFFF),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                reverse: true,
-                padding: const EdgeInsets.all(15),
-                itemCount: _messages.length,
-                itemBuilder: (context,index){
-                  final message=_messages[_messages.length-1-index];
-                  return _buildMessageBubble(message);
+    SizedBox(width: 10.w),
+    Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Text(
+    widget.supervisor.name,
+    style: TextStyle(
+    color: Colors.white,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.bold,
+    ),
+    ),
+    ],
+    ),
 
 
+    ],
+    ),
+    ),
+
+    backgroundColor: const Color(0xFFFFFFFF),
+    body: Column(
+    children: [
+    Expanded(
+    child: ListView.builder(
+    reverse: true,
+    padding: EdgeInsets.all(15.w),
+    itemCount: _messages.length,
+    itemBuilder: (context,index){
+    final message=_messages[_messages.length-1-index];
+    return _buildMessageBubble(message);
 
 
-                }
-            ),
-          ),
-          _buildMessageInput()
+    }
+    ),
+    ),
+    _buildMessageInput()
 
-        ],
-      ),
+    ],
+    ),
+    );
+    },
     );
   }
 
@@ -161,18 +164,18 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
       alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
+          maxWidth: 0.75.sw,
 
         ),
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 5.h),
+        padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 10.h),
         decoration: BoxDecoration(
             color: message.isMe ? Color(0xFFE0E0E0) : const Color(0xFFE0E0E0),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(18),
-              topRight: Radius.circular(18),
-              bottomLeft: message.isMe ? Radius.circular(18) : Radius.circular(5),
-              bottomRight: message.isMe ? Radius.circular(5) : Radius.circular(18),
+              topLeft: Radius.circular(18.r),
+              topRight: Radius.circular(18.r),
+              bottomLeft: message.isMe ? Radius.circular(18.r) : Radius.circular(5.r),
+              bottomRight: message.isMe ? Radius.circular(5.r) : Radius.circular(18.r),
 
             )
         ),
@@ -199,8 +202,8 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
                     File(message.imagePath),
-                    width: 200,
-                    height: 200,
+                    width: 200.w,
+                    height: 200.h,
                     fit: BoxFit.cover,
                   ),
 
@@ -209,23 +212,23 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
             ],
             Text(
               message.text,
-              style: const TextStyle(color: Colors.black,fontSize: 16),
+              style: TextStyle(color: Colors.black,fontSize: 16.sp),
 
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: 5.h),
             Text(
               message.time,
               style: TextStyle(
                 color: Colors.grey[400],
-                fontSize: 12,
+                fontSize: 12.sp,
               ),
             ),
 
             if(message.isMe)...[
-              const SizedBox(width: 5),
+              SizedBox(width: 5.w),
               Icon(
                 message.isRead ? Icons.done_all : Icons.done,
-                size: 14,
+                size: 14.sp,
                 color: Colors.black,
               )
             ]
@@ -238,39 +241,39 @@ class _SupervisorChatScreenState extends State<SupervisorChatScreen>{
 
   Widget _buildMessageInput(){
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.w),
       color: const Color(0xFFF5F5F5),
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.attach_file,color: Colors.black),
+            icon: Icon(Icons.attach_file,color: Colors.black,size: 24.sp,),
             onPressed: _getFromGallery,
           ),
           Expanded(
 
             child: TextField(
               controller: _messageController,
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black,fontSize: 16.sp),
               decoration: InputDecoration(
                   hintText: 'Type message....',
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.grey,fontSize: 14.sp),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.black,width: 2.0),
+                    borderRadius: BorderRadius.circular(20.r),
+                    borderSide: BorderSide(color: Colors.black,width: 2.w),
 
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFFFFFFF),
+                  fillColor: Colors.white,
 
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 10.h,
                   )
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send,color: Colors.black),
+            icon: Icon(Icons.send,color: Colors.black,size: 24.sp),
             onPressed: _sendMessage,
           )
 
@@ -297,7 +300,7 @@ class FullScreenImageViewer extends StatelessWidget{
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.white,size: 20.sp),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -305,11 +308,13 @@ class FullScreenImageViewer extends StatelessWidget{
         child: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: InteractiveViewer(
-            boundaryMargin: const EdgeInsets.all(20),
+            boundaryMargin: EdgeInsets.all(20.w),
             minScale: 0.5,
             maxScale: 4.0,
             child: Image.file(
               File(imagePath),
+              width: 0.9.sw,
+              height: 0.9.sh,
               fit: BoxFit.contain ,
 
             ),
