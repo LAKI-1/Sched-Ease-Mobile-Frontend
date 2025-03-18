@@ -8,10 +8,10 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
@@ -25,103 +25,100 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
             ),
-          ),
 
-          Positioned.fill(
-            child: Image.asset(
-              'assets/rectangle.png',
-              fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(1),
+            Positioned.fill(
+              child: Image.asset(
+                'assets/rectangle.png',
+                fit: BoxFit.cover,
+                opacity: const AlwaysStoppedAnimation(1),
+              ),
             ),
-          ),
 
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  70.verticalSpace,
-                  Image.asset(
-                    'assets/logo.png',
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    fit: BoxFit.contain,
-                  ),
-
-                  const SizedBox(height: 40),
-                  50.verticalSpace,
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF3C5A7D),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 3,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 70.h),
+                    Image.asset(
+                      'assets/logo.png',
+                      width: 0.8.sw,
+                      fit: BoxFit.contain,
                     ),
 
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 16,
+                    SizedBox(height: 50.h),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3C5A7D),
+                        borderRadius: BorderRadius.circular(30.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 3.r,
+                            offset: Offset(0, 2.h),
                           ),
-                          child: Text(
-                            "Sign In",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                        ],
+                      ),
+
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 12.h,
+                              horizontal: 16.w,
                             ),
-                          ),
-                        ),
-
-                        InkWell(
-                          borderRadius: BorderRadius.circular(30),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ),
-                            );
-                          },
-
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Color(0xFFA9A9A9),
-                                width: 1,
+                            child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
+                          ),
 
-                            child: const Center(
+                          InkWell(
+                            borderRadius: BorderRadius.circular(30.r),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+
+                            child: Container(
+                              width: 24.w,
+                              height: 24.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Color(0xFFA9A9A9),
+                                  width: 1.w,
+                                ),
+                              ),
+
                               child: Icon(
                                 Icons.arrow_forward_ios,
                                 color: Colors.black87,
-                                size: 12,
+                                size: 12.sp,
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

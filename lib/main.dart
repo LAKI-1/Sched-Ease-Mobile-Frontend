@@ -21,8 +21,12 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder:
           (context, child) => const MaterialApp(
+            debugShowCheckedModeBanner: false,
             onGenerateRoute: RouteUtils.onGenerateRoute,
             home: SplashScreen(),
           ),
