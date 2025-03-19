@@ -23,15 +23,16 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: const Color(0xFF3C5A7D),
           scaffoldBackgroundColor: Colors.white,
+          textTheme: TextTheme(
+            bodyMedium: TextStyle(fontSize: 16.sp),
+            headlineSmall: TextStyle(fontSize: 24.sp,fontWeight: FontWeight.bold) ,
+            labelLarge: TextStyle(fontSize: 14.sp),
+          ),
         ),
         home: HomeScreen(),
       );
     }
 
-    // return MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     home: HomeScreen(),
-    // );
     );
   }
 }

@@ -164,23 +164,23 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF20283A),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22.r)),
 
 
       ),
-      constraints: const BoxConstraints(
-        maxHeight: 120,
+      constraints: BoxConstraints(
+        maxHeight: 120.h,
       ),
       builder: (BuildContext context){
         return Column(
           //mainAxisAlignment: MainAxisAlignment.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.delete, color: Colors.white),
-              title: const Text(
+              leading: Icon(Icons.delete, color: Colors.white,size: 24.sp),
+              title: Text(
                 'Delete Contact',
-                 style: TextStyle(color: Colors.white,fontSize: 19),
+                 style: TextStyle(color: Colors.white,fontSize: 19.sp),
 
 
               ),
@@ -215,22 +215,22 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (BuildContext context){
           return AlertDialog(
             backgroundColor: const Color(0xFF20283A),
-            title: const Text(
+            title: Text(
               'Group Chat Deletion',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white,fontSize: 20.sp),
 
             ),
-            content: const Text(
+            content: Text(
               'Group cannot be Deleted',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white,fontSize: 16.sp),
             ),
             actions: [
               TextButton(
                 onPressed: (){
                   Navigator.of(context).pop();
                 },
-                child: const Text(
-                  'OK',style: TextStyle(color: Colors.white),
+                child: Text(
+                  'OK',style: TextStyle(color: Colors.white,fontSize: 16.sp),
                 ),
               ),
             ],
@@ -252,9 +252,10 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: const Color(0xff20283A),
           title:Text(
               title,
-              style: TextStyle(color: Colors.white)),
+              style: TextStyle(color: Colors.white,fontSize: 20.sp)),
           content: SizedBox(
             width: double.maxFinite,
+            height: 300.h,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: currentContactList.length,
@@ -262,31 +263,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 final contact = currentContactList[index];
                 return ListTile(
                   leading: CircleAvatar(
+                    radius: 20.w,
                     backgroundImage: NetworkImage(contact.imageUrl),
 
                   ),
                   title: Text(
                       contact.name,
-                      style: const TextStyle(color: Colors.white)),
+                      style: TextStyle(color: Colors.white,fontSize: 16.sp)),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext confirmContext) {
                         return AlertDialog(
                           backgroundColor: const Color(0xFF20283A),
-                          title: const Text('Confirm Delete',
-                              style: TextStyle(color: Colors.white)),
+                          title: Text('Confirm Delete',
+                              style: TextStyle(color: Colors.white,fontSize: 20.sp)),
                           content: Text(
                             'Are you Sure? ${contact.name}?',
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white,fontSize: 16.sp),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(confirmContext).pop();
                               },
-                              child: const Text('Cancel',
-                                  style: TextStyle(color: Colors.white)),
+                              child: Text('Cancel',
+                                  style: TextStyle(color: Colors.white,fontSize: 16.sp)),
 
 
                             ),
@@ -305,9 +307,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.of(confirmContext).pop();
                                 Navigator.of(context).pop();
                               },
-                              child: const Text(
+                              child: Text(
                                   'Delete',
-                                  style: TextStyle(color: Colors.red)),
+                                  style: TextStyle(color: Colors.red,fontSize: 16.sp)),
 
                             ),
                           ],
@@ -325,8 +327,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text(
-                  'Cancel', style: TextStyle(color: Colors.white)),
+              child: Text(
+                  'Cancel', style: TextStyle(color: Colors.white,fontSize: 16.sp)),
 
 
             ),
@@ -355,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                       CircleAvatar(
-                        radius: 35,
+                        radius: 35.w,
 
                         backgroundImage: const NetworkImage(
                           'https://i.pinimg.com/564x/e3/0f/47/e30f472f97a3b7090f62731ea87a84c2.jpg',
@@ -376,38 +378,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     IconButton(
                       onPressed: contactOption,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.more_horiz,
                         color: Colors.black,
 
-                        size: 38,
+                        size: 38.sp,
                       ),
                     )
 
 
                   ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 TextField(
                   decoration: InputDecoration(
                     hintText: 'search',
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.search,color: Colors.grey,),
+                    hintStyle: TextStyle(color: Colors.grey,fontSize: 16.sp),
+                    prefixIcon: Icon(Icons.search,color: Colors.grey,size: 24.sp),
                     filled: true,
                     fillColor: const Color(0xFFF5F5F5),
 
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(10.r),
                       borderSide: BorderSide.none,
                     ),
 
                   ),
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black,fontSize: 16.sp),
                   onChanged: filterContacts,
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
 
                 Row(
@@ -421,6 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Colors.grey),
                 ],
                 ),
+                SizedBox(height: 20.h),
 
 
 
@@ -434,10 +437,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 Expanded(
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(40),
+                        topLeft: Radius.circular(50.r),
+                        topRight: Radius.circular(40.r),
                       ),
 
                     ),
@@ -500,10 +503,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
           Icon(icon,
+              size: 24.sp,
               color: currentCategory == category ? color : Colors.grey),
+          SizedBox(height: 5.h),
           Text(text,
               style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: currentCategory == category ? color : Colors.grey)),
         ],
       ),
@@ -519,13 +524,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           CircleAvatar(
-            radius: 20,
+            radius: 20.w,
             backgroundImage: NetworkImage(contact.imageUrl),
 
 
           ),
 
-          const SizedBox(width: 10),
+          SizedBox(width: 10.w),
 
           Expanded(
             child: Column(
@@ -555,9 +560,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(height: 5.h),
                     Text(contact.email,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
-                      )
+                        fontSize: 14.sp,
+                      ),
+                      overflow: TextOverflow.ellipsis,
 
                     ),
                   ],

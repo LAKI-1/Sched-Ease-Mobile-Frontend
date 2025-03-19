@@ -54,7 +54,7 @@ class FullScreenPhotoViewer extends StatelessWidget{
         ),
         title: Text(
             contactName,
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.white),
 
         ),
       ),
