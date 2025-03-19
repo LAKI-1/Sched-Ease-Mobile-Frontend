@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:front_end_schedease/features/stat_page.dart';
 import 'package:front_end_schedease/widgets/schedule_card.dart';
 import 'package:front_end_schedease/features/schedule_page.dart';
 import 'package:front_end_schedease/widgets/navbar.dart';
 import 'package:front_end_schedease/features/log_page.dart'; // Add this import
 import 'package:front_end_schedease/service/event_service.dart'; //Import the event service
+import 'package:front_end_schedease/features/stat_page.dart';
 import 'package:intl/intl.dart'; //time formatting
 
 class DashBoard extends StatefulWidget {
@@ -18,12 +20,13 @@ class _DashBoardState extends State<DashBoard> {
   final EventService _eventService = EventService.instance; //Use of shared service
 
 
-  //List of pages displayed based on the index selected
+  // //List of pages displayed based on the index selected
   final List<Widget> _pages = [
-    DashBoardContent(),
-    SchedulePage(),
-    LogPage(),
-    // Chat is index 4, add it here
+    DashBoardContent(),    // Home (index 0)
+    SchedulePage(),        // Book (index 1)
+    LogPage(),             // Log (index 2)
+    Container(child: Center(child: Text("Chat Page"))), // Chat (index 3) - Add your real chat page
+    StatsPage(),           // Stats (index 4)
   ];
 
   void changePage(int index){
