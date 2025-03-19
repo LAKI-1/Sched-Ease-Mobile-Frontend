@@ -5,6 +5,7 @@ import 'package:sign_in_screen/ui/screens/help_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,27 +19,36 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<AuthResponse> _googleSignIn() async {
+    print('Starting Google Sign-In');
     const webClientId =
         '774729998454-ikupt71orb4iqlste11472e8ntj581dj.apps.googleusercontent.com';
 
     final GoogleSignIn googleSignIn = GoogleSignIn(serverClientId: webClientId);
 
+    print('Signing out previous session');
     await googleSignIn.signOut();
 
+    print('Requesting Google Sign-In');
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     if (googleUser == null) {
+      print('Sign-in aborted by user');
       throw 'Sign-in process aborted by user.';
     }
 
+    print('Getting authentication tokens');
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
     final accessToken = googleAuth.accessToken;
     final idToken = googleAuth.idToken;
+    print('Access Token: $accessToken, ID Token: $idToken');
 
     if (accessToken == null || idToken == null) {
+      print('No valid tokens received');
       throw 'No valid tokens received.';
     }
+
+    print('Signing in with Supabase');
 
     final response = await supabase.auth.signInWithIdToken(
       provider: OAuthProvider.google,
@@ -46,20 +56,30 @@ class _LoginScreenState extends State<LoginScreen> {
       accessToken: accessToken,
     );
 
-    await _sendTokenToBackend(accessToken);
+    print('Supabase Response: ${response.user?.email}');
+
+    print('Sending token to backend');
+
+    await _sendTokenToBackend(idToken);
 
     return response;
   }
 
-  Future<void> _sendTokenToBackend(String accessToken) async {
-    const backendUrl = 'http://localhost:8080/api/v1/login/student-login';
+  Future<void> _sendTokenToBackend(String idToken) async {
+    const backendUrl = 'http://10.31.7.21:8080/api/v1/login/student-login';
+    final cleanToken = idToken.trim();
+    print('Sending token to $backendUrl: ${cleanToken.substring(0, 50)}...');
 
     try {
       final response = await http.post(
         Uri.parse(backendUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: '{"access_token": "$accessToken"}', // Send token in JSON format
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': '$cleanToken',
+        },
       );
+
+      print('Backend response: ${response.statusCode} - ${response.body}');
 
       if (response.statusCode == 200) {
         print('Token successfully sent to backend');
@@ -67,6 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
         throw 'Failed to send token to backend: ${response.statusCode}';
       }
     } catch (e) {
+      print('Error sending token: $e');
       throw 'Error sending token to backend: $e';
     }
   }
