@@ -24,12 +24,12 @@ class FullScreenPhotoViewer extends StatelessWidget{
       backgroundColor: Colors.black,
         appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.white,size: 24.sp),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           contactName,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontSize: 20.sp),
       ),
         ),
 
@@ -39,7 +39,7 @@ class FullScreenPhotoViewer extends StatelessWidget{
          child: Hero(
           tag: 'profile',
          child: InteractiveViewer(
-           boundaryMargin: const EdgeInsets.all(20),
+           boundaryMargin: EdgeInsets.all(20.w),
            minScale: 0.5,
            maxScale: 4.0,
            child: Image.network(
@@ -55,23 +55,24 @@ class FullScreenPhotoViewer extends StatelessWidget{
                         loadingProgress.expectedTotalBytes!
                       : null,
                      color: Colors.white,
+                   strokeWidth: 4.w,
                    ),
                  );
 
              },
              errorBuilder: (context,error,stackTrace){
-               return const Column(
+               return Column(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
                    Icon(
                      Icons.error_outline,
                      color: Colors.red,
-                     size: 60,
+                     size: 60.sp,
                    ),
-                   SizedBox(height: 16),
+                   SizedBox(height: 16.h),
                    Text(
                      'Failed to load this Image',
-                     style: TextStyle(color: Colors.white),
+                     style: TextStyle(color: Colors.white,fontSize: 16.sp),
                    )
                  ],
                );
@@ -163,7 +164,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3C5A7D),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios,color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.white,size: 24.sp),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -173,7 +174,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
               child: Hero(
                 tag: 'profile',
                 child: CircleAvatar(
-                  radius: 20.r,
+                  radius: 20.w,
                   backgroundImage: NetworkImage(widget.group.imageUrl),
                 ),
               ),
@@ -375,8 +376,8 @@ class FullScreenImageViewer extends StatelessWidget{
           onTap: () => Navigator.pop(context),
           child: InteractiveViewer(
             boundaryMargin: EdgeInsets.all(20.w),
-            minScale: 0.9.sw,
-            maxScale: 0.9.sw,
+            minScale: 0.5,
+            maxScale: 4.0,
             child: Image.file(
               File(imagePath),
               fit: BoxFit.contain ,
