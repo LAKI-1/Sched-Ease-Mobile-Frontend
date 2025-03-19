@@ -4,6 +4,7 @@ import 'package:sign_in_screen/core/constants/styles.dart';
 import 'package:sign_in_screen/ui/screens/help_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,11 +40,35 @@ class _LoginScreenState extends State<LoginScreen> {
       throw 'No valid tokens received.';
     }
 
-    return await supabase.auth.signInWithIdToken(
+    final response = await supabase.auth.signInWithIdToken(
       provider: OAuthProvider.google,
       idToken: idToken,
       accessToken: accessToken,
     );
+
+    await _sendTokenToBackend(accessToken);
+
+    return response;
+  }
+
+  Future<void> _sendTokenToBackend(String accessToken) async {
+    const backendUrl = 'http://localhost:8080/api/v1/login/student-login';
+
+    try {
+      final response = await http.post(
+        Uri.parse(backendUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: '{"access_token": "$accessToken"}', // Send token in JSON format
+      );
+
+      if (response.statusCode == 200) {
+        print('Token successfully sent to backend');
+      } else {
+        throw 'Failed to send token to backend: ${response.statusCode}';
+      }
+    } catch (e) {
+      throw 'Error sending token to backend: $e';
+    }
   }
 
   @override
@@ -140,17 +165,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                 setState(() => _isLoading = true);
                                 try {
                                   final response = await _googleSignIn();
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Signed in as ${response.user?.email} ',
+                                      ),
+                                    ),
+                                  );
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => Placeholder(),
                                     ),
-                                  ); // Call Google Sign-In
-                                  print(
-                                    "User Signed In: ${response.user?.email}",
                                   );
                                 } catch (error) {
-                                  print("Google Sign-In Error: $error");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: $error')),
+                                  );
                                 } finally {
                                   setState(() => _isLoading = false);
                                 }
@@ -164,17 +196,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         elevation: 3,
                         shadowColor: Colors.black26,
                       ),
-                      child:
-                          _isLoading
-                              ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                              : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset('assets/google.png', width: 24.w),
-                                ],
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/google.png', width: 24.w),
+                          if (_isLoading) SizedBox(width: 10.w),
+                          if (_isLoading)
+                            const CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
 
