@@ -45,6 +45,16 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
     gtk_window_set_title(window, "user_profile");
+    gtk_header_bar_set_title(header_bar, "newchatapp");
+    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+  } else {
+    gtk_window_set_title(window, "newchatapp");
+    gtk_header_bar_set_title(header_bar, "sign_in_screen");
+    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+  } else {
+    gtk_window_set_title(window, "sign_in_screen");
   }
 
   gtk_window_set_default_size(window, 1280, 720);

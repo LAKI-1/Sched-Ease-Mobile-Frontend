@@ -65,6 +65,8 @@
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedPluginRegistrant.swift; sourceTree = "<group>"; };
 		33CC10ED2044A3C60003C045 /* user_profile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "user_profile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CC10ED2044A3C60003C045 /* newchatapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "newchatapp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CC10ED2044A3C60003C045 /* sign_in_screen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "sign_in_screen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33CC10F02044A3C60003C045 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33CC10F22044A3C60003C045 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Runner/Assets.xcassets; sourceTree = "<group>"; };
 		33CC10F52044A3C60003C045 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -132,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				33CC10ED2044A3C60003C045 /* user_profile.app */,
+				33CC10ED2044A3C60003C045 /* newchatapp.app */,
+				33CC10ED2044A3C60003C045 /* sign_in_screen.app */,
 				331C80D5294CF71000263BE5 /* RunnerTests.xctest */,
 			);
 			name = Products;
@@ -218,6 +222,8 @@
 			name = Runner;
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* user_profile.app */;
+			productReference = 33CC10ED2044A3C60003C045 /* newchatapp.app */;
+			productReference = 33CC10ED2044A3C60003C045 /* sign_in_screen.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -389,6 +395,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/user_profile.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/user_profile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/newchatapp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/newchatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sign_in_screen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sign_in_screen";
 			};
 			name = Debug;
 		};
@@ -403,6 +417,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/user_profile.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/user_profile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/newchatapp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/newchatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sign_in_screen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sign_in_screen";
 			};
 			name = Release;
 		};
@@ -417,6 +439,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/user_profile.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/user_profile";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/newchatapp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/newchatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sign_in_screen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/sign_in_screen";
 			};
 			name = Profile;
 		};
