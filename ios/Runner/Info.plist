@@ -6,6 +6,7 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Newchatapp</string>
+	<string>Sign In Screen</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -14,6 +15,7 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>newchatapp</string>
+	<string>sign_in_screen</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

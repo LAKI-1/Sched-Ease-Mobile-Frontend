@@ -9,6 +9,10 @@ PRODUCT_NAME = newchatapp
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp
+PRODUCT_NAME = sign_in_screen
+
+// The application's bundle identifier
+PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
