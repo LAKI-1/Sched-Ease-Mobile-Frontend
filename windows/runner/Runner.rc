@@ -90,6 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
+            VALUE "FileDescription", "newchatapp" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "newchatapp" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "newchatapp.exe" "\0"
+            VALUE "ProductName", "newchatapp" "\0"
             VALUE "FileDescription", "sign_in_screen" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "sign_in_screen" "\0"

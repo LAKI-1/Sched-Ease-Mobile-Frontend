@@ -1,4 +1,6 @@
 {
+    "name": "newchatapp",
+    "short_name": "newchatapp",
     "name": "sign_in_screen",
     "short_name": "sign_in_screen",
     "start_url": ".",
