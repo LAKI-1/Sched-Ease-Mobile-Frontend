@@ -5,6 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
+	<string>User Profile</string>
 	<string>Newchatapp</string>
 	<string>Sign In Screen</string>
 	<key>CFBundleExecutable</key>
@@ -14,6 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+	<string>user_profile</string>
 	<string>newchatapp</string>
 	<string>sign_in_screen</string>
 	<key>CFBundlePackageType</key>

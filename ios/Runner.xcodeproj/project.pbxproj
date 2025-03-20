@@ -368,6 +368,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -385,6 +386,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -403,6 +405,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -419,6 +422,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp.RunnerTests;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen.RunnerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -551,6 +555,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -574,6 +579,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.userProfile;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.newchatapp;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.signInScreen;
 				PRODUCT_NAME = "$(TARGET_NAME)";

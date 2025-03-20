@@ -5,6 +5,7 @@
 import FlutterMacOS
 import Foundation
 
+import app_links
 import file_selector_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

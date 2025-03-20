@@ -6,6 +6,9 @@ plugins {
 }
 
 android {
+    namespace = "com.example.user_profile"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
     namespace = "com.example.newchatapp"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
@@ -28,6 +31,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.user_profile"
         applicationId = "com.example.newchatapp"
 
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
