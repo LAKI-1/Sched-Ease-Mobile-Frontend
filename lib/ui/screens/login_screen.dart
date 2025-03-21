@@ -58,25 +58,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print('Supabase Response: ${response.user?.email}');
 
+    String? supabaseAccessToken;
+    final session = supabase.auth.currentSession;
+    if (session != null) {
+      supabaseAccessToken = session.accessToken;
+      print('Supabase Access Token: $supabaseAccessToken');
+      print('Token length: ${supabaseAccessToken.length}');
+      print('Token period count: ${supabaseAccessToken.split('.').length - 1}');
+    } else {
+      print('No Supabase session available');
+      throw 'No Supabase session available';
+    }
+
     print('Sending token to backend');
 
-    await _sendTokenToBackend(idToken);
+    await _sendTokenToBackend(supabaseAccessToken);
 
     return response;
   }
 
-  Future<void> _sendTokenToBackend(String idToken) async {
+  Future<void> _sendTokenToBackend(String token) async {
     const backendUrl = 'http://10.31.7.21:8080/api/v1/login/student-login';
-    final cleanToken = idToken.trim();
+    final cleanToken = token.trim();
+    final authHeader = 'Bearer $cleanToken';
+    // print('Authorization header: "$authHeader"');
+    print("$authHeader");
     print('Sending token to $backendUrl: ${cleanToken.substring(0, 50)}...');
 
     try {
       final response = await http.post(
         Uri.parse(backendUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': '$cleanToken',
-        },
+        headers: {'Content-Type': 'application/json', 'Authorization': token},
       );
 
       print('Backend response: ${response.statusCode} - ${response.body}');
